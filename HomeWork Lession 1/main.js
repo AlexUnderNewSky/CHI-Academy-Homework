@@ -75,6 +75,9 @@ const arrayObjects = [
 
 console.log(arrayObjects.filter((element) => element.age > 20));
 
+console.log(``);
+// Task 4
+console.log(`Task 4`);
 arrayObjects.map((element) => {
   element.pets.push(`Mouse`);
 });
@@ -82,44 +85,44 @@ arrayObjects.map((element) => {
 console.log(arrayObjects);
 
 console.log(``);
-// Task 4
-console.log(`Task 4`);
+// Task 5
+console.log(`Task 5`);
 
-const arrayTask4 = [];
+const arrayTask5 = [];
 
 for (let index = 0; index < 10; index++) {
-  arrayTask4.push(42);
+  arrayTask5.push(42);
 }
 
-console.log(arrayTask4);
+console.log(arrayTask5);
 
-arrayTask4.splice(4, 0, `answer`);
-arrayTask4.pop();
-console.log(arrayTask4);
-arrayTask4.find((index) => {
+arrayTask5.splice(4, 0, `answer`);
+arrayTask5.pop();
+console.log(arrayTask5);
+arrayTask5.find((index) => {
   if (index === `answer`) {
     return console.log(index);
   }
 });
 
 console.log(``);
-// Task 5
-console.log(`Task 5`);
+// Task 6
+console.log(`Task 6`);
 
-const task5Object = {
+const task6Object = {
   name: `Serhii`,
   age: 23,
   softLanguage: `JavaScript`,
   favouriteGame: `The Witcher 3: Wild Hunt`,
 };
 
-console.log(Object.keys(task5Object)); //keys
+console.log(Object.keys(task6Object)); //keys
 
-console.log(Object.hasOwn(task5Object, `softLanguage`)); //hasOwn
+console.log(Object.hasOwn(task6Object, `softLanguage`)); //hasOwn
 
-console.log(Object.values(task5Object)); //values
+console.log(Object.values(task6Object)); //values
 
 // keys + forEach :)
-Object.keys(task5Object).forEach((key) => {
-  console.log(`${key}: ${task5Object[key]}`);
+Object.keys(task6Object).forEach((key) => {
+  console.log(`${key}: ${task6Object[key]}`);
 });
