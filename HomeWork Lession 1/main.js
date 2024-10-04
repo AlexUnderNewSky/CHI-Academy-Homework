@@ -88,20 +88,20 @@ console.log(``);
 // Task 5
 console.log(`Task 5`);
 
-const arrayTask5 = [];
+const arrayTask5 = Array(10).fill(42);
 
-for (let index = 0; index < 10; index++) {
-  arrayTask5.push(42);
-}
+// for (let index = 0; index < 10; index++) {  don't need if you use method: fill
+//   arrayTask5.push(42);
+// }
 
 console.log(arrayTask5);
 
-arrayTask5.splice(4, 0, `answer`);
+arrayTask5.splice(4, 0, `answer`); // if 0 replace with 1 then you don't need to write .pop method
 arrayTask5.pop();
 console.log(arrayTask5);
 arrayTask5.find((index) => {
   if (index === `answer`) {
-    return console.log(index);
+    return console.log(`Index name - ${index}`);
   }
 });
 
