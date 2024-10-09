@@ -95,3 +95,37 @@ function recursiveFileFounder(obj, size) {
 
 const allFiles = recursiveFileFounder(root, 1);
 console.log(allFiles);
+
+console.log(``);
+// Task 4
+console.log(`=-=-=-= Task 4 =-=-=-=`);
+
+const person = {
+  name: `Serhii`,
+  phone: `+380 (99) 999-99-99`,
+  introduce() {
+    console.log(`My name is ${this.name} and my phone number is ${this.phone}`);
+  },
+};
+
+const student = Object.create(person);
+
+student.course = 1;
+student.study = function () {
+  console.log(`I'm study at ${this.course} course.`);
+};
+
+student.study();
+
+const teacher = Object.create(person);
+
+teacher.subject = `Music`;
+teacher.teach = function () {
+  console.log(`I'm teaching ${this.subject}`);
+};
+
+teacher.teach();
+
+teacher.name = `Kate`;
+teacher.phone = `23`;
+teacher.introduce();
