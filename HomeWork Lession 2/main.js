@@ -129,3 +129,51 @@ teacher.teach();
 teacher.name = `Kate`;
 teacher.phone = `23`;
 teacher.introduce();
+
+console.log(``);
+// Task 5
+console.log(`=-=-=-= Task 5 - prototype =-=-=-=`);
+
+function personPrototype(name, age) {
+  this.name = name;
+  this.age = age;
+}
+
+personPrototype.prototype.introduce = function () {
+  console.log(`My name is ${this.name} and my age is ${this.age}`);
+};
+
+const serhii = new personPrototype(`Serhii`, 23);
+serhii.introduce();
+
+function studentPrototype(name, age, course) {
+  personPrototype.call(this, name, age);
+  this.course = course;
+}
+
+studentPrototype.prototype = Object.create(personPrototype.prototype);
+studentPrototype.prototype.constructor = studentPrototype;
+
+studentPrototype.prototype.study = function () {
+  console.log(`I'm study at ${this.course} course.`);
+};
+
+const studentXristo = new studentPrototype(`Xristo`, 18, 1);
+studentXristo.introduce();
+studentXristo.study();
+
+function teacherPrototype(name, age, subject) {
+  personPrototype.call(this, name, age);
+  this.subject = subject;
+}
+
+teacherPrototype.prototype = Object.create(personPrototype.prototype);
+teacherPrototype.prototype.constructor = teacherPrototype;
+
+teacherPrototype.prototype.teach = function () {
+  console.log(`I'm teaching ${this.subject}`);
+};
+
+const teacherSerhii = new teacherPrototype(`Elizabeth`, 42, `Music`);
+teacherSerhii.introduce();
+teacherSerhii.teach();
