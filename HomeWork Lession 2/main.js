@@ -1,6 +1,8 @@
 "use strict";
 
-// Task 1
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TASK 1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 console.log(`=-=-=-= Task 1 =-=-=-=`);
 function addParamsToRequest(objectCall) {
   let count = 0;
@@ -26,7 +28,9 @@ const result2 = sendData({ name: "Xristo", "music taste": `Hip-hop`, age: 17 });
 console.log(result2);
 
 console.log(``);
-// Task 2
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TASK 2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 console.log(`=-=-=-= Task 2 =-=-=-=`);
 
 const obj = {
@@ -41,7 +45,9 @@ const fnNewGetData = obj.getData.bind({ name: `Xristo`, age: 17 });
 fnNewGetData();
 
 console.log(``);
-// Task 3
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TASK 3!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 console.log(`=-=-=-= Task 3 =-=-=-=`);
 
 const root = {
@@ -97,7 +103,9 @@ const allFiles = recursiveFileFounder(root, 1);
 console.log(allFiles);
 
 console.log(``);
-// Task 4
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TASK 4!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 console.log(`=-=-=-= Task 4 =-=-=-=`);
 
 const person = {
@@ -131,23 +139,25 @@ teacher.phone = `23`;
 teacher.introduce();
 
 console.log(``);
-// Task 5
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TASK 5!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 console.log(`=-=-=-= Task 5 - prototype =-=-=-=`);
 
-function personPrototype(name, age) {
+function personPrototype(name, phone) {
   this.name = name;
-  this.age = age;
+  this.phone = phone;
 }
 
 personPrototype.prototype.introduce = function () {
-  console.log(`My name is ${this.name} and my age is ${this.age}`);
+  console.log(`My name is ${this.name} and my phone number is ${this.phone}`);
 };
 
-const serhii = new personPrototype(`Serhii`, 23);
-serhii.introduce();
+const serhiiPrototype = new personPrototype(`Serhii`, `+380 (99) 999-99-99`);
+serhiiPrototype.introduce();
 
-function studentPrototype(name, age, course) {
-  personPrototype.call(this, name, age);
+function studentPrototype(name, phone, course) {
+  personPrototype.call(this, name, phone);
   this.course = course;
 }
 
@@ -158,12 +168,12 @@ studentPrototype.prototype.study = function () {
   console.log(`I'm study at ${this.course} course.`);
 };
 
-const studentXristo = new studentPrototype(`Xristo`, 18, 1);
+const studentXristo = new studentPrototype(`Xristo`, `+380 (77) 777-77-77`, 1);
 studentXristo.introduce();
 studentXristo.study();
 
-function teacherPrototype(name, age, subject) {
-  personPrototype.call(this, name, age);
+function teacherPrototype(name, phone, subject) {
+  personPrototype.call(this, name, phone);
   this.subject = subject;
 }
 
@@ -174,6 +184,62 @@ teacherPrototype.prototype.teach = function () {
   console.log(`I'm teaching ${this.subject}`);
 };
 
-const teacherSerhii = new teacherPrototype(`Elizabeth`, 42, `Music`);
-teacherSerhii.introduce();
-teacherSerhii.teach();
+const teacherElizabeth = new teacherPrototype(
+  `Elizabeth`,
+  `+380 (22) 222-22-22`,
+  `Music`
+);
+teacherElizabeth.introduce();
+teacherElizabeth.teach();
+
+console.log(``);
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TASK 6!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+console.log(`=-=-=-= Task 6 - class =-=-=-=`);
+
+class Person {
+  constructor(name, phone) {
+    this.name = name;
+    this.phone = phone;
+  }
+
+  introduce() {
+    console.log(`My name is ${this.name} and my phone number is ${this.phone}`);
+  }
+}
+
+const serhiiClass = new Person(`Serhii`, `+380 (99) 999-99-99`);
+serhiiClass.introduce();
+
+class Student extends Person {
+  constructor(name, phone, course) {
+    super(name, phone);
+    this.course = course;
+  }
+  study() {
+    console.log(`I'm study at ${this.course} course.`);
+  }
+}
+
+const studentXristoClass = new Student(`Xristo`, `+380 (55) 555-55-55`, 3);
+studentXristoClass.introduce();
+studentXristoClass.study();
+
+class Teacher extends Person {
+  constructor(name, phone, subject) {
+    super(name, phone);
+    this.subject = subject;
+  }
+  teach() {
+    console.log(`I'm teaching ${this.subject}`);
+  }
+}
+
+const teacherElizabethClass = new Teacher(
+  `Elizabeth`,
+  `+380 (22) 222-22-22`,
+  `Math`
+);
+teacherElizabethClass.introduce();
+teacherElizabethClass.teach();
