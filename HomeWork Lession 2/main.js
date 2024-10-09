@@ -6,14 +6,11 @@
 console.log(`=-=-=-= Task 1 =-=-=-=`);
 function addParamsToRequest(objectCall) {
   let count = 0;
-  return (newInfo) => {
-    count += 1;
-    return {
-      ...objectCall,
-      data: { ...newInfo },
-      count: count - 1, // if you don't want to start with 0, just remove "-1"
-    };
-  };
+  return (newInfo) => ({
+    ...objectCall,
+    data: newInfo,
+    count: count++,
+  });
 }
 
 const sendData = addParamsToRequest({ "access-token": "qwerty" });
