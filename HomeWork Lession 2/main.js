@@ -9,7 +9,7 @@ function addParamsToRequest(objectCall) {
     return {
       ...objectCall,
       data: { ...newInfo },
-      count: count - 1, // if we don't want to start with 0, just remove "-1"
+      count: count - 1, // if you don't want to start with 0, just remove "-1"
     };
   };
 }
@@ -39,3 +39,59 @@ obj.getData.call({ name: `Serhii`, age: 23 });
 
 const fnNewGetData = obj.getData.bind({ name: `Xristo`, age: 17 });
 fnNewGetData();
+
+console.log(``);
+// Task 3
+console.log(`=-=-=-= Task 3 =-=-=-=`);
+
+const root = {
+  name: "name",
+  type: "folder",
+  children: [
+    {
+      name: "folder 1",
+      type: "folder",
+      children: [
+        {
+          name: "folder 2",
+          type: "folder",
+          children: [
+            {
+              name: "file 3",
+              type: "file",
+              size: 30,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "file 1",
+      type: "file",
+      size: 10,
+    },
+    {
+      name: "file 2",
+      type: "file",
+      size: 20,
+    },
+  ],
+};
+
+function recursiveFileFounder(obj, size) {
+  let files = [];
+  if (obj.type === "file") {
+    if (obj.size > size) {
+      //   console.log(obj.name, obj.size);  // if you want to see all files without array
+      files.push(obj.name);
+    }
+  } else {
+    obj.children.forEach((child) => {
+      files = files.concat(recursiveFileFounder(child, size));
+    });
+  }
+  return files;
+}
+
+const allFiles = recursiveFileFounder(root, 1);
+console.log(allFiles);
