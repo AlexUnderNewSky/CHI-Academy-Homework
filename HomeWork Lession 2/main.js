@@ -84,22 +84,20 @@ const root = {
   ],
 };
 
-function recursiveFileFounder(obj, size) {
+function recursiveFileFounder(obj) {
   let files = [];
   if (obj.type === "file") {
-    if (obj.size > size) {
-      //   console.log(obj.name, obj.size);  // if you want to see all files without array
-      files.push(obj.name);
-    }
+    //   console.log(obj.name);  // if you want to see all files without array
+    files.push(obj.name);
   } else {
     obj.children.forEach((child) => {
-      files = files.concat(recursiveFileFounder(child, size));
+      files = files.concat(recursiveFileFounder(child));
     });
   }
   return files;
 }
 
-const allFiles = recursiveFileFounder(root, 1);
+const allFiles = recursiveFileFounder(root);
 console.log(allFiles);
 
 console.log(``);
