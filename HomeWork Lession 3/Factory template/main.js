@@ -23,22 +23,27 @@ class Bike extends Transport {
 }
 
 class TransportFactory {
-  create(type) {
+  static create(type) {
     let transport;
-    if (type === `car`) {
-      transport = new Car();
-    } else if (type === `bike`) {
-      transport = new Bike();
-    } else {
-      console.log(`Error`);
+
+    switch (type) {
+      case "car":
+        transport = new Car();
+        break;
+      case "bike":
+        transport = new Bike();
+        break;
+      default:
+        console.log("Error");
     }
+
     return transport;
   }
 }
 
-const factory = new TransportFactory();
-const myCar = factory.create(`car`);
-const myBike = factory.create(`bike`);
+
+const myCar = TransportFactory.create(`car`);
+const myBike = TransportFactory.create(`bike`);
 
 myCar.ride();
 myCar.stop();
