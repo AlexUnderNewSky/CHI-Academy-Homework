@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Serhii Sosnytskyi Task DOM Rick and Morty</title>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://www.freepnglogos.com/uploads/rick-and-morty-png/rick-and-morty-portal-shoes-white-clothing-zavvi-23.png"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="main.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Character List</h2>
+
+      <p class="loading" style="display: none">Loading...</p>
+
+      <div class="characters-list">
+        <!-- List of characters will be loaded here -->
+      </div>
+      <div id="modal" class="modal">
+        <div class="modal-content">
+          <span id="closeModal" class="close">&times;</span>
+          <div id="modalCharacterInfo" class="character-info"></div>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btnPrevious">Previous</button>
+        <p class="currentPage">Page 1</p>
+        <button class="btnNext">Next</button>
+      </div>
+    </div>
+  </body>
+</html>
