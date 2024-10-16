@@ -2,15 +2,15 @@
 const loadingText = document.querySelector(`.loading`);
 const characterList = document.querySelector(`.characters-list`);
 const characterShow = document.querySelector(`.character-show`);
-const btnPrevious = document.querySelector(`.btnPrevious`);
-const btnNext = document.querySelector(".btnNext");
+// const btnPrevious = document.querySelector(`.btnPrevious`);
+// const btnNext = document.querySelector(".btnNext");
 const currentPageElement = document.querySelector(`.currentPage`);
 const modal = document.getElementById("modal");
 const modalCharacterInfo = document.getElementById("modalCharacterInfo");
 const closeModal = document.getElementById("closeModal");
 
 let currentPage = 1;
-btnPrevious.disabled = true;
+// btnPrevious.disabled = true;
 let nextPageUrl = null;
 let isFetching = false;
 
@@ -77,7 +77,7 @@ async function displayCharacters(pageUrl) {
       }
     });
 
-    currentPageElement.textContent = `Page ${currentPage}`;
+    currentPageElement.textContent = `Current loaded page: ${currentPage}`;
     console.log(parsedData);
 
     btnPrevious.disabled = currentPage === 1;
@@ -94,20 +94,20 @@ displayCharacters(
   `https://rickandmortyapi.com/api/character/?page=${currentPage}`
 );
 
-btnNext.addEventListener(`click`, () => {
-  if (nextPageUrl) {
-    currentPage++;
-    displayCharacters(nextPageUrl);
-  }
-});
-btnPrevious.addEventListener(`click`, () => {
-  if (currentPage > 1) {
-    currentPage--;
-    displayCharacters(
-      `https://rickandmortyapi.com/api/character/?page=${currentPage}`
-    );
-  }
-});
+// btnNext.addEventListener(`click`, () => {
+//   if (nextPageUrl) {
+//     currentPage++;
+//     displayCharacters(nextPageUrl);
+//   }
+// });
+// btnPrevious.addEventListener(`click`, () => {
+//   if (currentPage > 1) {
+//     currentPage--;
+//     displayCharacters(
+//       `https://rickandmortyapi.com/api/character/?page=${currentPage}`
+//     );
+//   }
+// });
 
 closeModal.addEventListener(`click`, () => {
   modal.style.display = `none`;
