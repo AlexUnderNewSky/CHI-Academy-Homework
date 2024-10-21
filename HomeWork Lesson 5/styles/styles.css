@@ -1,0 +1,112 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 0;
+}
+
+.loading {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  margin-top: 20px;
+}
+
+.characters-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px auto; /* Центрируем и добавляем отступ сверху и снизу */
+  max-width: 1200px; /* Устанавливаем максимальную ширину для списка */
+  padding: 0 20px; /* Добавляем отступы по бокам */
+}
+
+.character-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  width: 120px; /* Фиксированная ширина карточки */
+  margin: 5px;
+  padding: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.character-card:hover {
+  transform: scale(1.05);
+}
+
+.character-card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.character-info {
+  text-align: center;
+}
+
+.character-info h3 {
+  font-size: 18px;
+  margin: 10px 0 5px;
+}
+
+.character-info p {
+  font-size: 14px;
+  color: #666;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.btnPrevious,
+.btnNext {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  margin: 0 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btnPrevious:disabled,
+.btnNext:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.btnPrevious:hover:not(:disabled),
+.btnNext:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.currentPage {
+  font-size: 16px;
+  margin: 0 10px;
+}
+
+/* Стили для заголовка h1 */
+.title {
+  text-align: center; /* Центрирует заголовок */
+  color: #007bff; /* Устанавливает синий цвет */
+  text-transform: uppercase; /* Делает текст заглавными буквами */
+  font-size: 2.5rem; /* Размер шрифта, можно изменить по желанию */
+  margin: 20px 0; /* Отступ сверху и снизу */
+}
+
+/* Медиазапросы для мобильных устройств */
+@media (max-width: 600px) {
+  .character-card {
+    width: 100%; /* Заставляем карточки занимать 100% ширины на маленьких экранах */
+    max-width: none; /* Убираем ограничение максимальной ширины */
+  }
+
+  .characters-list {
+    margin: 10px; /* Уменьшаем отступы */
+  }
+}
