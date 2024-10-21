@@ -47,7 +47,7 @@ const App = () => {
   return (
     <div>
       {loading && <div className="loading">Loading...</div>}
-      {error && <div className="error">{error}</div>} {}
+      {error && <div className="error">{error}</div>}
       <h1 class="title">Character List</h1>
       <div className="characters-list">
         {characters.map((item) => (
