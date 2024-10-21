@@ -59,11 +59,15 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin: 20px 0;
+  position: fixed;   
+  bottom: 10px;      
+  left: 50%;         
+  transform: translateX(-50%); 
+  z-index: 1000;     
 }
 
-.btnPrevious,
-.btnNext {
+.btnPrevious, .btnNext {
   background-color: #007bff;
   color: white;
   border: none;
@@ -74,14 +78,12 @@ body {
   transition: background-color 0.3s;
 }
 
-.btnPrevious:disabled,
-.btnNext:disabled {
+.btnPrevious:disabled, .btnNext:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
 }
 
-.btnPrevious:hover:not(:disabled),
-.btnNext:hover:not(:disabled) {
+.btnPrevious:hover:not(:disabled), .btnNext:hover:not(:disabled) {
   background-color: #0056b3;
 }
 
