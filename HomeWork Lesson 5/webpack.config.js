@@ -46,7 +46,9 @@ module.exports = (argv) => {
       port: 8080,
       open: true,
       compress: true,
-      static: path.resolve(__dirname, "./dist"),
+      static: {
+        directory: path.resolve(__dirname, "dist"),
+      },
       historyApiFallback: true,
     },
     optimization: {
