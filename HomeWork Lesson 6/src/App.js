@@ -36,7 +36,7 @@ const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Проверяем, находится ли пользователь на пути "/heroes/:id"
+
   const isHeroDetailRoute = location.pathname.startsWith("/heroes/");
 
   return (
@@ -46,7 +46,6 @@ const App = () => {
       <ThemeSwitcher darkMode={darkMode} setDarkMode={setDarkMode} />
 
       <Box display="flex">
-        {/* Основное содержимое */}
         <Box sx={{ flexGrow: 1, padding: "20px" }}>
           <Routes
             location={isHeroDetailRoute ? { pathname: "/heroes" } : location}
