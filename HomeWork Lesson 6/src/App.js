@@ -6,7 +6,7 @@ import Heroes from "./pages/Heroes";
 import About from "./pages/About";
 import { CssBaseline, createTheme, ThemeProvider, Box } from "@mui/material";
 import ThemeSwitcher from "./components/ThemeSwitcher";
-import HeroDetails from "./pages/HeroDetails";
+import HeroDetails from "./components/HeroDetails";
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
