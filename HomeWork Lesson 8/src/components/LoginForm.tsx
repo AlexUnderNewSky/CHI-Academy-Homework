@@ -1,5 +1,6 @@
 import React from "react";
 import { loginUser } from "../api/userActions"; // Импортируйте функцию
+import { useNavigate } from "react-router-dom";
 
 interface LoginFormProps {
   onLogin: (username: string, password: string) => void;
@@ -8,6 +9,7 @@ interface LoginFormProps {
 export const LoginForm: React.FC<LoginFormProps> = ({
   onLogin,
 }): JSX.Element => {
+  const navigate = useNavigate();
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -35,6 +37,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         <input type="password" name="password" />
       </label>
       <button type="submit">Login</button>
+      <br />
+      <br />
+      <br />
+      <div>
+        Not registered yet?{" "}
+        <button onClick={() => navigate("/register")}>Register</button>
+      </div>
     </form>
   );
 };
