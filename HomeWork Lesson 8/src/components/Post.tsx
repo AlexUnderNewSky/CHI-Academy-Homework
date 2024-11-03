@@ -7,6 +7,7 @@ interface PostProps {
   imageUrl: string; // Предполагается, что imageUrl начинается с "/uploads/...".
   description: string;
   username: string;
+  userid: number;
   commentCount: number;
 }
 
@@ -15,31 +16,39 @@ const Post: React.FC<PostProps> = ({
   imageUrl,
   description,
   username,
+  userid,
   commentCount,
 }) => {
-  // Убираем "/uploads/" или "/static/" из imageUrl
-  const cleanImageUrl = imageUrl
-    .replace(/^\/uploads\//, "")
-    .replace(/^\/static\//, "");
-
   return (
     <Card sx={{ margin: 2, borderRadius: 2, boxShadow: 2 }}>
+      <Typography variant="subtitle1" fontWeight="bold" sx={{ ml: 1 }}>
+        Image id: {id}
+      </Typography>
       <CardMedia
         component="img"
         height="200"
         sx={{ width: "50%", height: "auto", objectFit: "cover" }}
-        image={`${BASE_URL}/api/exhibits/static/%2Fuploads%2F${cleanImageUrl}`}
+        image={`${BASE_URL}${imageUrl}`}
         alt={description}
       />
       <CardContent>
         <Typography variant="subtitle1" fontWeight="bold">
-          {username}
+          User id: {userid}
         </Typography>
-        <Typography variant="body2" color="text.secondary" gutterBottom>
+        <Typography variant="subtitle1" fontWeight="bold">
+          User name: {username}
+        </Typography>
+        <Typography>
+          <Typography component="span" sx={{ fontWeight: "bold" }}>
+            Description:
+          </Typography>{" "}
           {description}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {commentCount} Comments
+          <Typography component="span" sx={{ fontWeight: "bold" }}>
+            {commentCount}
+          </Typography>{" "}
+          Comments
         </Typography>
       </CardContent>
     </Card>
