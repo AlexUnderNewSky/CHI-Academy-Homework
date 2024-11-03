@@ -1,15 +1,19 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import LoginPage from "./layouts/LoginPage"; // Обновите путь в зависимости от вашей структуры папок
+import LoginPage from "./layouts/LoginPage";
 import RegisterPage from "./layouts/RegisterPage";
+import StipePage from "./layouts/StipePage";
+import Header from "./components/Header";
 
 const App: React.FC = (): JSX.Element => {
   return (
     <Router>
+      <Header />
       <Routes>
+        <Route path="/" element={<StipePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        {/* Добавьте другие маршруты здесь */}
+        {/* Add other routes here */}
       </Routes>
     </Router>
   );

@@ -36,6 +36,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
         <input type="password" name="password" />
       </label>
       <button type="submit">Register</button>
+      <br />
+      <br />
+      <br />
+      <div>
+        Already have account?{" "}
+        <button onClick={() => navigate("/login")}>Login</button>
+      </div>
     </form>
   );
 };
