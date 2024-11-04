@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { uploadExhibit } from "../api/exhibitActions"; // Импортируем функцию загрузки
 import { TextField, Button, Grid, Typography, Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const UploadExhibit: React.FC = () => {
   const [image, setImage] = useState<File | null>(null);
   const [description, setDescription] = useState("");
+  const navigate = useNavigate();
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -34,6 +36,7 @@ const UploadExhibit: React.FC = () => {
     try {
       const response = await uploadExhibit(formData);
       console.log("Upload successful:", response.data);
+      navigate("/");
     } catch (error) {
       console.error("Error during upload:", error);
     }

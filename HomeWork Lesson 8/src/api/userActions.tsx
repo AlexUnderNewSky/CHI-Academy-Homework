@@ -7,7 +7,8 @@ export const loginUser = async (username: string, password: string) => {
       password,
     });
     localStorage.setItem("token", response.data.access_token);
-    return response.data; 
+    console.log(response);
+    return response.data;
   } catch (error) {
     throw error;
   }
@@ -19,8 +20,8 @@ export const registerUser = async (username: string, password: string) => {
       username,
       password,
     });
-    return response.data; 
+    return response.data;
   } catch (error) {
-    throw error; 
+    throw error;
   }
 };
