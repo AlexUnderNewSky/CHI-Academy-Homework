@@ -1,5 +1,5 @@
 import React from "react";
-import { BASE_URL } from "../api/axiosInstance"; // Убедитесь, что BASE_URL правильно экспортируется
+import { axiosInstance } from "../api/axiosInstance"; // Убедитесь, что BASE_URL правильно экспортируется
 import { Card, CardMedia, CardContent, Typography } from "@mui/material";
 
 interface PostProps {
@@ -28,7 +28,7 @@ const Post: React.FC<PostProps> = ({
         component="img"
         height="200"
         sx={{ width: "50%", height: "auto", objectFit: "cover" }}
-        image={`${BASE_URL}${imageUrl}`}
+        image={`${axiosInstance.defaults.baseURL}${imageUrl}`}
         alt={description}
       />
       <CardContent>

@@ -1,10 +1,14 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
+import { Provider } from "react-redux"; // Импортируем Provider
+import store from "./store/store";
+import App from "./App"; // Импортируем главный компонент приложения
 
-const domContainer = document.getElementById("root");
-if (!domContainer) {
-  throw new Error("Failed to find the root element");
-}
-const root = createRoot(domContainer);
-root.render(<App />);
+const root = createRoot(document.getElementById("root") as HTMLElement);
+root.render(
+  <Provider store={store}>
+    {" "}
+    {/* Оборачиваем приложение в Provider */}
+    <App />
+  </Provider>
+);
