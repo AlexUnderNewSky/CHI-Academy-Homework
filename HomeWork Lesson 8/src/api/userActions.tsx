@@ -7,7 +7,8 @@ export const loginUser = async (username: string, password: string) => {
       username,
       password,
     });
-    return response.data; // Возвращаем данные ответа
+    localStorage.setItem("token", response.data.access_token);
+    return response.data.access_token; // Возвращаем данные ответа
   } catch (error) {
     throw error; // Обработка ошибок
   }

@@ -1,8 +1,5 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: "http://ec2-13-49-67-34.eu-north-1.compute.amazonaws.com:3000/",
+  baseURL: "http://ec2-13-49-67-34.eu-north-1.compute.amazonaws.com/",
 });
-
-const BASE_URL = "http://ec2-13-49-67-34.eu-north-1.compute.amazonaws.com";
-export { BASE_URL };

@@ -50,6 +50,18 @@ const Header: React.FC = () => {
             >
               Main Page
             </Button>
+            <Button
+              sx={{ mr: 8, color: "white" }}
+              onClick={() => navigate("/new-post")}
+            >
+              New Post
+            </Button>
+            <Button
+              sx={{ mr: 8, color: "white" }}
+              onClick={() => navigate("/remove-post")}
+            >
+              Remove Post
+            </Button>
             Main Page for Instagram
           </Typography>
           <Button color="inherit" onClick={handleButtonClick}>

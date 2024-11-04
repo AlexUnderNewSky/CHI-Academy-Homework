@@ -1,12 +1,12 @@
 import React from "react";
-import { loginUser } from "../api/userActions"; // Импортируйте функцию
+import { loginUser } from "../api/userActions";
 import { useNavigate } from "react-router-dom";
 
-interface LoginFormProps {
+interface LoginFormPropsI {
   onLogin: (username: string, password: string) => void;
 }
 
-export const LoginForm: React.FC<LoginFormProps> = ({
+export const LoginForm: React.FC<LoginFormPropsI> = ({
   onLogin,
 }): JSX.Element => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     onLogin(username, password);
 
     try {
-      const data = await loginUser(username, password); // Используйте функцию из userActions
+      const data = await loginUser(username, password);
       console.log(data);
     } catch (error) {
       console.error("Ошибка входа:", error);
