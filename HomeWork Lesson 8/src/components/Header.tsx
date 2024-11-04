@@ -1,5 +1,3 @@
-// src/components/Header.tsx
-
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
@@ -18,8 +16,17 @@ const Header: React.FC = () => {
   const isLoginPage = location.pathname === "/login";
   const isRegisterPage = location.pathname === "/register";
 
-  // Функция для обработки клика по кнопке
-  const handleButtonClick = () => {
+  // Проверяем, авторизован ли пользователь
+  const isAuthenticated = !!localStorage.getItem("token");
+
+  // Функция для обработки клика по кнопке "Logout"
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Удаляем токен из локального хранилища
+    navigate("/login"); // Перенаправляем на страницу входа
+  };
+
+  // Функция для обработки клика по кнопке "Login/Register"
+  const handleAuthButtonClick = () => {
     if (isLoginPage) {
       navigate("/register");
     } else if (isRegisterPage) {
@@ -56,17 +63,19 @@ const Header: React.FC = () => {
             >
               New Post
             </Button>
-            <Button
-              sx={{ mr: 8, color: "white" }}
-              onClick={() => navigate("/remove-post")}
-            >
-              Remove Post
-            </Button>
             Main Page for Instagram
           </Typography>
-          <Button color="inherit" onClick={handleButtonClick}>
-            {isLoginPage ? "Register" : "Login"}
-          </Button>
+
+          {/* Условно отображаем кнопки на основе состояния авторизации */}
+          {isAuthenticated ? (
+            <Button color="inherit" onClick={handleLogout}>
+              Logout
+            </Button>
+          ) : (
+            <Button color="inherit" onClick={handleAuthButtonClick}>
+              {isLoginPage ? "Register" : "Login"}
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

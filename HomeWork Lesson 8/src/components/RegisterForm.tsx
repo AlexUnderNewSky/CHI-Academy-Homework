@@ -1,12 +1,11 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { registerUser } from "../api/userActions";
+import { useNavigate } from "react-router-dom";
+import { Button, TextField, Box, Typography, Alert } from "@mui/material";
 
-interface RegisterFormProps {
-  onRegister: (username: string, password: string) => void;
-}
-const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
+const RegisterForm: React.FC = () => {
   const navigate = useNavigate();
+  const [error, setError] = React.useState<string>("");
 
   const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -14,36 +13,35 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
 
-    onRegister(username, password);
-
     try {
-      const data = await registerUser(username, password);
-      console.log("Регистрация прошла успешно:", data);
-      navigate("/login"); // Перенаправление на страницу логина
+      await registerUser(username, password);
+      navigate("/login"); // Redirect after successful registration
     } catch (error) {
-      console.error("Ошибка регистрации:", error);
+      setError("Registration failed. Please try again.");
     }
   };
 
   return (
-    <form onSubmit={handleRegister}>
-      <label>
-        Username:
-        <input type="text" name="username" />
-      </label>
-      <label>
-        Password:
-        <input type="password" name="password" />
-      </label>
-      <button type="submit">Register</button>
-      <br />
-      <br />
-      <br />
-      <div>
-        Already have account?{" "}
-        <button onClick={() => navigate("/login")}>Login</button>
-      </div>
-    </form>
+    <Box component="form" onSubmit={handleRegister} sx={{ mt: 2 }}>
+      <Typography variant="h5">Register</Typography>
+      <Box sx={{ m: 1 }} />
+      {error && <Alert severity="error">{error}</Alert>}
+      <TextField name="username" label="Username" fullWidth required />
+      <Box sx={{ m: 1 }} />
+      <TextField
+        name="password"
+        label="Password"
+        type="password"
+        fullWidth
+        required
+      />
+      <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+        Register
+      </Button>
+      <Button onClick={() => navigate("/login")} sx={{ mt: 2, ml: 2 }}>
+        Already have an account? Login
+      </Button>
+    </Box>
   );
 };
 

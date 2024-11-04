@@ -1,6 +1,5 @@
-import { axiosInstance } from "../api/axiosInstance";
+import { axiosInstance } from "./axiosInstance";
 
-// Функция для входа пользователя
 export const loginUser = async (username: string, password: string) => {
   try {
     const response = await axiosInstance.post("api/auth/login", {
@@ -8,21 +7,20 @@ export const loginUser = async (username: string, password: string) => {
       password,
     });
     localStorage.setItem("token", response.data.access_token);
-    return response.data.access_token; // Возвращаем данные ответа
+    return response.data; 
   } catch (error) {
-    throw error; // Обработка ошибок
+    throw error;
   }
 };
 
-// Функция для регистрации пользователя (если требуется)
 export const registerUser = async (username: string, password: string) => {
   try {
-    const response = await axiosInstance.post("users/register", {
+    const response = await axiosInstance.post("api/users/register", {
       username,
       password,
     });
-    return response.data; // Возвращаем данные ответа
+    return response.data; 
   } catch (error) {
-    throw error; // Обработка ошибок
+    throw error; 
   }
 };

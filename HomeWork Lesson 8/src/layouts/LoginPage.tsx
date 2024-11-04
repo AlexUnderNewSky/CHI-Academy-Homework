@@ -1,17 +1,12 @@
 import React from "react";
-import LoginForm from "../components/LoginForm"; // Обновите путь в зависимости от вашей структуры папок
+import LoginForm from "../components/LoginForm";
+import { Container } from "@mui/material";
 
-const LoginPage: React.FC = (): JSX.Element => {
-  const handleLogin = (username: string, password: string) => {
-    console.log("Logging in with:", { username, password });
-    // Здесь вы можете добавить логику для аутентификации, например, отправку запроса на сервер.
-  };
-
+const LoginPage: React.FC = () => {
   return (
-    <div>
-      <h1>Login</h1>
-      <LoginForm onLogin={handleLogin} />
-    </div>
+    <Container maxWidth="sm">
+      <LoginForm />
+    </Container>
   );
 };
 

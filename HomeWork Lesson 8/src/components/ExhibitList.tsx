@@ -1,7 +1,5 @@
-// src/components/ExhibitList.tsx
 import React, { useEffect, useState } from "react";
-import { fetchExhibits, removeExhibits } from "../api/exhibitActions";
-import { axiosInstance } from "../api/axiosInstance";
+import { fetchExhibits, removeExhibit } from "../api/exhibitActions";
 import {
   Box,
   Typography,
@@ -13,6 +11,7 @@ import {
   Grid,
   Alert,
 } from "@mui/material";
+import { axiosInstance } from "../api/axiosInstance";
 
 const ExhibitList: React.FC = () => {
   const [exhibits, setExhibits] = useState<any[]>([]);
@@ -25,7 +24,6 @@ const ExhibitList: React.FC = () => {
         setExhibits(data);
       } catch (error) {
         setError("Failed to fetch exhibits");
-        console.error("Error fetching exhibits:", error);
       }
     };
 
@@ -34,12 +32,9 @@ const ExhibitList: React.FC = () => {
 
   const handleRemove = async (id: string) => {
     try {
-      await removeExhibits(id);
-      // Обновляем состояние, удаляя удаленный экспонат
+      await removeExhibit(id);
       setExhibits(exhibits.filter((exhibit) => exhibit.id !== id));
-      console.log(`Exhibit ${id} removed successfully`);
     } catch (error) {
-      console.error("Error removing exhibit:", error);
       setError("Failed to remove exhibit");
     }
   };
@@ -58,10 +53,17 @@ const ExhibitList: React.FC = () => {
                 component="img"
                 image={`${axiosInstance.defaults.baseURL}${exhibit.imageUrl}`}
                 alt={exhibit.description}
-                sx={{ height: 140 }} // Высота изображения
+                sx={{ height: 140 }}
               />
               <CardContent>
+                <Typography variant="body1">Image ID: {exhibit.id}</Typography>
                 <Typography variant="body1">{exhibit.description}</Typography>
+                <Typography variant="body1">
+                  Username: {exhibit.user.username}
+                </Typography>
+                <Typography variant="body1">
+                  User ID: {exhibit.user.id}
+                </Typography>
               </CardContent>
               <CardActions>
                 <Button
