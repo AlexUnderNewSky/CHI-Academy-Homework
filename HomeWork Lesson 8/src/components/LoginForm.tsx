@@ -1,50 +1,41 @@
 import React from "react";
 import { loginUser } from "../api/userActions";
 import { useNavigate } from "react-router-dom";
+import { Button, TextField, Box, Typography, Alert, Divider } from "@mui/material";
 
-interface LoginFormPropsI {
-  onLogin: (username: string, password: string) => void;
-}
-
-export const LoginForm: React.FC<LoginFormPropsI> = ({
-  onLogin,
-}): JSX.Element => {
+const LoginForm: React.FC = () => {
   const navigate = useNavigate();
+  const [error, setError] = React.useState<string>("");
+
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
 
-    onLogin(username, password);
-
     try {
-      const data = await loginUser(username, password);
-      console.log(data);
+      await loginUser(username, password);
+      navigate("/"); // Redirect after successful login
     } catch (error) {
-      console.error("Ошибка входа:", error);
+      setError("Login failed. Please check your credentials.");
     }
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <label>
-        Username:
-        <input type="text" name="username" />
-      </label>
-      <label>
-        Password:
-        <input type="password" name="password" />
-      </label>
-      <button type="submit">Login</button>
-      <br />
-      <br />
-      <br />
-      <div>
-        Not registered yet?{" "}
-        <button onClick={() => navigate("/register")}>Register</button>
-      </div>
-    </form>
+    <Box component="form" onSubmit={handleLogin} sx={{ mt: 2 }}>
+      <Typography variant="h5">Login</Typography>
+      <Box sx={{ m: 1 }} />
+      {error && <Alert severity="error">{error}</Alert>}
+      <TextField name="username" label="Username" fullWidth required />
+      <Box sx={{ m: 1 }} />
+      <TextField name="password" label="Password" type="password" fullWidth required />
+      <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+        Login
+      </Button>
+      <Button onClick={() => navigate("/register")} sx={{ ml: 2, mt: 2 }}>
+        Register
+      </Button>
+    </Box>
   );
 };
 
