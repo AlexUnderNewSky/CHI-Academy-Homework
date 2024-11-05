@@ -1,21 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  isAuthenticated: false, // Изначально пользователь не залогинен
-  token: null, // Здесь будет храниться токен (как ключ доступа)
+  isAuthenticated: !!localStorage.getItem("token"),
+  token: localStorage.getItem("token"),
 };
 
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     login: (state, action) => {
       state.isAuthenticated = true;
-      state.token = action.payload; // Здесь будет токен пользователя
+      state.token = action.payload;
+      localStorage.setItem("token", action.payload); // Сохраняем токен
     },
     logout: (state) => {
       state.isAuthenticated = false;
       state.token = null;
+      localStorage.removeItem("token"); // Удаляем токен
     },
   },
 });

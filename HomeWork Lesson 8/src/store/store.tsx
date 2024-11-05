@@ -1,37 +1,11 @@
-import { configureStore } from '@reduxjs/toolkit';
-
-const initialState = {
-  auth: {
-    isAuthenticated: false, // Измените в зависимости от вашего механизма аутентификации
-    user: null,
-  },
-};
-
-const rootReducer = (state = initialState, action: any) => {
-  switch (action.type) {
-    case "LOGIN":
-      return {
-        ...state,
-        auth: {
-          isAuthenticated: true,
-          user: action.payload,
-        },
-      };
-    case "LOGOUT":
-      return {
-        ...state,
-        auth: {
-          isAuthenticated: false,
-          user: null,
-        },
-      };
-    default:
-      return state;
-  }
-};
+import { configureStore } from "@reduxjs/toolkit";
+import userReducer from "./slices/userSlice";
 
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: {
+    auth: userReducer,
+  },
 });
 
+export type RootState = ReturnType<typeof store.getState>; // Типизация состояния
 export default store;
