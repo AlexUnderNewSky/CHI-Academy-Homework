@@ -32,10 +32,10 @@ const ExhibitList: React.FC = () => {
 
   const handleRemove = async (id: string) => {
     try {
-      await removeExhibit(id);
+      await removeExhibit(id); // Убедитесь, что здесь правильный ID
       setExhibits(exhibits.filter((exhibit) => exhibit.id !== id));
     } catch (error) {
-      setError("Failed to remove exhibit");
+      setError("Failed to remove exhibit"); // Выводим сообщение об ошибке
     }
   };
 

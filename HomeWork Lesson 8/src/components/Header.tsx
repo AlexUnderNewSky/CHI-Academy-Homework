@@ -7,10 +7,13 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useDispatch } from "react-redux"; // Импортируем useDispatch
+import { logout } from "../store/slices/userSlice"; // Импортируем действие logout
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch(); // Получаем dispatch
 
   // Определяем, на какой странице находится пользователь
   const isLoginPage = location.pathname === "/login";
@@ -21,7 +24,8 @@ const Header: React.FC = () => {
 
   // Функция для обработки клика по кнопке "Logout"
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Удаляем токен из локального хранилища
+    localStorage.removeItem("token");
+    dispatch(logout()); // Вызываем действие logout для обновления состояния
     navigate("/login"); // Перенаправляем на страницу входа
   };
 

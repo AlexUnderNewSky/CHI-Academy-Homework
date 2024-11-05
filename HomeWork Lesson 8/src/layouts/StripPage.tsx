@@ -2,7 +2,7 @@ import React from "react";
 import ExhibitList from "../components/ExhibitList";
 import { Container } from "@mui/material";
 
-const ExhibitPage: React.FC = () => {
+const StripPage: React.FC = () => {
   return (
     <Container>
       <ExhibitList />
@@ -10,4 +10,4 @@ const ExhibitPage: React.FC = () => {
   );
 };
 
-export default ExhibitPage;
+export default StripPage;
