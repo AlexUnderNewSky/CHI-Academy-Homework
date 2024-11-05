@@ -67,6 +67,12 @@ const Header: React.FC = () => {
             >
               New Post
             </Button>
+            <Button
+              sx={{ mr: 8, color: "white" }}
+              onClick={() => navigate("/home")}
+            >
+              My Post
+            </Button>
             Main Page for Instagram
           </Typography>
 
