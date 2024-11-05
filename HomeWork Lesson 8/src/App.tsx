@@ -33,13 +33,10 @@ const App: React.FC = () => {
             </ProtectedRoute>
           }
         />
+        {/* Главная страница доступна для всех пользователей */}
         <Route
           path="/"
-          element={
-            <ProtectedRoute requiresAuth={true}>
-              <StripPage />
-            </ProtectedRoute>
-          }
+          element={<StripPage />} 
         />
         <Route
           path="/new-post"
