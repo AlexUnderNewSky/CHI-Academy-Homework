@@ -1,13 +1,21 @@
 import { axiosInstance } from "./axiosInstance"; // Import your axios instance
 
-export const fetchExhibits = async () => {
+export const fetchExhibits = async (page: number) => {
   try {
-    const response = await axiosInstance.get("api/exhibits");
-    return response.data.data; // Предполагаем, что данные находятся в response.data.data
+    const response = await axiosInstance.get("api/exhibits", {
+      params: {
+        page: page,
+      },
+    });
+    return {
+      data: response.data.data, // Список выставок
+      lastPage: response.data.lastPage, // Последняя страница
+    };
   } catch (error) {
-    throw error; // Перебрасываем ошибку для обработки
+    throw error;
   }
 };
+
 
 export const removeExhibit = async (id: string) => {
   const token = localStorage.getItem("token"); // Получаем токен из localStorage
