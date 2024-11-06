@@ -8,6 +8,7 @@ import Header from "./components/Header";
 import UploadExhibit from "./layouts/UploadPosts";
 import ProtectedRoute from "./components/ProtectedRoute";
 import HomePage from "./layouts/HomePage"; // Импортируйте HomePage
+import ExhibitDetail from "./components/ExhibitDetail"; // Импортируйте новый компонент для деталей выставки
 
 const App: React.FC = () => {
   const isAuthenticated = useSelector(
@@ -54,6 +55,11 @@ const App: React.FC = () => {
               <UploadExhibit />
             </ProtectedRoute>
           }
+        />
+        {/* Маршрут для детальной страницы выставки */}
+        <Route
+          path="/exhibit/:id" // Параметр id в URL
+          element={<ExhibitDetail />} // Компонент для отображения детальной информации
         />
       </Routes>
     </Router>
