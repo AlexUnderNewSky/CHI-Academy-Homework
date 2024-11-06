@@ -12,33 +12,20 @@ import {
   Alert,
 } from "@mui/material";
 import { axiosInstance } from "../api/axiosInstance";
+import { useSelector, useDispatch } from "react-redux";
 import { getUserProfile } from "../api/userActions";
-
-// Добавьте экшен и редьюсер для сохранения данных о пользователе в Redux (если необходимо)
-
+import { useNavigate } from "react-router-dom"; // Импортируем useNavigate
 
 const ExhibitList: React.FC = () => {
   const [exhibits, setExhibits] = useState<any[]>([]);
   const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
-  const [userId, setUserId] = useState<number | null>(null); // Для хранения ID текущего пользователя
+  const [userProfile, setUserProfile] = useState<any>(null); // Храним профиль текущего пользователя
+  const userId = useSelector((state: any) => state.user?.id); // Получаем userId из состояния Redux
 
-  // Загружаем данные о текущем пользователе при монтировании компонента
-  useEffect(() => {
-    const loadUserProfile = async () => {
-      try {
-        const userData = await getUserProfile();
-        setUserId(userData.id); // Сохраняем ID пользователя
-      } catch (error) {
-        console.error("Failed to load user profile:", error);
-      }
-    };
+  const navigate = useNavigate(); // Хук для навигации
 
-    loadUserProfile();
-  }, []); // Этот useEffect сработает только при монтировании компонента
-
-  // Загрузка выставок
   const loadExhibits = async (page: number) => {
     try {
       const { data, lastPage } = await fetchExhibits(page);
@@ -52,8 +39,19 @@ const ExhibitList: React.FC = () => {
     }
   };
 
+  const loadUserProfile = async () => {
+    try {
+      const profileData = await getUserProfile();
+      setUserProfile(profileData); // Загружаем профиль текущего пользователя
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+      setError("Failed to fetch user profile");
+    }
+  };
+
   useEffect(() => {
     loadExhibits(currentPage);
+    loadUserProfile(); // Загружаем профиль пользователя при монтировании компонента
   }, [currentPage]);
 
   const handleNextPage = () => {
@@ -75,6 +73,10 @@ const ExhibitList: React.FC = () => {
     } catch (error) {
       setError("Failed to remove exhibit");
     }
+  };
+
+  const handleCardClick = (id: string) => {
+    navigate(`/exhibit/${id}`); // Программный переход на страницу с подробной информацией
   };
 
   return (
@@ -108,7 +110,7 @@ const ExhibitList: React.FC = () => {
       <Grid container spacing={2}>
         {exhibits.map((exhibit) => (
           <Grid item xs={12} sm={6} md={4} key={exhibit.id}>
-            <Card>
+            <Card onClick={() => handleCardClick(exhibit.id)} sx={{ cursor: "pointer" }}>
               <CardMedia
                 component="img"
                 image={`${axiosInstance.defaults.baseURL}${exhibit.imageUrl}`}
@@ -126,7 +128,8 @@ const ExhibitList: React.FC = () => {
                 </Typography>
               </CardContent>
               <CardActions>
-                {userId === exhibit.user.id && ( // Проверка, что кнопка должна быть только для пользователя
+                {/* Отображаем кнопку "Remove", если выставка принадлежит текущему пользователю */}
+                {userProfile && userProfile.id === exhibit.user.id && (
                   <Button
                     variant="contained"
                     color="secondary"
