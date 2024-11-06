@@ -10,11 +10,14 @@ import {
   Button,
   Grid,
   Alert,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
 } from "@mui/material";
 import { axiosInstance } from "../api/axiosInstance";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserProfile } from "../api/userActions";
-import { useNavigate } from "react-router-dom"; // Импортируем useNavigate
 
 const ExhibitList: React.FC = () => {
   const [exhibits, setExhibits] = useState<any[]>([]);
@@ -22,9 +25,9 @@ const ExhibitList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [userProfile, setUserProfile] = useState<any>(null); // Храним профиль текущего пользователя
+  const [selectedExhibit, setSelectedExhibit] = useState<any | null>(null); // Храним информацию о выбранной выставке
+  const [openDialog, setOpenDialog] = useState(false); // Состояние для управления открытием модального окна
   const userId = useSelector((state: any) => state.user?.id); // Получаем userId из состояния Redux
-
-  const navigate = useNavigate(); // Хук для навигации
 
   const loadExhibits = async (page: number) => {
     try {
@@ -75,8 +78,14 @@ const ExhibitList: React.FC = () => {
     }
   };
 
-  const handleCardClick = (id: string) => {
-    navigate(`/exhibit/${id}`); // Программный переход на страницу с подробной информацией
+  const handleCardClick = (exhibit: any) => {
+    setSelectedExhibit(exhibit); // Сохраняем выбранную выставку
+    setOpenDialog(true); // Открываем модальное окно
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false); // Закрываем модальное окно
+    setSelectedExhibit(null); // Очищаем выбранную выставку
   };
 
   return (
@@ -110,7 +119,10 @@ const ExhibitList: React.FC = () => {
       <Grid container spacing={2}>
         {exhibits.map((exhibit) => (
           <Grid item xs={12} sm={6} md={4} key={exhibit.id}>
-            <Card onClick={() => handleCardClick(exhibit.id)} sx={{ cursor: "pointer" }}>
+            <Card
+              onClick={() => handleCardClick(exhibit)} // При клике открываем модалку
+              sx={{ cursor: "pointer" }}
+            >
               <CardMedia
                 component="img"
                 image={`${axiosInstance.defaults.baseURL}${exhibit.imageUrl}`}
@@ -143,6 +155,35 @@ const ExhibitList: React.FC = () => {
           </Grid>
         ))}
       </Grid>
+
+      {/* Модальное окно с деталями выставки */}
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Exhibit Details</DialogTitle>
+        <DialogContent>
+          {selectedExhibit && (
+            <Box>
+              {/* Добавляем картинку в модальное окно */}
+              <CardMedia
+                component="img"
+                image={`${axiosInstance.defaults.baseURL}${selectedExhibit.imageUrl}`}
+                alt={selectedExhibit.description}
+                sx={{ height: 300, marginBottom: 2 }} // Размер картинки
+              />
+              <Typography variant="h6">Description</Typography>
+              <Typography variant="body1">{selectedExhibit.description}</Typography>
+              <Typography variant="body1">Username: {selectedExhibit.user.username}</Typography>
+              <Typography variant="body1">User ID: {selectedExhibit.user.id}</Typography>
+              <Typography variant="body1">Created At: {new Date(selectedExhibit.createdAt).toLocaleString()}</Typography>
+            </Box>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <Box sx={{ display: "flex", justifyContent: "center", marginTop: 4 }}>
         <Button
           variant="contained"
