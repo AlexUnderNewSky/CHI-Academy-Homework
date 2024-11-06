@@ -24,3 +24,17 @@ export const registerUser = async (username: string, password: string) => {
     throw error;
   }
 };
+
+export const getUserProfile = async () => {
+  try {
+    const response = await axiosInstance.get("/users/my-profile", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Используем токен из localStorage (или другого хранилища)
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch user profile", error);
+    throw error;
+  }
+};
