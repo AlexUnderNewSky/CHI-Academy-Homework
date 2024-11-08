@@ -6,10 +6,10 @@ import {
   deleteComment,
 } from "../api/commentActions";
 import ExhibitCard from "./ExhibitCard";
-import PaginationControls from "./PaginationControls"; // Импорт компонента пагинации
+import PaginationControls from "./PaginationControls";
 import { Box, Grid, Typography } from "@mui/material";
-import { Exhibit, Comment } from "../types";
-import { useUserProfile } from "../hooks/useUserProfile"; // Импортируем наш хук
+import { Exhibit, Comment } from "../interfaces";
+import { useUserProfile } from "../hooks/useUserProfile";
 import { axiosInstance } from "../api/axiosInstance";
 
 const ExhibitList: React.FC = () => {
@@ -19,17 +19,14 @@ const ExhibitList: React.FC = () => {
   const [lastPage, setLastPage] = useState(1);
   const [error, setError] = useState<string | null>(null);
 
-  // Используем хук для получения данных пользователя
   const { user, loading, error: userError } = useUserProfile();
 
-  // Функция для загрузки экспонатов и комментариев
   const loadExhibitsAndComments = async () => {
     try {
       const { data, lastPage } = await fetchExhibits(currentPage);
       setExhibits(data);
       setLastPage(lastPage);
 
-      // Загрузка комментариев для каждого экспоната
       const commentsFetches = data.map((exhibit: Exhibit) =>
         fetchComments(exhibit.id).then((comments) => ({
           exhibitId: exhibit.id,
@@ -52,11 +49,10 @@ const ExhibitList: React.FC = () => {
 
   useEffect(() => {
     loadExhibitsAndComments();
-  }, [currentPage]); // Перезапрос данных при изменении страницы
+  }, [currentPage]);
 
-  // Добавление комментария
   const handleAddComment = async (exhibitId: string, commentText: string) => {
-    if (!commentText.trim()) return; // Не позволять отправлять пустые комментарии
+    if (!commentText.trim()) return;
     try {
       const comment = await addComment(exhibitId, commentText);
       setCommentsMap((prevCommentsMap) => ({
@@ -68,7 +64,6 @@ const ExhibitList: React.FC = () => {
     }
   };
 
-  // Удаление комментария
   const handleDeleteComment = async (exhibitId: string, commentId: string) => {
     try {
       await deleteComment(exhibitId, commentId);
@@ -83,13 +78,10 @@ const ExhibitList: React.FC = () => {
     }
   };
 
-  // Удаление выставки
   const handleRemoveExhibit = async (exhibitId: string) => {
     try {
-      // Выполнить запрос на сервер для удаления выставки
       await axiosInstance.delete(`/api/exhibits/${exhibitId}`);
 
-      // Обновить состояние, удалив выставку из списка
       setExhibits((prevExhibits) =>
         prevExhibits.filter((exhibit) => exhibit.id !== exhibitId)
       );
@@ -99,13 +91,11 @@ const ExhibitList: React.FC = () => {
     }
   };
 
-  // Функция для изменения текущей страницы
   const handlePageChange = (page: number) => {
-    if (page < 1 || page > lastPage) return; // Ограничение страниц
-    setCurrentPage(page); // Обновляем текущую страницу
+    if (page < 1 || page > lastPage) return;
+    setCurrentPage(page);
   };
 
-  // Проверка, если данные пользователя еще не загружены
   if (loading) {
     return <Typography>Loading user data...</Typography>;
   }
@@ -129,11 +119,11 @@ const ExhibitList: React.FC = () => {
           <ExhibitCard
             key={exhibit.id}
             exhibit={exhibit}
-            user={user} // Передаем данные пользователя
+            user={user}
             commentsMap={commentsMap}
             onAddComment={handleAddComment}
             onDeleteComment={handleDeleteComment}
-            onRemove={handleRemoveExhibit} // Передаем функцию удаления
+            onRemove={handleRemoveExhibit}
           />
         ))}
       </Grid>

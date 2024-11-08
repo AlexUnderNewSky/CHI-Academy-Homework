@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LoginPage from "./layouts/LoginPage";
 import RegisterPage from "./layouts/RegisterPage";
-import StripPage from "./layouts/StripPage"; // Это, видимо, ваша главная страница
+import StripPage from "./layouts/StripPage";
 import Header from "./components/Header";
 import UploadExhibit from "./layouts/UploadPosts";
 import ProtectedRoute from "./components/ProtectedRoute";
-import HomePage from "./layouts/HomePage"; // Импортируйте HomePage
-import ExhibitDetail from "./components/ExhibitDetail"; // Импортируйте новый компонент для деталей выставки
+import HomePage from "./layouts/HomePage";
+import ExhibitDetail from "./components/ExhibitDetail";
 
 const App: React.FC = () => {
   const isAuthenticated = useSelector(
@@ -36,15 +36,12 @@ const App: React.FC = () => {
           }
         />
         {/* Главная страница доступна для всех */}
-        <Route
-          path="/"
-          element={<StripPage />} 
-        />
+        <Route path="/" element={<StripPage />} />
         <Route
           path="/home"
           element={
             <ProtectedRoute requiresAuth={true}>
-              <HomePage /> 
+              <HomePage />
             </ProtectedRoute>
           }
         />
@@ -56,11 +53,8 @@ const App: React.FC = () => {
             </ProtectedRoute>
           }
         />
-        {/* Маршрут для детальной страницы выставки */}
-        <Route
-          path="/exhibit/:id" // Параметр id в URL
-          element={<ExhibitDetail />} // Компонент для отображения детальной информации
-        />
+
+        <Route path="/exhibit/:id" element={<ExhibitDetail />} />
       </Routes>
     </Router>
   );

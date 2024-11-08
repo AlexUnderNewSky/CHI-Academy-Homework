@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { axiosInstance } from "../api/axiosInstance";
-import { Box, Typography, Card, CardMedia, CardContent, Button, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Card,
+  CardMedia,
+  CardContent,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 import CommentStripe from "../components/CommentStripe";
 
 const ExhibitDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>(); // Получаем id из URL
+  const { id } = useParams<{ id: string }>();
   const [exhibit, setExhibit] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
@@ -45,15 +53,23 @@ const ExhibitDetail: React.FC = () => {
         <CardContent>
           <Typography variant="h6">Description</Typography>
           <Typography variant="body1">{exhibit?.description}</Typography>
-          <Typography variant="body2">Username: {exhibit?.user.username}</Typography>
-          <Typography variant="body2">Created At: {new Date(exhibit?.createdAt).toLocaleString()}</Typography>
+          <Typography variant="body2">
+            Username: {exhibit?.user.username}
+          </Typography>
+          <Typography variant="body2">
+            Created At: {new Date(exhibit?.createdAt).toLocaleString()}
+          </Typography>
         </CardContent>
-        <Button variant="contained" color="primary" onClick={() => window.history.back()}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => window.history.back()}
+        >
           Back
         </Button>
       </Card>
-
-      <CommentStripe exhibitId={id!} /> {/* Передаем exhibitId для работы с комментариями */}
+      <CommentStripe exhibitId={id!} />{" "}
+      {/* Передаем exhibitId для работы с комментариями */}
     </Box>
   );
 };
