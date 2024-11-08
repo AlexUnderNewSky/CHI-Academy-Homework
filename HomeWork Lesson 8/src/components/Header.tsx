@@ -82,7 +82,6 @@ const Header: React.FC = () => {
         </Toolbar>
       </AppBar>
 
-      {/* Отступ для основного контента, чтобы не перекрывать его header'ом */}
       <Box sx={{ paddingTop: "64px" }} />
     </>
   );
