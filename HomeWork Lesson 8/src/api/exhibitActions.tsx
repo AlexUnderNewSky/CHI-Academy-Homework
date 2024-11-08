@@ -16,7 +16,6 @@ export const fetchExhibits = async (page: number) => {
   }
 };
 
-
 export const removeExhibit = async (id: string) => {
   const token = localStorage.getItem("token"); // Получаем токен из localStorage
   if (!token) {
@@ -31,20 +30,23 @@ export const removeExhibit = async (id: string) => {
   });
 };
 
-export const uploadExhibit = async (formData: FormData) => {
-  const token = localStorage.getItem("token"); // Получаем токен
-  if (!token) {
-    throw new Error("Unauthorized"); // Проверка на наличие токена
-  }
-
-  return axiosInstance.post("api/exhibits", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-      Authorization: `Bearer ${token}`, // Добавляем токен в заголовки
-    },
-  });
+export const fetchComments = async (exhibitId: string) => {
+  const response = await axiosInstance.get(`/exhibits/${exhibitId}/comments`);
+  return response.data;
 };
 
+export const addComment = async (exhibitId: string, text: string) => {
+  const response = await axiosInstance.post(`/exhibits/${exhibitId}/comments`, { text });
+  return response.data;
+};
+
+export const deleteComment = async (exhibitId: string, commentId: string) => {
+  await axiosInstance.delete(`/exhibits/${exhibitId}/comments/${commentId}`);
+};
+
+// Добавление недостающих функций:
+
+// Получение постов пользователя
 export const fetchUserPosts = async () => {
   const token = localStorage.getItem("token"); // Получаем токен из localStorage
   if (!token) {
@@ -61,4 +63,19 @@ export const fetchUserPosts = async () => {
   } catch (error) {
     throw error;
   }
+};
+
+// Загрузка нового exhibit
+export const uploadExhibit = async (formData: FormData) => {
+  const token = localStorage.getItem("token"); // Получаем токен
+  if (!token) {
+    throw new Error("Unauthorized"); // Проверка на наличие токена
+  }
+
+  return axiosInstance.post("api/exhibits", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${token}`, // Добавляем токен в заголовки
+    },
+  });
 };
