@@ -1,15 +1,7 @@
 import React from "react";
-import { axiosInstance } from "../api/axiosInstance"; // Убедитесь, что BASE_URL правильно экспортируется
+import { axiosInstance } from "../api/axiosInstance";
 import { Card, CardMedia, CardContent, Typography } from "@mui/material";
-
-interface PostProps {
-  id: number;
-  imageUrl: string; // Предполагается, что imageUrl начинается с "/uploads/...".
-  description: string;
-  username: string;
-  userid: number;
-  commentCount: number;
-}
+import { PostProps } from "../interfaces";
 
 const Post: React.FC<PostProps> = ({
   id,

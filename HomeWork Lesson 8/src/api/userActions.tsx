@@ -29,7 +29,7 @@ export const getUserProfile = async () => {
   try {
     const response = await axiosInstance.get("/users/my-profile", {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Используем токен из localStorage (или другого хранилища)
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
       },
     });
     return response.data;

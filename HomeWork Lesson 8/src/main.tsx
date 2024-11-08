@@ -1,14 +1,13 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { Provider } from "react-redux"; // Импортируем Provider
+import { Provider } from "react-redux";
 import store from "./store/store";
-import App from "./App"; // Импортируем главный компонент приложения
+import App from "./App";
 
 const root = createRoot(document.getElementById("root") as HTMLElement);
 root.render(
   <Provider store={store}>
     {" "}
-    {/* Оборачиваем приложение в Provider */}
     <App />
   </Provider>
 );

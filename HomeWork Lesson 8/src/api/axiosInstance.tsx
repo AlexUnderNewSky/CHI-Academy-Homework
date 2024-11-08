@@ -1,4 +1,3 @@
-// axiosInstance.tsx
 import axios from "axios";
 import { createBrowserHistory } from "history";
 
@@ -8,7 +7,6 @@ const axiosInstance = axios.create({
 
 const history = createBrowserHistory();
 
-// Intercept response to handle authorization
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -19,7 +17,6 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-// Add token to headers if present
 axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {

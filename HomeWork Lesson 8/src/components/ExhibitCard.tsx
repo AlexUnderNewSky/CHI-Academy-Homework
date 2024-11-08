@@ -18,17 +18,8 @@ import {
   ExpandLess,
   Delete as DeleteIcon,
 } from "@mui/icons-material";
-import { User, Exhibit, Comment } from "../types";
+import { ExhibitCardProps } from "../interfaces";
 import { axiosInstance } from "../api/axiosInstance";
-
-interface ExhibitCardProps {
-  exhibit: Exhibit;
-  user: User | null;
-  onRemove: (id: string) => void;
-  onAddComment: (exhibitId: string, comment: string) => void;
-  onDeleteComment: (exhibitId: string, commentId: string) => void;
-  commentsMap: Record<string, Comment[]>; 
-}
 
 const ExhibitCard: React.FC<ExhibitCardProps> = ({
   exhibit,
@@ -38,7 +29,9 @@ const ExhibitCard: React.FC<ExhibitCardProps> = ({
   onDeleteComment,
   commentsMap,
 }) => {
-  const [expandedComments, setExpandedComments] = useState<Record<string, boolean>>({});
+  const [expandedComments, setExpandedComments] = useState<
+    Record<string, boolean>
+  >({});
   const [newComment, setNewComment] = useState<string>("");
 
   const toggleComments = (exhibitId: string) => {
@@ -49,12 +42,11 @@ const ExhibitCard: React.FC<ExhibitCardProps> = ({
   };
 
   const handleAddComment = () => {
-    if (!newComment.trim()) return; 
+    if (!newComment.trim()) return;
     onAddComment(exhibit.id, newComment);
-    setNewComment(""); 
+    setNewComment("");
   };
 
-  // Удаление комментария
   const handleDeleteComment = (commentId: string) => {
     onDeleteComment(exhibit.id, commentId);
   };
@@ -83,13 +75,21 @@ const ExhibitCard: React.FC<ExhibitCardProps> = ({
             {expandedComments[exhibit.id] ? "Hide Comments" : "Show Comments"}
           </Button>
           {user && user.id === exhibit.user.id && (
-            <Button variant="contained" color="secondary" onClick={() => onRemove(exhibit.id)}>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => onRemove(exhibit.id)}
+            >
               Remove Exhibit
             </Button>
           )}
         </CardActions>
 
-        <Collapse in={expandedComments[exhibit.id]} timeout="auto" unmountOnExit>
+        <Collapse
+          in={expandedComments[exhibit.id]}
+          timeout="auto"
+          unmountOnExit
+        >
           <Divider />
           <Box sx={{ padding: 2 }}>
             <Typography variant="subtitle1">Comments:</Typography>
@@ -101,18 +101,34 @@ const ExhibitCard: React.FC<ExhibitCardProps> = ({
               onChange={(e) => setNewComment(e.target.value)}
               sx={{ marginBottom: 2 }}
             />
-            <Button variant="contained" color="primary" onClick={handleAddComment} sx={{ marginBottom: 2 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddComment}
+              sx={{ marginBottom: 2 }}
+            >
               Add Comment
             </Button>
 
             {commentsMap[exhibit.id]?.length ? (
               commentsMap[exhibit.id].map((comment) => (
-                <Box key={comment.id} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingY: 1 }}>
+                <Box
+                  key={comment.id}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    paddingY: 1,
+                  }}
+                >
                   <Typography variant="body2" color="text.secondary">
                     <strong>{comment.user.username}:</strong> {comment.text}
                   </Typography>
                   {user && user.id === comment.user.id && (
-                    <IconButton color="error" onClick={() => handleDeleteComment(comment.id)}>
+                    <IconButton
+                      color="error"
+                      onClick={() => handleDeleteComment(comment.id)}
+                    >
                       <DeleteIcon />
                     </IconButton>
                   )}

@@ -1,19 +1,24 @@
-// CommentStripe.tsx
 import React, { useState, useEffect } from "react";
-import { TextField, Button, Box, Typography, List, ListItem, IconButton } from "@mui/material";
-import { ExpandMore, ExpandLess, Delete as DeleteIcon } from "@mui/icons-material";
-import { addComment, fetchComments, deleteComment } from "../api/commentActions";
-
-interface Comment {
-  id: string;
-  text: string;
-  createdAt: string;
-  user: { id: string; username: string };
-}
-
-interface CommentStripeProps {
-  exhibitId: string;
-}
+import {
+  TextField,
+  Button,
+  Box,
+  Typography,
+  List,
+  ListItem,
+  IconButton,
+} from "@mui/material";
+import {
+  ExpandMore,
+  ExpandLess,
+  Delete as DeleteIcon,
+} from "@mui/icons-material";
+import {
+  addComment,
+  fetchComments,
+  deleteComment,
+} from "../api/commentActions";
+import { Comment, CommentStripeProps } from "../interfaces";
 
 const CommentStripe: React.FC<CommentStripeProps> = ({ exhibitId }) => {
   const [comments, setComments] = useState<Comment[]>([]);
@@ -39,14 +44,17 @@ const CommentStripe: React.FC<CommentStripeProps> = ({ exhibitId }) => {
     <Box>
       <Typography variant="h6">Comments</Typography>
       <Button onClick={() => setExpanded(!expanded)}>
-        {expanded ? <ExpandLess /> : <ExpandMore />} {expanded ? "Hide" : "Show"} Comments
+        {expanded ? <ExpandLess /> : <ExpandMore />}{" "}
+        {expanded ? "Hide" : "Show"} Comments
       </Button>
 
       {expanded && (
         <List>
           {comments.map((comment) => (
             <ListItem key={comment.id}>
-              <Typography>{comment.text} - by {comment.user.username}</Typography>
+              <Typography>
+                {comment.text} - by {comment.user.username}
+              </Typography>
               <IconButton onClick={() => handleDeleteComment(comment.id)}>
                 <DeleteIcon />
               </IconButton>

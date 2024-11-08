@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { uploadExhibit } from "../api/exhibitActions"; // Импортируем функцию загрузки
+import { uploadExhibit } from "../api/exhibitActions";
 import { TextField, Button, Grid, Typography, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -56,7 +56,7 @@ const UploadExhibit: React.FC = () => {
               accept="image/*"
               onChange={handleImageChange}
               required
-              style={{ display: "none" }} // Скрываем стандартный input
+              style={{ display: "none" }}
             />
             <label htmlFor="image">
               <Button variant="contained" component="span">

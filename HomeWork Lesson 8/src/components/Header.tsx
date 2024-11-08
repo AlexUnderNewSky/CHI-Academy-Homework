@@ -8,11 +8,10 @@ import {
   IconButton,
   Box,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
 import { useDispatch } from "react-redux";
 import { logout } from "../store/slices/userSlice";
-import { useUserProfile } from "../hooks/useUserProfile"; // Импортируем наш хук
-import AddIcon from '@mui/icons-material/Add';
+import { useUserProfile } from "../hooks/useUserProfile";
+import AddIcon from "@mui/icons-material/Add";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -20,7 +19,6 @@ const Header: React.FC = () => {
   const location = useLocation();
   const isAuthenticated = !!localStorage.getItem("token");
 
-  // Используем хук для получения профиля пользователя
   const { user, loading, error } = useUserProfile();
 
   const handleAuthButtonClick = () => {
@@ -31,8 +29,7 @@ const Header: React.FC = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <IconButton edge="start" color="inherit" aria-label="menu">
-        </IconButton>
+        <IconButton edge="start" color="inherit" aria-label="menu"></IconButton>
 
         {isAuthenticated && (
           <>
@@ -43,14 +40,14 @@ const Header: React.FC = () => {
               My Posts
             </Button>
             <Button
-              sx={{ mr: 30,  color: "white" }}
+              sx={{ mr: 30, color: "white" }}
               onClick={() => navigate("/new-post")}
             >
               <AddIcon />
             </Button>
           </>
         )}
-        <Typography variant="h6" sx={{flexGrow: 1 }}>
+        <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Instagram Clone
         </Typography>
 
