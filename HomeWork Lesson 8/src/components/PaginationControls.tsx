@@ -8,7 +8,7 @@ const PaginationControls: React.FC<PaginationProps> = ({
   onPageChange,
 }) => {
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", marginTop: 4 }}>
+    <Box sx={{ display: "flex", justifyContent: "center", marginTop: 4, mb: 2, mt: 2}}>
       <Button
         variant="contained"
         onClick={() => onPageChange(currentPage - 1)}

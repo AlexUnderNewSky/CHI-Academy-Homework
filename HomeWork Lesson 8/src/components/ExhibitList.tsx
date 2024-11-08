@@ -102,8 +102,8 @@ const ExhibitList: React.FC = () => {
 
   return (
     <Box sx={{ padding: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Exhibit List
+      <Typography variant="h4" gutterBottom sx={{ textAlign: "center" }}>
+        List of Exhibits!
       </Typography>
       {error && <Typography color="error">{error}</Typography>}
 
