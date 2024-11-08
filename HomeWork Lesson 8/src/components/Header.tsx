@@ -27,59 +27,63 @@ const Header: React.FC = () => {
   };
 
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <IconButton edge="start" color="inherit" aria-label="menu"></IconButton>
+    <>
+      <AppBar position="fixed" sx={{ top: 0, left: 0, right: 0 }}>
+        <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="menu"></IconButton>
 
-        {isAuthenticated && (
-          <>
-            <Button
-              sx={{ mx: 3, color: "white" }}
-              onClick={() => navigate("/home")}
-            >
-              My Posts
-            </Button>
-            <Button
-              sx={{ mr: 30, color: "white" }}
-              onClick={() => navigate("/new-post")}
-            >
-              <AddIcon />
-            </Button>
-          </>
-        )}
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Instagram Clone
-        </Typography>
+          {isAuthenticated && (
+            <>
+              <Button
+                sx={{ mx: 3, color: "white" }}
+                onClick={() => navigate("/home")}
+              >
+                My Posts
+              </Button>
+              <Button
+                sx={{ mr: 30, color: "white" }}
+                onClick={() => navigate("/new-post")}
+              >
+                <AddIcon />
+              </Button>
+            </>
+          )}
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            Instagram Clone
+          </Typography>
 
-        {/* Если пользователь авторизован, показываем его имя и id */}
-        {isAuthenticated && !loading && user && (
-          <Box sx={{ display: "flex", alignItems: "center", color: "white" }}>
-            <Typography variant="body2" sx={{ marginRight: 2 }}>
-              {user.username} (ID: {user.id})
-            </Typography>
-          </Box>
-        )}
+          {/* Если пользователь авторизован, показываем его имя и id */}
+          {isAuthenticated && !loading && user && (
+            <Box sx={{ display: "flex", alignItems: "center", color: "white" }}>
+              <Typography variant="body2" sx={{ marginRight: 2 }}>
+                Welcome, {user.username} (ID: {user.id})
+              </Typography>
+            </Box>
+          )}
 
-        <Button color="inherit" onClick={() => navigate("/")}>
-          Home
-        </Button>
-        {isAuthenticated ? (
-          <Button
-            color="inherit"
-            onClick={() => {
-              dispatch(logout());
-              navigate("/login");
-            }}
-          >
-            Logout
+          <Button color="inherit" onClick={() => navigate("/")}>
+            Home
           </Button>
-        ) : (
-          <Button color="inherit" onClick={handleAuthButtonClick}>
-            {location.pathname === "/login" ? "Register" : "Login"}
-          </Button>
-        )}
-      </Toolbar>
-    </AppBar>
+          {isAuthenticated ? (
+            <Button
+              color="inherit"
+              onClick={() => {
+                dispatch(logout());
+                navigate("/login");
+              }}
+            >
+              Logout
+            </Button>
+          ) : (
+            <Button color="inherit" onClick={handleAuthButtonClick}>
+              {location.pathname === "/login" ? "Register" : "Login"}
+            </Button>
+          )}
+        </Toolbar>
+      </AppBar>
+
+      <Box sx={{ paddingTop: "64px" }} />
+    </>
   );
 };
 
