@@ -1,16 +1,27 @@
-// Header.tsx
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { AppBar, Toolbar, Typography, Button, IconButton } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+  Box,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useDispatch } from "react-redux";
 import { logout } from "../store/slices/userSlice";
+import { useUserProfile } from "../hooks/useUserProfile"; // Импортируем наш хук
+import AddIcon from '@mui/icons-material/Add';
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
   const isAuthenticated = !!localStorage.getItem("token");
+
+  // Используем хук для получения профиля пользователя
+  const { user, loading, error } = useUserProfile();
 
   const handleAuthButtonClick = () => {
     const targetRoute = location.pathname === "/login" ? "/register" : "/login";
@@ -21,24 +32,50 @@ const Header: React.FC = () => {
     <AppBar position="static">
       <Toolbar>
         <IconButton edge="start" color="inherit" aria-label="menu">
-          <MenuIcon />
         </IconButton>
-        <Button
-              sx={{ mr: 8, color: "white" }}
-              onClick={() => navigate("/new-post")}
-            >
-              New Post
-            </Button>
+
+        {isAuthenticated && (
+          <>
             <Button
-              sx={{ mr: 8, color: "white" }}
+              sx={{ mx: 3, color: "white" }}
               onClick={() => navigate("/home")}
             >
-              My Post
+              My Posts
             </Button>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>Instagram Clone</Typography>
-        <Button color="inherit" onClick={() => navigate("/")}>Home</Button>
+            <Button
+              sx={{ mr: 30,  color: "white" }}
+              onClick={() => navigate("/new-post")}
+            >
+              <AddIcon />
+            </Button>
+          </>
+        )}
+        <Typography variant="h6" sx={{flexGrow: 1 }}>
+          Instagram Clone
+        </Typography>
+
+        {/* Если пользователь авторизован, показываем его имя и id */}
+        {isAuthenticated && !loading && user && (
+          <Box sx={{ display: "flex", alignItems: "center", color: "white" }}>
+            <Typography variant="body2" sx={{ marginRight: 2 }}>
+              {user.username} (ID: {user.id})
+            </Typography>
+          </Box>
+        )}
+
+        <Button color="inherit" onClick={() => navigate("/")}>
+          Home
+        </Button>
         {isAuthenticated ? (
-          <Button color="inherit" onClick={() => { dispatch(logout()); navigate("/login"); }}>Logout</Button>
+          <Button
+            color="inherit"
+            onClick={() => {
+              dispatch(logout());
+              navigate("/login");
+            }}
+          >
+            Logout
+          </Button>
         ) : (
           <Button color="inherit" onClick={handleAuthButtonClick}>
             {location.pathname === "/login" ? "Register" : "Login"}
