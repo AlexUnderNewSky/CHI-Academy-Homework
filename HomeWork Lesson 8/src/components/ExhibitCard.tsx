@@ -12,6 +12,9 @@ import {
   IconButton,
   TextField,
   Typography,
+  Dialog,
+  DialogActions,
+  DialogContent,
 } from "@mui/material";
 import {
   ExpandMore,
@@ -33,6 +36,8 @@ const ExhibitCard: React.FC<ExhibitCardProps> = ({
     Record<string, boolean>
   >({});
   const [newComment, setNewComment] = useState<string>("");
+  const [openImageDialog, setOpenImageDialog] = useState<boolean>(false); 
+  const [imageUrl, setImageUrl] = useState<string>("");
 
   const toggleComments = (exhibitId: string) => {
     setExpandedComments((prevState) => ({
@@ -51,6 +56,15 @@ const ExhibitCard: React.FC<ExhibitCardProps> = ({
     onDeleteComment(exhibit.id, commentId);
   };
 
+  const handleOpenImageDialog = (image: string) => {
+    setImageUrl(image);
+    setOpenImageDialog(true);
+  };
+
+  const handleCloseImageDialog = () => {
+    setOpenImageDialog(false);
+  };
+
   return (
     <Grid item key={exhibit.id}>
       <Card sx={{ maxWidth: 800, margin: "0 auto", padding: 2 }}>
@@ -59,6 +73,7 @@ const ExhibitCard: React.FC<ExhibitCardProps> = ({
           image={`${axiosInstance.defaults.baseURL}${exhibit.imageUrl}`}
           alt={exhibit.description}
           sx={{ height: 300, width: "100%", objectFit: "cover" }}
+          onClick={() => handleOpenImageDialog(exhibit.imageUrl)} // Открыть картинку по клику
         />
         <CardContent>
           <Typography variant="body2">Image ID: {exhibit.id}</Typography>
@@ -142,6 +157,26 @@ const ExhibitCard: React.FC<ExhibitCardProps> = ({
           </Box>
         </Collapse>
       </Card>
+
+      {/* Модальное окно для отображения изображения на весь экран */}
+      <Dialog open={openImageDialog} onClose={handleCloseImageDialog}>
+        <DialogContent sx={{ padding: 0 }}>
+          <img
+            src={`${axiosInstance.defaults.baseURL}${imageUrl}`}
+            alt={exhibit.description}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain", 
+            }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseImageDialog} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Grid>
   );
 };
