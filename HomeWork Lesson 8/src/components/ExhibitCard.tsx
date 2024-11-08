@@ -36,7 +36,7 @@ const ExhibitCard: React.FC<ExhibitCardProps> = ({
     Record<string, boolean>
   >({});
   const [newComment, setNewComment] = useState<string>("");
-  const [openImageDialog, setOpenImageDialog] = useState<boolean>(false); 
+  const [openImageDialog, setOpenImageDialog] = useState<boolean>(false);
   const [imageUrl, setImageUrl] = useState<string>("");
 
   const toggleComments = (exhibitId: string) => {
@@ -167,7 +167,7 @@ const ExhibitCard: React.FC<ExhibitCardProps> = ({
             style={{
               width: "100%",
               height: "100%",
-              objectFit: "contain", 
+              objectFit: "contain",
             }}
           />
         </DialogContent>
