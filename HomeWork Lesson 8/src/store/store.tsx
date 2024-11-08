@@ -1,12 +1,12 @@
+// store.tsx
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./slices/userSlice";
 
 const store = configureStore({
   reducer: {
-    auth: userReducer,
-    user: userReducer,
+    auth: userReducer,  // Keep only one to avoid redundancy
   },
 });
 
-export type RootState = ReturnType<typeof store.getState>; // Типизация состояния
+export type RootState = ReturnType<typeof store.getState>;
 export default store;

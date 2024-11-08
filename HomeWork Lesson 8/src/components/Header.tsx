@@ -1,67 +1,29 @@
+// Header.tsx
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
+import { AppBar, Toolbar, Typography, Button, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useDispatch } from "react-redux"; // Импортируем useDispatch
-import { logout } from "../store/slices/userSlice"; // Импортируем действие logout
+import { useDispatch } from "react-redux";
+import { logout } from "../store/slices/userSlice";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const location = useLocation();
-  const dispatch = useDispatch(); // Получаем dispatch
-
-  // Определяем, на какой странице находится пользователь
-  const isLoginPage = location.pathname === "/login";
-  const isRegisterPage = location.pathname === "/register";
-
-  // Проверяем, авторизован ли пользователь
   const isAuthenticated = !!localStorage.getItem("token");
 
-  // Функция для обработки клика по кнопке "Logout"
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    dispatch(logout()); // Вызываем действие logout для обновления состояния
-    navigate("/login"); // Перенаправляем на страницу входа
-  };
-
-  // Функция для обработки клика по кнопке "Login/Register"
   const handleAuthButtonClick = () => {
-    if (isLoginPage) {
-      navigate("/register");
-    } else if (isRegisterPage) {
-      navigate("/login");
-    } else {
-      navigate("/login"); // По умолчанию
-    }
+    const targetRoute = location.pathname === "/login" ? "/register" : "/login";
+    navigate(targetRoute);
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Button
-              sx={{ mr: 8, color: "white" }}
-              onClick={() => navigate("/")}
-            >
-              Main Page
-            </Button>
-            <Button
+    <AppBar position="static">
+      <Toolbar>
+        <IconButton edge="start" color="inherit" aria-label="menu">
+          <MenuIcon />
+        </IconButton>
+        <Button
               sx={{ mr: 8, color: "white" }}
               onClick={() => navigate("/new-post")}
             >
@@ -73,22 +35,17 @@ const Header: React.FC = () => {
             >
               My Post
             </Button>
-            Main Page for Instagram
-          </Typography>
-
-          {/* Условно отображаем кнопки на основе состояния авторизации */}
-          {isAuthenticated ? (
-            <Button color="inherit" onClick={handleLogout}>
-              Logout
-            </Button>
-          ) : (
-            <Button color="inherit" onClick={handleAuthButtonClick}>
-              {isLoginPage ? "Register" : "Login"}
-            </Button>
-          )}
-        </Toolbar>
-      </AppBar>
-    </Box>
+        <Typography variant="h6" sx={{ flexGrow: 1 }}>Instagram Clone</Typography>
+        <Button color="inherit" onClick={() => navigate("/")}>Home</Button>
+        {isAuthenticated ? (
+          <Button color="inherit" onClick={() => { dispatch(logout()); navigate("/login"); }}>Logout</Button>
+        ) : (
+          <Button color="inherit" onClick={handleAuthButtonClick}>
+            {location.pathname === "/login" ? "Register" : "Login"}
+          </Button>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 };
 
