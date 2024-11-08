@@ -1,12 +1,12 @@
 import React from "react";
-import { useDispatch } from "react-redux"; // Импортируем useDispatch
+import { useDispatch } from "react-redux";
 import { loginUser } from "../api/userActions";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField, Box, Typography, Alert } from "@mui/material";
-import { login } from "../store/slices/userSlice"; // Импортируем действие login
+import { login } from "../store/slices/userSlice";
 
 const LoginForm: React.FC = () => {
-  const dispatch = useDispatch(); // Получаем dispatch
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [error, setError] = React.useState<string>("");
 
@@ -17,10 +17,10 @@ const LoginForm: React.FC = () => {
     const password = formData.get("password") as string;
 
     try {
-      const token = await loginUser(username, password); // Предполагается, что эта функция возвращает токен
-      localStorage.setItem("token", token.access_token); // Сохраняем токен в localStorage
-      dispatch(login(token.access_token)); // Отправляем действие login с токеном
-      navigate("/"); // Редирект после успешного логина
+      const token = await loginUser(username, password);
+      localStorage.setItem("token", token.access_token);
+      dispatch(login(token.access_token));
+      navigate("/");
     } catch (error) {
       setError("Login failed. Please check your credentials.");
     }

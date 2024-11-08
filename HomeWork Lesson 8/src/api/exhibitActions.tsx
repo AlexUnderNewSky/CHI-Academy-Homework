@@ -1,4 +1,4 @@
-import { axiosInstance } from "./axiosInstance"; // Import your axios instance
+import { axiosInstance } from "./axiosInstance";
 
 export const fetchExhibits = async (page: number) => {
   try {
@@ -8,8 +8,8 @@ export const fetchExhibits = async (page: number) => {
       },
     });
     return {
-      data: response.data.data, // Список выставок
-      lastPage: response.data.lastPage, // Последняя страница
+      data: response.data.data,
+      lastPage: response.data.lastPage,
     };
   } catch (error) {
     throw error;
@@ -17,15 +17,14 @@ export const fetchExhibits = async (page: number) => {
 };
 
 export const removeExhibit = async (id: string) => {
-  const token = localStorage.getItem("token"); // Получаем токен из localStorage
+  const token = localStorage.getItem("token");
   if (!token) {
-    throw new Error("Unauthorized"); // Если токена нет, выбрасываем ошибку
+    throw new Error("Unauthorized");
   }
 
-  // Выполняем запрос на удаление с токеном в заголовке
   return axiosInstance.delete(`api/exhibits/${id}`, {
     headers: {
-      Authorization: `Bearer ${token}`, // Добавляем токен в заголовки
+      Authorization: `Bearer ${token}`,
     },
   });
 };
@@ -36,7 +35,9 @@ export const fetchComments = async (exhibitId: string) => {
 };
 
 export const addComment = async (exhibitId: string, text: string) => {
-  const response = await axiosInstance.post(`/exhibits/${exhibitId}/comments`, { text });
+  const response = await axiosInstance.post(`/exhibits/${exhibitId}/comments`, {
+    text,
+  });
   return response.data;
 };
 
@@ -44,11 +45,8 @@ export const deleteComment = async (exhibitId: string, commentId: string) => {
   await axiosInstance.delete(`/exhibits/${exhibitId}/comments/${commentId}`);
 };
 
-// Добавление недостающих функций:
-
-// Получение постов пользователя
 export const fetchUserPosts = async () => {
-  const token = localStorage.getItem("token"); // Получаем токен из localStorage
+  const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("No token found");
   }
@@ -56,26 +54,25 @@ export const fetchUserPosts = async () => {
   try {
     const response = await axiosInstance.get("api/exhibits/my-posts", {
       headers: {
-        Authorization: `Bearer ${token}`, // Убедитесь, что вы отправляете токен
+        Authorization: `Bearer ${token}`,
       },
     });
-    return response.data.data; // Предполагаем, что данные находятся здесь
+    return response.data.data;
   } catch (error) {
     throw error;
   }
 };
 
-// Загрузка нового exhibit
 export const uploadExhibit = async (formData: FormData) => {
-  const token = localStorage.getItem("token"); // Получаем токен
+  const token = localStorage.getItem("token");
   if (!token) {
-    throw new Error("Unauthorized"); // Проверка на наличие токена
+    throw new Error("Unauthorized");
   }
 
   return axiosInstance.post("api/exhibits", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
-      Authorization: `Bearer ${token}`, // Добавляем токен в заголовки
+      Authorization: `Bearer ${token}`,
     },
   });
 };
