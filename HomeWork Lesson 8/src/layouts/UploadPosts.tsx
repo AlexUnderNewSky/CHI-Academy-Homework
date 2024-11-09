@@ -2,36 +2,44 @@ import React, { useState } from "react";
 import { uploadExhibit } from "../api/exhibitActions";
 import { TextField, Button, Grid, Typography, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+
+const validationSchema = Yup.object({
+  description: Yup.string()
+    .min(10, "Description must be at least 10 characters")
+    .max(20, "Description must be less than 20 characters")
+    .required("Description is required"),
+  image: Yup.mixed()
+    .required("Image is required")
+    .test(
+      "fileFormat",
+      "Unsupported file format, only .jpeg or .png are allowed",
+      (value) => {
+        return (
+          value &&
+          ["image/jpg", "image/jpeg", "image/png"].includes(
+            (value as File).type
+          )
+        );
+      }
+    ),
+});
 
 const UploadExhibit: React.FC = () => {
-  const [image, setImage] = useState<File | null>(null);
-  const [description, setDescription] = useState("");
   const navigate = useNavigate();
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imageName, setImageName] = useState<string | null>(null);
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-      setImage(files[0]);
-    }
-  };
-
-  const handleDescriptionChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setDescription(event.target.value);
-  };
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!image) {
+  const handleSubmit = async (values: { description: string; image: File | null }) => {
+    if (!values.image) {
       alert("Please select an image to upload.");
       return;
     }
 
     const formData = new FormData();
-    formData.append("image", image);
-    formData.append("description", description);
+    formData.append("image", values.image);
+    formData.append("description", values.description);
 
     try {
       const response = await uploadExhibit(formData);
@@ -47,43 +55,75 @@ const UploadExhibit: React.FC = () => {
       <Typography variant="h4" gutterBottom>
         Upload New Exhibit
       </Typography>
-      <form onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <input
-              type="file"
-              id="image"
-              accept="image/*"
-              onChange={handleImageChange}
-              required
-              style={{ display: "none" }}
-            />
-            <label htmlFor="image">
-              <Button variant="contained" component="span">
-                {image ? image.name : "Choose Image"}
-              </Button>
-            </label>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              id="description"
-              label="Description"
-              multiline
-              rows={4}
-              variant="outlined"
-              fullWidth
-              value={description}
-              onChange={handleDescriptionChange}
-              required
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Button type="submit" variant="contained" color="primary">
-              Upload Exhibit
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
+      <Formik
+        initialValues={{ description: "", image: null }}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ setFieldValue }) => (
+          <Form>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <input
+                  id="image"
+                  name="image"
+                  type="file"
+                  accept="image/*"
+                  onChange={(event) => {
+                    if (event.target.files) {
+                      const file = event.target.files[0];
+                      setFieldValue("image", file);
+                      setImageName(file.name); // Сохраняем имя файла
+
+                      // Создание предварительного просмотра
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        setImagePreview(reader.result as string);
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                  style={{ display: "none" }}
+                />
+                <label htmlFor="image">
+                  <Button variant="contained" component="span">
+                    {imagePreview ? (
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          style={{ width: 50, height: 50, objectFit: "cover", marginRight: 8 }}
+                        />
+                        <span>{imageName}</span> {/* Показываем имя файла */}
+                      </Box>
+                    ) : (
+                      "Choose Image"
+                    )}
+                  </Button>
+                </label>
+                <ErrorMessage name="image" component="div" />
+              </Grid>
+              <Grid item xs={12}>
+                <Field
+                  name="description"
+                  as={TextField}
+                  label="Description"
+                  multiline
+                  rows={4}
+                  variant="outlined"
+                  fullWidth
+                />
+                <ErrorMessage name="description" component="div" />
+              </Grid>
+              <Grid item xs={12}>
+                <Button type="submit" variant="contained" color="primary">
+                  Upload Exhibit
+                </Button>
+              </Grid>
+            </Grid>
+          </Form>
+        )}
+      </Formik>
     </Box>
   );
 };

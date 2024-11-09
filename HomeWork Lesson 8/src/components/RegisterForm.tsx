@@ -1,20 +1,27 @@
 import React from "react";
-import { registerUser } from "../api/userActions";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField, Box, Typography, Alert } from "@mui/material";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { registerUser } from "../api/userActions";
+
+const validationSchema = Yup.object({
+  username: Yup.string()
+    .max(12, "Must be 12 characters or less")
+    .required("Username is required"),
+  password: Yup.string()
+    .min(6, "Password must be at least 6 characters")
+    .max(12, "Password must be 12 characters or less")
+    .required("Password is required"),
+});
 
 const RegisterForm: React.FC = () => {
   const navigate = useNavigate();
   const [error, setError] = React.useState<string>("");
 
-  const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const username = formData.get("username") as string;
-    const password = formData.get("password") as string;
-
+  const handleRegister = async (values: { username: string; password: string }) => {
     try {
-      await registerUser(username, password);
+      await registerUser(values.username, values.password);
       navigate("/login");
     } catch (error) {
       setError("Registration failed. Please try again.");
@@ -22,26 +29,32 @@ const RegisterForm: React.FC = () => {
   };
 
   return (
-    <Box component="form" onSubmit={handleRegister} sx={{ mt: 2 }}>
-      <Typography variant="h5">Register</Typography>
-      <Box sx={{ m: 1 }} />
-      {error && <Alert severity="error">{error}</Alert>}
-      <TextField name="username" label="Username" fullWidth required />
-      <Box sx={{ m: 1 }} />
-      <TextField
-        name="password"
-        label="Password"
-        type="password"
-        fullWidth
-        required
-      />
-      <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-        Register
-      </Button>
-      <Button onClick={() => navigate("/login")} sx={{ mt: 2, ml: 2 }}>
-        Already have an account? Login
-      </Button>
-    </Box>
+    <Formik
+      initialValues={{ username: "", password: "" }}
+      validationSchema={validationSchema}
+      onSubmit={handleRegister}
+    >
+      <Form>
+        <Typography variant="h5">Register</Typography>
+        <Box sx={{ m: 1 }} />
+        {error && <Alert severity="error">{error}</Alert>}
+
+        <Field name="username" as={TextField} label="Username" fullWidth required />
+        <ErrorMessage name="username" component="div"/>
+        
+        <Box sx={{ m: 1 }} />
+
+        <Field name="password" as={TextField} label="Password" type="password" fullWidth required />
+        <ErrorMessage name="password" component="div" />
+
+        <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+          Register
+        </Button>
+        <Button onClick={() => navigate("/login")} sx={{ mt: 2, ml: 2 }}>
+          Already have an account? Login
+        </Button>
+      </Form>
+    </Formik>
   );
 };
 
