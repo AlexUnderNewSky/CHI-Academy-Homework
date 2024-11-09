@@ -11,6 +11,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import { Exhibit, Comment } from "../interfaces";
 import { useUserProfile } from "../hooks/useUserProfile";
 import { axiosInstance } from "../api/axiosInstance";
+import NotificationComponent from "../hooks/useSocket";
 
 const ExhibitList: React.FC = () => {
   const [exhibits, setExhibits] = useState<Exhibit[]>([]);
@@ -50,6 +51,12 @@ const ExhibitList: React.FC = () => {
   useEffect(() => {
     loadExhibitsAndComments();
   }, [currentPage]);
+
+  const handleNewPost = () => {
+    if (currentPage === 1) {
+      loadExhibitsAndComments();
+    }
+  };
 
   const handleAddComment = async (exhibitId: string, commentText: string) => {
     if (!commentText.trim()) return;
@@ -102,6 +109,7 @@ const ExhibitList: React.FC = () => {
 
   return (
     <Box sx={{ padding: 4 }}>
+      <NotificationComponent onNewPost={handleNewPost}/>
       <Typography variant="h4" gutterBottom sx={{ textAlign: "center" }}>
         List of Exhibits!
       </Typography>
