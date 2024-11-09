@@ -8,7 +8,7 @@ import * as Yup from "yup";
 const validationSchema = Yup.object({
   description: Yup.string()
     .min(10, "Description must be at least 10 characters")
-    .max(20, "Description must be less than 20 characters")
+    .max(50, "Description must be less than 50 characters")
     .required("Description is required"),
   image: Yup.mixed()
     .required("Image is required")
@@ -31,7 +31,10 @@ const UploadExhibit: React.FC = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageName, setImageName] = useState<string | null>(null);
 
-  const handleSubmit = async (values: { description: string; image: File | null }) => {
+  const handleSubmit = async (values: {
+    description: string;
+    image: File | null;
+  }) => {
     if (!values.image) {
       alert("Please select an image to upload.");
       return;
@@ -70,17 +73,22 @@ const UploadExhibit: React.FC = () => {
                   type="file"
                   accept="image/*"
                   onChange={(event) => {
-                    if (event.target.files) {
-                      const file = event.target.files[0];
-                      setFieldValue("image", file);
-                      setImageName(file.name); // Сохраняем имя файла
+                    const files = event.target.files;
 
-                      // Создание предварительного просмотра
+                    if (files && files.length > 0) {
+                      const file = files[0];
+                      setFieldValue("image", file);
+                      setImageName(file.name);
+
                       const reader = new FileReader();
                       reader.onloadend = () => {
                         setImagePreview(reader.result as string);
                       };
                       reader.readAsDataURL(file);
+                    } else {
+                      setImagePreview(null);
+                      setImageName(null);
+                      setFieldValue("image", null);
                     }
                   }}
                   style={{ display: "none" }}
@@ -92,9 +100,14 @@ const UploadExhibit: React.FC = () => {
                         <img
                           src={imagePreview}
                           alt="Preview"
-                          style={{ width: 50, height: 50, objectFit: "cover", marginRight: 8 }}
+                          style={{
+                            width: 50,
+                            height: 50,
+                            objectFit: "cover",
+                            marginRight: 8,
+                          }}
                         />
-                        <span>{imageName}</span> {/* Показываем имя файла */}
+                        <span>{imageName}</span>
                       </Box>
                     ) : (
                       "Choose Image"
