@@ -14,6 +14,7 @@ export interface Comment {
 
 export interface CommentStripeProps {
   exhibitId: number;
+  expanded: boolean;
 }
 
 export interface User {
