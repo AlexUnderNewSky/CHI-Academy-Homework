@@ -1,21 +1,12 @@
-import Avatar from "@mui/material/Avatar";
-import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
-import { ExhibitI } from "../interfaces";
-import { format } from "date-fns";
-import ExhibitCardActionBar from "./ExhibitCardActionBar";
-import { Card, CardContent, CardHeader, CardMedia } from "@mui/material";
 import React from "react";
+import { ExhibitI } from "../interfaces";
+import ExhibitCardActionBar from "./ExhibitCardActionBar";
+import { Card, CardContent, CardHeader, CardMedia, Avatar, Typography } from "@mui/material";
+import { format } from "date-fns";
+import { red } from "@mui/material/colors";
 import { axiosInstance } from "../api/axiosInstance";
-import CommentStripe from "./CommentStripe"; // Импортируем компонент для комментариев
 
-const ExhibitCard: React.FC<ExhibitI> = ({
-  user,
-  description,
-  imageUrl,
-  createdAt,
-  id,
-}) => {
+const ExhibitCard: React.FC<ExhibitI> = ({ user, description, imageUrl, createdAt, id }) => {
   return (
     <Card sx={{ maxWidth: 800, margin: "auto", mt: 2 }}>
       <CardHeader
@@ -36,10 +27,8 @@ const ExhibitCard: React.FC<ExhibitI> = ({
         <Typography variant="body1">Description: {description}</Typography>
       </CardContent>
 
-      {/* Pass CommentStripe as a child of ExhibitCardActionBar */}
-      <ExhibitCardActionBar userId={user.id} exhibitId={id}>
-       
-      </ExhibitCardActionBar>
+      {/* Компонент для отображения и управления комментариями */}
+      <ExhibitCardActionBar userId={user.id} exhibitId={id} />
     </Card>
   );
 };

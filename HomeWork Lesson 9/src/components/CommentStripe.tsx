@@ -20,10 +20,12 @@ import {
 } from "../api/commentActions";
 import { Comment, CommentStripeProps } from "../interfaces";
 
-const CommentStripe: React.FC<CommentStripeProps> = ({ exhibitId }) => {
+const CommentStripe: React.FC<CommentStripeProps> = ({
+  exhibitId,
+  expanded,
+}) => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");
-  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     fetchComments(exhibitId).then(setComments).catch(console.error);
@@ -41,19 +43,33 @@ const CommentStripe: React.FC<CommentStripeProps> = ({ exhibitId }) => {
   };
 
   return (
-    <Box>
-      <Typography variant="h6">Comments</Typography>
-      <Button onClick={() => setExpanded(!expanded)}>
-        {expanded ? <ExpandLess /> : <ExpandMore />}{" "}
-        {expanded ? "Hide" : "Show"} Comments
-      </Button>
+    <Box
+      sx={{
+        backgroundColor: "#f9f9f9",
+        padding: 2,
+        borderRadius: 2,
+        boxShadow: 1,
+      }}
+    >
+      <Typography variant="h6" sx={{ fontWeight: 600, marginBottom: 1 }}>
+        Comments
+      </Typography>
 
+      {/* Show comments when expanded */}
       {expanded && (
-        <List>
+        <List sx={{ marginBottom: 2 }}>
           {comments.map((comment) => (
-            <ListItem key={comment.id}>
-              <Typography>
-                {comment.text} - by {comment.user.username}
+            <ListItem
+              key={comment.id}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                padding: "8px 0",
+                borderBottom: "1px solid #ddd",
+              }}
+            >
+              <Typography sx={{ fontSize: 14, color: "text.secondary" }}>
+                {comment.text} - by <strong>{comment.user.username}</strong>
               </Typography>
               <IconButton onClick={() => handleDeleteComment(comment.id)}>
                 <DeleteIcon />
@@ -63,13 +79,37 @@ const CommentStripe: React.FC<CommentStripeProps> = ({ exhibitId }) => {
         </List>
       )}
 
-      <TextField
-        variant="outlined"
-        label="Add a comment"
-        value={newComment}
-        onChange={(e) => setNewComment(e.target.value)}
-      />
-      <Button onClick={handleAddComment}>Add Comment</Button>
+      {/* Input field for adding a comment */}
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <TextField
+          variant="outlined"
+          label="Add a comment"
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          fullWidth
+          sx={{
+            borderRadius: 2,
+            backgroundColor: "white",
+            "& .MuiOutlinedInput-root": {
+              borderRadius: "8px",
+            },
+          }}
+        />
+        <Button
+          onClick={handleAddComment}
+          disabled={!newComment.trim()}
+          variant="contained"
+          color="primary"
+          sx={{
+            alignSelf: "flex-start",
+            textTransform: "none",
+            padding: "8px 16px",
+            borderRadius: 2,
+          }}
+        >
+          Add Comment
+        </Button>
+      </Box>
     </Box>
   );
 };
