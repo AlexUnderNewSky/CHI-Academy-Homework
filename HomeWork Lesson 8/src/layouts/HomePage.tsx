@@ -35,12 +35,6 @@ const HomePage: React.FC = () => {
     }
   }, [isAuthenticated]);
 
-  if (!isAuthenticated) {
-    return (
-      <Typography variant="h6">Please log in to see your posts.</Typography>
-    );
-  }
-
   const handleRemove = async (id: string) => {
     try {
       await removeExhibit(id);

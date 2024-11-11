@@ -30,13 +30,17 @@ const Header: React.FC = () => {
     <>
       <AppBar position="fixed" sx={{ top: 0, left: 0, right: 0 }}>
         <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="menu"></IconButton>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+          ></IconButton>
 
           {isAuthenticated && (
             <>
               <Button
                 sx={{ mx: 3, color: "white" }}
-                onClick={() => navigate("/home")}
+                onClick={() => navigate("/my-posts")}
               >
                 My Posts
               </Button>

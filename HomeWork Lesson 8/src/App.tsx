@@ -11,9 +11,6 @@ import HomePage from "./layouts/HomePage";
 import ExhibitDetail from "./components/ExhibitDetail";
 
 const App: React.FC = () => {
-  const isAuthenticated = useSelector(
-    (state: any) => state.auth.isAuthenticated
-  );
 
   return (
     <Router>
@@ -38,7 +35,7 @@ const App: React.FC = () => {
         {/* Главная страница доступна для всех */}
         <Route path="/" element={<StripPage />} />
         <Route
-          path="/home"
+          path="/my-posts"
           element={
             <ProtectedRoute requiresAuth={true}>
               <HomePage />
