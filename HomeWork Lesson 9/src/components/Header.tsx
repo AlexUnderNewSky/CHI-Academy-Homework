@@ -19,7 +19,7 @@ const Header: React.FC = () => {
   const location = useLocation();
   const isAuthenticated = !!localStorage.getItem("token");
 
-  const { user, loading, error } = useUserProfile();
+  const { userProfile, loading } = useUserProfile();
 
   const handleAuthButtonClick = () => {
     const targetRoute = location.pathname === "/login" ? "/register" : "/login";
@@ -53,10 +53,10 @@ const Header: React.FC = () => {
           </Typography>
 
           {/* Если пользователь авторизован, показываем его имя и id */}
-          {isAuthenticated && !loading && user && (
+          {isAuthenticated && !loading && userProfile && (
             <Box sx={{ display: "flex", alignItems: "center", color: "white" }}>
               <Typography variant="body2" sx={{ marginRight: 2 }}>
-                Welcome, {user.username} (ID: {user.id})
+                Welcome, {userProfile.username} (ID: {userProfile.id})
               </Typography>
             </Box>
           )}
