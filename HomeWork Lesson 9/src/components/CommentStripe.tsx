@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
 import {
   TextField,
   Button,
@@ -19,6 +19,7 @@ import {
   deleteComment,
 } from "../api/commentActions";
 import { Comment, CommentStripeProps } from "../interfaces";
+import { useUserProfile } from "../hooks/useUserProfile";
 
 const CommentStripe: React.FC<CommentStripeProps> = ({
   exhibitId,
@@ -26,6 +27,7 @@ const CommentStripe: React.FC<CommentStripeProps> = ({
 }) => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");
+  const { userProfile } = useUserProfile();
 
   useEffect(() => {
     fetchComments(exhibitId).then(setComments).catch(console.error);
@@ -37,10 +39,12 @@ const CommentStripe: React.FC<CommentStripeProps> = ({
     setNewComment("");
   };
 
-  const handleDeleteComment = async (commentId: string) => {
+  const handleDeleteComment = async (commentId: number) => {
     await deleteComment(exhibitId, commentId);
     setComments(comments.filter((c) => c.id !== commentId));
   };
+
+  // console.log(userProfile);
 
   return (
     <Box
@@ -52,7 +56,7 @@ const CommentStripe: React.FC<CommentStripeProps> = ({
       }}
     >
       <Typography variant="h6" sx={{ fontWeight: 600, marginBottom: 1 }}>
-        Comments
+        Comments: {comments.length}
       </Typography>
 
       {/* Show comments when expanded */}
@@ -71,15 +75,16 @@ const CommentStripe: React.FC<CommentStripeProps> = ({
               <Typography sx={{ fontSize: 14, color: "text.secondary" }}>
                 {comment.text} - by <strong>{comment.user.username}</strong>
               </Typography>
-              <IconButton onClick={() => handleDeleteComment(comment.id)}>
-                <DeleteIcon />
-              </IconButton>
+              {userProfile?.id === comment.user.id && (
+                <IconButton onClick={() => handleDeleteComment(comment.id)}>
+                  <DeleteIcon />
+                </IconButton>
+              )}
             </ListItem>
           ))}
         </List>
       )}
 
-      {/* Input field for adding a comment */}
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         <TextField
           variant="outlined"

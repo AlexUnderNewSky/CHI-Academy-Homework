@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { getUserProfile } from "../api/userActions";
 
 export const useUserProfile = () => {
-  const [user, setUser] = useState<{ id: string; username: string } | null>(
+  const [userProfile, setUser] = useState<{ id: number; username: string } | null>(
     null
   );
   const [loading, setLoading] = useState<boolean>(true);
@@ -23,5 +23,5 @@ export const useUserProfile = () => {
     fetchUserProfile();
   }, []);
 
-  return { user, loading, error };
+  return { userProfile, loading, error };
 };
