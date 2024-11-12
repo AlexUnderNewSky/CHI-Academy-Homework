@@ -15,7 +15,7 @@ export const fetchComments = async (exhibitId: number) => {
   return response.data;
 };
 
-export const deleteComment = async (exhibitId: number, commentId: string) => {
+export const deleteComment = async (exhibitId: number, commentId: number) => {
   const response = await axiosInstance.delete(
     `/api/exhibits/${exhibitId}/comments/${commentId}`
   );
