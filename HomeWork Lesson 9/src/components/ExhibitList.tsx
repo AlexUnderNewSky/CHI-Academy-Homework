@@ -4,6 +4,7 @@ import ExhibitCard from "./ExhibitCard";
 import Paginator from "./PaginationControls";
 import { Box } from "@mui/system";
 import { CircularProgress } from "@mui/material";
+import NotificationComponent from "../hooks/useSocket";
 
 interface ExhibitStripePropsI {
   data: ExhibitI[];
@@ -23,6 +24,14 @@ const ExhibitList: React.FC<ExhibitStripePropsI> = ({
       setLoading(false);
     }
   }, [data]);
+
+  const handleNewPost = () => {
+    if (page === 1) {
+      setTimeout(function () {
+        window.location.reload();
+      }, 1000);
+    }
+  };
   return (
     <>
       {loading ? (
@@ -41,7 +50,7 @@ const ExhibitList: React.FC<ExhibitStripePropsI> = ({
           <ExhibitCard key={exhibit.id} {...exhibit} />
         ))
       )}
-
+      <NotificationComponent onNewPost={handleNewPost} />
       {loading ? (
         <p></p>
       ) : (
