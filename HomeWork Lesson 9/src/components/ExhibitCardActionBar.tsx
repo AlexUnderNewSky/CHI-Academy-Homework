@@ -1,10 +1,11 @@
 import CardActions from "@mui/material/CardActions";
 import { useState } from "react";
 import React from "react";
-import { IconButton, IconButtonProps } from "@mui/material";
+import { IconButton, IconButtonProps, Typography } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { styled } from "@mui/material/styles";
-import CommentStripe from "./CommentStripe"; 
+import CommentStripe from "./CommentStripe";
+import { textAlign } from "@mui/system";
 
 interface ExhibitCardActionBarPropsI {
   userId: number;
@@ -27,7 +28,9 @@ const ExpandMore = styled((props: ExpandMorePropsI) => {
   transform: expand ? "rotate(180deg)" : "rotate(0deg)",
 }));
 
-const ExhibitCardActionBar: React.FC<ExhibitCardActionBarPropsI> = ({ exhibitId }) => {
+const ExhibitCardActionBar: React.FC<ExhibitCardActionBarPropsI> = ({
+  exhibitId,
+}) => {
   const [expanded, setExpanded] = useState(false); // Состояние для скрытия/показа
 
   const handleExpandClick = () => {
@@ -36,7 +39,10 @@ const ExhibitCardActionBar: React.FC<ExhibitCardActionBarPropsI> = ({ exhibitId 
 
   return (
     <>
-      <CardActions disableSpacing>
+      <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <Typography variant="body1" sx={{ marginRight: 1 }}>
+          Show Comments
+        </Typography>
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
@@ -48,9 +54,7 @@ const ExhibitCardActionBar: React.FC<ExhibitCardActionBarPropsI> = ({ exhibitId 
       </CardActions>
 
       {/* Передаем expanded и setExpanded в CommentStripe */}
-      {expanded && (
-        <CommentStripe exhibitId={exhibitId} expanded={expanded} />
-      )}
+      {expanded && <CommentStripe exhibitId={exhibitId} expanded={expanded} />}
     </>
   );
 };

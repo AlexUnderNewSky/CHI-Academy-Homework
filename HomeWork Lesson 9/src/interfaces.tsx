@@ -7,13 +7,13 @@ export interface ExhibitI {
 }
 
 export interface Comment {
-  id: string;
+  id: number;
   text: string;
-  user: { id: string; username: string };
+  user: { id: number; username: string };
 }
 
 export interface CommentStripeProps {
-  exhibitId: number;
+  exhibitId: any;
   expanded: boolean;
 }
 
