@@ -7,15 +7,15 @@ import { IconButton, IconButtonProps, Typography } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { styled } from "@mui/material/styles";
 import CommentStripe from "./CommentStripe";
-import { getUserProfile } from "../api/userActions"; // Добавьте импорт функции для получения данных пользователя
-import NotificationComponent from "./NotificationComponent"; // Импортируем компонент уведомлений
+import { getUserProfile } from "../api/userActions"; 
+import NotificationComponent from "./NotificationComponent"; 
 
 interface ExhibitCardActionBarPropsI {
   exhibitId: number;
 }
 
 interface ExpandMorePropsI extends IconButtonProps {
-  expand: boolean;
+  expand: boolean;  
 }
 
 const ExpandMore = styled((props: ExpandMorePropsI) => {
@@ -78,7 +78,7 @@ const ExhibitCardActionBar: React.FC<ExhibitCardActionBarPropsI> = ({
           Show Comments
         </Typography>
         <ExpandMore
-          expand={expanded}
+          expand={expanded} 
           onClick={handleExpandClick}
           aria-expanded={expanded}
           aria-label="show more"

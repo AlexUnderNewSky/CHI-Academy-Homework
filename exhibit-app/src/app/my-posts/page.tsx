@@ -1,69 +1,60 @@
-'use client';
+"use client";
 
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
+import { Box, Typography, Grid, Card, CardContent, Button, CardHeader, Avatar, IconButton, Tooltip, Divider, CardMedia } from "@mui/material";
+import { format } from "date-fns";
+import { red } from "@mui/material/colors";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { fetchUserPosts, removeExhibit } from "../../api/exhibitActions";
-import {
-  Box,
-  Typography,
-  Card,
-  CardContent,
-  Button,
-  Grid,
-  Alert,
-  CardMedia,
-} from "@mui/material";
-import { axiosInstance } from "../../api/axiosInstance";
-
-// Определяем интерфейсы для типов данных
-interface User {
-  username: string;
-}
+import { getUserProfile } from "../../api/userActions"; 
 
 interface Post {
   id: number;
   imageUrl: string;
   description: string;
-  user: User;
+  user: { id: number; username: string };
+  commentCount: number;
+  createdAt: string;
 }
 
-const HomePage: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([]); // типизируем массив постов
-  const [error, setError] = useState<string | null>(null); // типизируем ошибку
-  const isAuthenticated = useSelector(
-    (state: { auth: { isAuthenticated: boolean } }) => state.auth.isAuthenticated
-  );
+const MyPostsPage: React.FC = () => {
+  const router = useRouter();
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [user, setUser] = useState<{ id: number; username: string } | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      const loadUserPosts = async () => {
-        try {
-          const data = await fetchUserPosts();
-          setPosts(data);
-        } catch (error) {
-            console.error(error);
-            setError("Failed to fetch your posts");
-          }
-      };
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsAuthenticated(true);
 
-      loadUserPosts();
+      getUserProfile()
+        .then((userData) => {
+          setUser(userData);
+        })
+        .catch((error) => {
+          console.error("Failed to fetch user data:", error);
+          setUser(null);
+        });
     }
-  }, [isAuthenticated]);
+  }, []);
 
-  if (!isAuthenticated) {
-    return (
-      <Typography variant="h6">Please log in to see your posts.</Typography>
-    );
-  }
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      fetchUserPosts()
+        .then((data) => setPosts(data))
+        .catch((error) => console.error("Failed to fetch posts:", error));
+    }
+  }, [isAuthenticated, user]);
 
-  const handleRemove = async (id: number) => {
+  const handleRemove = async (postId: number) => {
     try {
-      await removeExhibit(id);
-      setPosts(posts.filter((post) => post.id !== id));
+      await removeExhibit(postId);
+      setPosts(posts.filter((post) => post.id !== postId)); // Обновляем список постов
     } catch (error) {
-        console.error(error);
-        setError("Failed to fetch your posts");
-      }
+      console.error("Failed to remove post:", error);
+    }
   };
 
   return (
@@ -71,31 +62,59 @@ const HomePage: React.FC = () => {
       <Typography variant="h4" gutterBottom>
         My Posts
       </Typography>
-      {error && <Alert severity="error">{error}</Alert>}
       <Grid container spacing={2}>
         {posts.map((post) => (
           <Grid item xs={12} sm={6} md={4} key={post.id}>
-            <Card>
-              <CardMedia
-                component="img"
-                image={`${axiosInstance.defaults.baseURL}${post.imageUrl}`}
-                alt={post.description}
-                sx={{ height: 140 }}
+            <Card sx={{ maxWidth: 800, margin: "auto", mt: 3, borderRadius: 4, boxShadow: 3 }}>
+              <CardHeader
+                avatar={<Avatar sx={{ bgcolor: red[500] }}>{post.user.username[0]}</Avatar>}
+                title={<Typography variant="h6">{post.user.username}</Typography>}
+                subheader={format(new Date(post.createdAt), "dd.MM.yyyy HH:mm:ss")}
+                action={
+                  user?.id === post.user.id && (
+                    <Tooltip title="Remove Post" arrow>
+                      <IconButton
+                        onClick={() => handleRemove(post.id)}
+                        color="error"
+                        sx={{
+                          padding: 1,
+                          "&:hover": { backgroundColor: red[100] },
+                          "&:active": { backgroundColor: red[200] },
+                          borderRadius: "50%",
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                  )
+                }
               />
+
+              <Box sx={{ display: "flex", justifyContent: "center", overflow: "hidden" }}>
+                <CardMedia
+                  component="img"
+                  sx={{ maxHeight: 400, width: "100%", objectFit: "cover", borderRadius: 2 }}
+                  image={`http://ec2-13-49-67-34.eu-north-1.compute.amazonaws.com${post.imageUrl}`}
+                  alt={post.description}
+                />
+              </Box>
+
               <CardContent>
-                <Typography variant="body1">Post ID: {post.id}</Typography>
-                <Typography variant="body1">{post.description}</Typography>
-                <Typography variant="body1">
-                  Username: {post.user.username}
+                <Typography variant="body1" sx={{ mb: 1 }}>
+                  <strong>Description:</strong> {post.description}
                 </Typography>
+
+                <Divider sx={{ my: 2 }} />
+
+                <Box>
+                  <Typography variant="body2" color="text.secondary">
+                    <strong>Image ID:</strong> {post.id}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                    <strong>Comments:</strong> {post.commentCount}
+                  </Typography>
+                </Box>
               </CardContent>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => handleRemove(post.id)}
-              >
-                Remove
-              </Button>
             </Card>
           </Grid>
         ))}
@@ -104,4 +123,4 @@ const HomePage: React.FC = () => {
   );
 };
 
-export default HomePage;
+export default MyPostsPage;
