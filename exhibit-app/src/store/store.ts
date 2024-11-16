@@ -1,6 +1,5 @@
-// src/store/store.ts
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "./slices/userSlice"; // Импортируем редьюсер
+import userReducer from "./slices/userSlice"; 
 
 const store = configureStore({
   reducer: {
@@ -8,5 +7,5 @@ const store = configureStore({
   },
 });
 
-export type RootState = ReturnType<typeof store.getState>; // Типизация состояния
+export type RootState = ReturnType<typeof store.getState>; 
 export default store;

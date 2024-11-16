@@ -4,10 +4,10 @@ import { UserI } from "../../../interfaces";
 interface UserState {
   user: UserI | null;
 }
-// Типизируем начальное состояние
+
 interface UserState {
   isAuthenticated: boolean;
-  token: string | null; // Позволяет token быть либо string, либо null
+  token: string | null; 
 }
 
 // Указываем типы для initialState
@@ -22,7 +22,6 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action: PayloadAction<string>) => {
-      // Ожидаем, что token всегда будет строкой при логине
       state.isAuthenticated = true;
       state.token = action.payload;
       if (typeof window !== "undefined") {
@@ -41,7 +40,6 @@ const userSlice = createSlice({
       }
     },
     initializeAuth: (state) => {
-      // Проверяем наличие localStorage только на клиенте
       if (typeof window !== "undefined") {
         const token = localStorage.getItem("token");
         state.isAuthenticated = !!token;
