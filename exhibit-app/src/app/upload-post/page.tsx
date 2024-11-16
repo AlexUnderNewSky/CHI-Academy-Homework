@@ -3,8 +3,6 @@
 import React, { useState } from "react";
 import { uploadExhibit } from "../../api/exhibitActions";
 import { TextField, Button, Grid, Typography, Box } from "@mui/material";
-// import { useNavigate } from "react-router-dom";
-import Link from "next/link";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Image from "next/image";
@@ -31,14 +29,10 @@ const validationSchema = Yup.object({
 });
 
 const UploadExhibit: React.FC = () => {
-  // const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageName, setImageName] = useState<string | null>(null);
 
-  const handleSubmit = async (values: {
-    description: string;
-    image: File | null;
-  }) => {
+  const handleSubmit = async (values: { description: string; image: File | null }) => {
     if (!values.image) {
       alert("Please select an image to upload.");
       return;
@@ -50,8 +44,8 @@ const UploadExhibit: React.FC = () => {
 
     try {
       const response = await uploadExhibit(formData);
-      console.log("Upload successful:", response.data);
-      <Link href="/">Home</Link>;
+      console.log("Upload successful:", response);
+      window.location.href = "/exhibits";
     } catch (error) {
       console.error("Error during upload:", error);
     }
@@ -101,29 +95,16 @@ const UploadExhibit: React.FC = () => {
                   <Button variant="contained" component="span">
                     {imagePreview ? (
                       <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <label htmlFor="image">
-                          <Button variant="contained" component="span">
-                            {imagePreview ? (
-                              <Box
-                                sx={{ display: "flex", alignItems: "center" }}
-                              >
-                                <Image
-                                  src={imagePreview}
-                                  alt="Preview"
-                                  width={50}
-                                  height={50}
-                                  style={{
-                                    objectFit: "cover",
-                                    marginRight: 8,
-                                  }}
-                                />
-                                <span>{imageName}</span>
-                              </Box>
-                            ) : (
-                              "Choose Image"
-                            )}
-                          </Button>
-                        </label>
+                        <Image
+                          src={imagePreview}
+                          alt="Preview"
+                          width={50}
+                          height={50}
+                          style={{
+                            objectFit: "cover",
+                            marginRight: 8,
+                          }}
+                        />
                         <span>{imageName}</span>
                       </Box>
                     ) : (

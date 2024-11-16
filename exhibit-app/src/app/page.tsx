@@ -5,7 +5,7 @@ const HomePage = () => {
   return (
     <Container>
       <h1>Welcome to the Exhibit App</h1>
-      {/* Контент главной страницы */}
+
     </Container>
   );
 };

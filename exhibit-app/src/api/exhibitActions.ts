@@ -1,51 +1,62 @@
 import { axiosInstance } from "./axiosInstance";
+import { ExhibitsResponse, ExhibitI, AddCommentResponse, Comment } from "../../interfaces";
 
-export const fetchExhibits = async (page: number) => {
+// Fetch exhibits with pagination
+export const fetchExhibits = async (page: number): Promise<ExhibitsResponse> => {
   try {
     const response = await axiosInstance.get("api/exhibits", {
       params: {
         page: page,
       },
     });
+    // Typing the response based on the expected data structure
     return {
-      data: response.data.data,
-      lastPage: response.data.lastPage,
+      data: response.data.data, // Array of exhibits
+      lastPage: response.data.lastPage, // Last page for pagination
     };
   } catch (error) {
     throw error;
   }
 };
 
-export const removeExhibit = async (id: number) => {
+// Remove exhibit
+export const removeExhibit = async (id: number): Promise<void> => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("Unauthorized");
   }
 
-  return axiosInstance.delete(`api/exhibits/${id}`, {
+  await axiosInstance.delete(`api/exhibits/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 };
 
-export const fetchComments = async (exhibitId: number) => {
+// Fetch comments for a specific exhibit
+export const fetchComments = async (exhibitId: number): Promise<Comment[]> => {
   const response = await axiosInstance.get(`/exhibits/${exhibitId}/comments`);
-  return response.data;
+  // Assuming the response contains an array of comments
+  return response.data; // Array of Comment objects
 };
 
-export const addComment = async (exhibitId: number, text: string) => {
+// Add a comment to an exhibit
+export const addComment = async (exhibitId: number, text: string): Promise<AddCommentResponse> => {
   const response = await axiosInstance.post(`/exhibits/${exhibitId}/comments`, {
     text,
   });
-  return response.data;
+  // Typing the response to match the expected structure
+  return response.data; // AddCommentResponse is defined in the interfaces
 };
 
-export const deleteComment = async (exhibitId: number, commentId: number) => {
+// Delete a comment from an exhibit
+export const deleteComment = async (exhibitId: number, commentId: number): Promise<void> => {
   await axiosInstance.delete(`/exhibits/${exhibitId}/comments/${commentId}`);
+  // No response expected here, so we return nothing
 };
 
-export const fetchUserPosts = async () => {
+// Fetch user-specific posts
+export const fetchUserPosts = async (): Promise<ExhibitI[]> => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("No token found");
@@ -57,22 +68,27 @@ export const fetchUserPosts = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data.data;
+    // Return data as an array of exhibits
+    return response.data.data; // ExhibitI[] (Array of exhibits)
   } catch (error) {
     throw error;
   }
 };
 
-export const uploadExhibit = async (formData: FormData) => {
+// Upload an exhibit (with FormData)
+export const uploadExhibit = async (formData: FormData): Promise<ExhibitI> => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("Unauthorized");
   }
 
-  return axiosInstance.post("api/exhibits", formData, {
+  const response = await axiosInstance.post("api/exhibits", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${token}`,
     },
   });
+
+  // Return the newly uploaded exhibit data
+  return response.data; // ExhibitI
 };

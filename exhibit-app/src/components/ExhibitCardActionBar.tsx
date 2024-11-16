@@ -1,17 +1,16 @@
 'use client';
 
 import CardActions from "@mui/material/CardActions";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import { IconButton, IconButtonProps, Typography } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { styled } from "@mui/material/styles";
 import CommentStripe from "./CommentStripe";
+import { getUserProfile } from "../api/userActions"; // Добавьте импорт функции для получения данных пользователя
 
 interface ExhibitCardActionBarPropsI {
-  userId: number;
   exhibitId: number;
-  children?: React.ReactNode;
 }
 
 interface ExpandMorePropsI extends IconButtonProps {
@@ -33,10 +32,32 @@ const ExhibitCardActionBar: React.FC<ExhibitCardActionBarPropsI> = ({
   exhibitId,
 }) => {
   const [expanded, setExpanded] = useState(false); // Состояние для скрытия/показа
+  const [userId, setUserId] = useState<number | null>(null); // Состояние для хранения userId
+  const [loading, setLoading] = useState<boolean>(true); 
+
+  // Функция для получения данных о текущем пользователе
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const userProfile = await getUserProfile(); // Получаем данные о пользователе
+        setUserId(userProfile.id); // Устанавливаем id текущего пользователя
+        setLoading(false);
+      } catch (error) {
+        console.error("Failed to fetch user profile:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  if (loading) {
+    return <Typography>Loading...</Typography>; // Пока идет загрузка, можно отобразить текст
+  }
 
   return (
     <>
@@ -54,8 +75,10 @@ const ExhibitCardActionBar: React.FC<ExhibitCardActionBarPropsI> = ({
         </ExpandMore>
       </CardActions>
 
-      {/* Передаем expanded и setExpanded в CommentStripe */}
-      {expanded && <CommentStripe exhibitId={exhibitId} expanded={expanded} />}
+      {/* Передаем userId в CommentStripe */}
+      {expanded && userId && (
+        <CommentStripe exhibitId={exhibitId} expanded={expanded} userId={userId} />
+      )}
     </>
   );
 };

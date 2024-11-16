@@ -1,6 +1,7 @@
+// src/store/storeWrapper.ts
 import { configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
-import userReducer from "./slices/userSlice";
+import userReducer from "./slices/userSlice"; // Импортируем редьюсер
 
 const makeStore = () =>
   configureStore({

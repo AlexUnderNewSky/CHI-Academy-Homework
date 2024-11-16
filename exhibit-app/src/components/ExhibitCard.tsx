@@ -1,10 +1,12 @@
 import React from "react";
 import { ExhibitI } from "../../interfaces";
 import ExhibitCardActionBar from "./ExhibitCardActionBar";
-import { Card, CardMedia, Avatar, Typography, CardHeader } from "@mui/material";
+import { Card, CardMedia, Avatar, Typography, CardHeader, CardContent, Divider, Box } from "@mui/material";
 import { format } from "date-fns";
 import { red } from "@mui/material/colors";
-import { axiosInstance } from "../api/axiosInstance";
+
+// Импортируем DeleteExhibitButton без динамической загрузки
+import DeleteExhibitButton from './DeleteExhibitButton';
 
 const ExhibitCard: React.FC<ExhibitI> = ({
   user,
@@ -14,47 +16,68 @@ const ExhibitCard: React.FC<ExhibitI> = ({
   createdAt,
   id,
 }) => {
-  console.log(imageUrl);
   return (
-    <Card sx={{ maxWidth: 800, margin: "auto", mt: 2 }}>
+    <Card sx={{ maxWidth: 800, margin: "auto", mt: 3, borderRadius: 4, boxShadow: 3 }}>
+      {/* Card Header */}
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: red[500] }} aria-label="user-avatar">
             {user.username[0].toUpperCase()}
           </Avatar>
         }
-        title={`${user.username} (ID: ${user.id})`}
-        subheader={format(new Date(createdAt), "dd.MM.yyyy HH:mm:ss")}
+        title={
+          <Typography variant="h6" fontWeight="bold">
+            {user.username} (ID: {user.id})
+          </Typography>
+        }
+        subheader={
+          <Typography variant="body2" color="text.secondary">
+            {format(new Date(createdAt), "dd.MM.yyyy HH:mm:ss")}
+          </Typography>
+        }
+        action={
+          user.id && (
+            <DeleteExhibitButton exhibitId={id} ownerId={user.id} />
+          )
+        }
       />
-      <CardMedia
-        component="img"
-        height="200"
-        sx={{ width: "50%", height: "auto", objectFit: "cover" }}
-        image={`http://ec2-13-49-67-34.eu-north-1.compute.amazonaws.com${imageUrl}`}
-        alt={description}
-      />
-      <Typography variant="subtitle1" fontWeight="bold" sx={{ ml: 1 }}>
-        Image id: {id}
-      </Typography>
-      <Typography variant="subtitle1" fontWeight="bold">
-        User id: {user.id}
-      </Typography>
-      <Typography variant="subtitle1" fontWeight="bold">
-        User name: {user.username}
-      </Typography>
-      <Typography>
-        <Typography component="span" sx={{ fontWeight: "bold" }}>
-          Description:
-        </Typography>{" "}
-        {description}
-      </Typography>
-      <Typography>
-        <Typography component="span" sx={{ fontWeight: "bold" }}>
-          Comment count:
-        </Typography>{" "}
-        {commentCount}
-      </Typography>
-      <ExhibitCardActionBar userId={user.id} exhibitId={id} />
+
+      {/* Media Section */}
+      <Box sx={{ display: "flex", justifyContent: "center", overflow: "hidden" }}>
+        <CardMedia
+          component="img"
+          sx={{
+            maxHeight: 400,
+            width: "100%",
+            objectFit: "cover",
+            borderRadius: 2,
+          }}
+          image={`http://ec2-13-49-67-34.eu-north-1.compute.amazonaws.com${imageUrl}`}
+          alt={description}
+        />
+      </Box>
+
+      {/* Card Content */}
+      <CardContent>
+        <Typography variant="body1" sx={{ mb: 1 }}>
+          <strong>Description:</strong> {description}
+        </Typography>
+
+        <Divider sx={{ my: 2 }} />
+
+        {/* Image and Comment Details */}
+        <Box>
+          <Typography variant="body2" color="text.secondary">
+            <strong>Image ID:</strong> {id}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+            <strong>Comments:</strong> {commentCount}
+          </Typography>
+        </Box>
+      </CardContent>
+
+      {/* Action Bar */}
+      <ExhibitCardActionBar exhibitId={id} />
     </Card>
   );
 };

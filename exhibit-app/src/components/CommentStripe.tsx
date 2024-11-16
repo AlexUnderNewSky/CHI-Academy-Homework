@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -9,18 +9,24 @@ import {
   List,
   ListItem,
   IconButton,
-} from '@mui/material';
-import { Delete as DeleteIcon } from '@mui/icons-material';
-import { addComment, fetchComments, deleteComment } from '../api/commentActions';
-import { Comment, CommentStripeProps } from '../../interfaces';
-import { useUserProfile } from '../hooks/useUserProfile';
+} from "@mui/material";
+import { Delete as DeleteIcon } from "@mui/icons-material";
+import {
+  addComment,
+  fetchComments,
+  deleteComment,
+} from "../api/commentActions";
+import { Comment, CommentStripeProps } from "../../interfaces";
 
-const CommentStripe: React.FC<CommentStripeProps> = ({ exhibitId, expanded }) => {
+const CommentStripe: React.FC<CommentStripeProps> = ({
+  exhibitId,
+  expanded,
+  userId,
+}) => {
   const [comments, setComments] = useState<Comment[]>([]);
-  const [newComment, setNewComment] = useState('');
-  const { userProfile } = useUserProfile();
+  const [newComment, setNewComment] = useState("");
 
-  // Use client-side effects to fetch comments (this should only run on the client)
+  // Fetch comments when the exhibitId changes
   useEffect(() => {
     if (exhibitId) {
       fetchComments(exhibitId)
@@ -29,23 +35,36 @@ const CommentStripe: React.FC<CommentStripeProps> = ({ exhibitId, expanded }) =>
     }
   }, [exhibitId]);
 
+  // Add a new comment
   const handleAddComment = async () => {
     if (!newComment.trim()) return; // Prevent empty comments
 
-    const response = await addComment(exhibitId, newComment);
-    setComments((prevComments) => [...prevComments, response]);
-    setNewComment('');
+    try {
+      const response = await addComment(exhibitId, newComment);
+      setComments((prevComments) => [...prevComments, response]);
+      setNewComment("");
+    } catch (error) {
+      console.error("Failed to add comment:", error);
+    }
   };
 
+  // Delete a comment
   const handleDeleteComment = async (commentId: number) => {
-    await deleteComment(exhibitId, commentId);
-    setComments((prevComments) => prevComments.filter((c) => c.id !== commentId));
+    try {
+      await deleteComment(exhibitId, commentId);
+      setComments((prevComments) =>
+        prevComments.filter((c) => c.id !== commentId)
+      );
+    } catch (error) {
+      console.error("Failed to delete comment:", error);
+    }
   };
 
+  console.log(userId);
   return (
     <Box
       sx={{
-        backgroundColor: '#f9f9f9',
+        backgroundColor: "#f9f9f9",
         padding: 2,
         borderRadius: 2,
         boxShadow: 1,
@@ -62,16 +81,16 @@ const CommentStripe: React.FC<CommentStripeProps> = ({ exhibitId, expanded }) =>
             <ListItem
               key={comment.id}
               sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                padding: '8px 0',
-                borderBottom: '1px solid #ddd',
+                display: "flex",
+                justifyContent: "space-between",
+                padding: "8px 0",
+                borderBottom: "1px solid #ddd",
               }}
             >
-              <Typography sx={{ fontSize: 14, color: 'text.secondary' }}>
+              <Typography sx={{ fontSize: 14, color: "text.secondary" }}>
                 {comment.text} - by <strong>{comment.user.username}</strong>
               </Typography>
-              {userProfile?.id === comment.user.id && (
+              {userId === comment.user.id && (
                 <IconButton onClick={() => handleDeleteComment(comment.id)}>
                   <DeleteIcon />
                 </IconButton>
@@ -81,7 +100,7 @@ const CommentStripe: React.FC<CommentStripeProps> = ({ exhibitId, expanded }) =>
         </List>
       )}
 
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         <TextField
           variant="outlined"
           label="Add a comment"
@@ -90,9 +109,9 @@ const CommentStripe: React.FC<CommentStripeProps> = ({ exhibitId, expanded }) =>
           fullWidth
           sx={{
             borderRadius: 2,
-            backgroundColor: 'white',
-            '& .MuiOutlinedInput-root': {
-              borderRadius: '8px',
+            backgroundColor: "white",
+            "& .MuiOutlinedInput-root": {
+              borderRadius: "8px",
             },
           }}
         />
@@ -102,9 +121,9 @@ const CommentStripe: React.FC<CommentStripeProps> = ({ exhibitId, expanded }) =>
           variant="contained"
           color="primary"
           sx={{
-            alignSelf: 'flex-start',
-            textTransform: 'none',
-            padding: '8px 16px',
+            alignSelf: "flex-start",
+            textTransform: "none",
+            padding: "8px 16px",
             borderRadius: 2,
           }}
         >

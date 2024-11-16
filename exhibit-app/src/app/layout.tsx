@@ -1,16 +1,17 @@
 import React from "react";
-// import Header from "../components/Header";
-// import { Provider } from "react-redux";
-// import store from "../store/store";
+import Header from "@/components/Header"; // Подключаем Header
 
-// Глобальный layout, например для header, footer
 export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      {/* <Header/> */}
-      <body>{children}</body>
+      <body>
+        <Header />
+        <main style={{ marginTop: "100px" }}>{children}</main>
+      </body>
     </html>
   );
 }
