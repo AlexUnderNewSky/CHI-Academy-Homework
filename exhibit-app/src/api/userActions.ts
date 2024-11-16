@@ -38,7 +38,6 @@ export const getUserProfile = async (): Promise<UserI> => {
         Authorization: `Bearer ${localStorage.getItem("authToken")}`,
       },
     });
-    // Теперь возвращаем только пользователя (тип UserI), без обертки UserProfileResponse
     return response.data;
   } catch (error) {
     console.error("Failed to fetch user profile", error);

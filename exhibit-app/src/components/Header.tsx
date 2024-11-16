@@ -1,36 +1,39 @@
-// src/components/Header.tsx
-'use client';
+"use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation"; // Для навигации
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Button,
-  Box,
-} from "@mui/material";
+import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import { getUserProfile } from "../api/userActions";
 
 const Header: React.FC = () => {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<{ id: number; username: string } | null>(null);
+  const [user, setUser] = useState<{ id: number; username: string } | null>(
+    null
+  );
 
-  // Проверка токена и получение пользователя
   useEffect(() => {
     const token = localStorage.getItem("token");
 
     if (token) {
       setIsAuthenticated(true);
+
+      getUserProfile()
+        .then((userData) => {
+          setUser(userData);
+        })
+        .catch((error) => {
+          console.error("Failed to fetch user data:", error);
+          setUser(null);
+        });
     }
   }, []);
 
   // Обработчик выхода
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
     setIsAuthenticated(false);
     setUser(null);
     router.push("/login");
@@ -42,6 +45,15 @@ const Header: React.FC = () => {
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Instagram Clone
         </Typography>
+
+        {/* Если пользователь авторизован, показываем его имя и id */}
+        {isAuthenticated && user && (
+          <Box sx={{ display: "flex", alignItems: "center", color: "white" }}>
+            <Typography variant="body2" sx={{ marginRight: 2 }}>
+              Welcome, {user.username} (ID: {user.id})
+            </Typography>
+          </Box>
+        )}
 
         {isAuthenticated && (
           <>
@@ -74,15 +86,6 @@ const Header: React.FC = () => {
           <Button color="inherit" onClick={() => router.push("/login")}>
             Login
           </Button>
-        )}
-
-        {/* Информация о пользователе */}
-        {isAuthenticated && user && (
-          <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
-            <Typography variant="body2" color="inherit">
-              Welcome, {user.username} (ID: {user.id})
-            </Typography>
-          </Box>
         )}
       </Toolbar>
     </AppBar>
