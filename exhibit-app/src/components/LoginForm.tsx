@@ -1,7 +1,6 @@
 'use client';
 
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import Link from "next/link";  // Используем Link из Next.js
 import { Button, TextField, Box, Typography, Alert } from "@mui/material";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -20,7 +19,7 @@ const LoginForm: React.FC = () => {
     try {
       const token = await loginUser(values.username, values.password);
       localStorage.setItem("token", token.access_token);  // Сохраняем токен в localStorage
-      window.location.href = "/";  // Перенаправляем на главную страницу после успешного логина
+      window.location.href = "/exhibits";  // Перенаправляем на главную страницу после успешного логина
     } catch (error) {
       console.log(error);
       setError("Login failed. Please check your credentials.");
@@ -34,7 +33,7 @@ const LoginForm: React.FC = () => {
       onSubmit={handleLogin}
     >
       <Form>
-        <Typography variant="h5">Login</Typography>
+        <Typography variant="h5" sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 12}}>Login</Typography>
         <Box sx={{ m: 1 }} />
         {error && <Alert severity="error">{error}</Alert>}
         <Field name="username" as={TextField} label="Username" fullWidth required />

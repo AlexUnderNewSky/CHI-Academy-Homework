@@ -1,23 +1,37 @@
-import { axiosInstance } from "./axiosInstance";
+"use client";
 
-export const addComment = async (exhibitId: number, comment: string) => {
+import { axiosInstance } from "./axiosInstance";
+import {
+  AddCommentResponse,
+  FetchCommentsResponse,
+} from "../../interfaces";
+
+export const addComment = async (
+  exhibitId: number,
+  comment: string
+): Promise<AddCommentResponse> => {
   const response = await axiosInstance.post(
     `/api/exhibits/${exhibitId}/comments`,
     { text: comment }
   );
-  return response.data;
+  return response.data; // The response data is now typed as AddCommentResponse
 };
 
-export const fetchComments = async (exhibitId: number) => {
+export const fetchComments = async (
+  exhibitId: number
+): Promise<FetchCommentsResponse> => {
   const response = await axiosInstance.get(
     `/api/exhibits/${exhibitId}/comments`
   );
-  return response.data;
+  return response.data; // Response is typed as FetchCommentsResponse
 };
 
-export const deleteComment = async (exhibitId: number, commentId: number) => {
-  const response = await axiosInstance.delete(
+export const deleteComment = async (
+  exhibitId: number,
+  commentId: number
+): Promise<void> => {
+  await axiosInstance.delete(
     `/api/exhibits/${exhibitId}/comments/${commentId}`
   );
-  return response.data;
+  // No response is expected here, so just return nothing
 };

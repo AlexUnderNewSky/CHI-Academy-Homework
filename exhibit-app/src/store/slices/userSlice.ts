@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { UserI } from "../../../interfaces";
 
+interface UserState {
+  user: UserI | null;
+}
 // Типизируем начальное состояние
 interface UserState {
   isAuthenticated: boolean;
@@ -10,22 +14,28 @@ interface UserState {
 const initialState: UserState = {
   isAuthenticated: false,
   token: null,
+  user: null,
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    login: (state, action: PayloadAction<string>) => { // Ожидаем, что token всегда будет строкой при логине
+    login: (state, action: PayloadAction<string>) => {
+      // Ожидаем, что token всегда будет строкой при логине
       state.isAuthenticated = true;
       state.token = action.payload;
       if (typeof window !== "undefined") {
         localStorage.setItem("token", action.payload);
       }
     },
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
     logout: (state) => {
       state.isAuthenticated = false;
       state.token = null;
+      state.user = null;
       if (typeof window !== "undefined") {
         localStorage.removeItem("token");
       }
@@ -35,11 +45,11 @@ const userSlice = createSlice({
       if (typeof window !== "undefined") {
         const token = localStorage.getItem("token");
         state.isAuthenticated = !!token;
-        state.token = token; 
+        state.token = token;
       }
     },
   },
 });
 
-export const { login, logout, initializeAuth } = userSlice.actions;
+export const { setUser, login, logout, initializeAuth } = userSlice.actions;
 export default userSlice.reducer;
