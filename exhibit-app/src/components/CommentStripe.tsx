@@ -65,8 +65,6 @@ const CommentStripe: React.FC<CommentStripeProps> = ({
       console.error("Failed to delete comment:", error);
     }
   };
-
-  console.log(userId);
   return (
     <Box
       sx={{

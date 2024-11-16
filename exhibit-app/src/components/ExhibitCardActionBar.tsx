@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import CardActions from "@mui/material/CardActions";
 import { useState, useEffect } from "react";
@@ -8,6 +8,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { styled } from "@mui/material/styles";
 import CommentStripe from "./CommentStripe";
 import { getUserProfile } from "../api/userActions"; // Добавьте импорт функции для получения данных пользователя
+import NotificationComponent from "./NotificationComponent"; // Импортируем компонент уведомлений
 
 interface ExhibitCardActionBarPropsI {
   exhibitId: number;
@@ -33,7 +34,7 @@ const ExhibitCardActionBar: React.FC<ExhibitCardActionBarPropsI> = ({
 }) => {
   const [expanded, setExpanded] = useState(false); // Состояние для скрытия/показа
   const [userId, setUserId] = useState<number | null>(null); // Состояние для хранения userId
-  const [loading, setLoading] = useState<boolean>(true); 
+  const [loading, setLoading] = useState<boolean>(true);
 
   // Функция для получения данных о текущем пользователе
   useEffect(() => {
@@ -55,12 +56,23 @@ const ExhibitCardActionBar: React.FC<ExhibitCardActionBarPropsI> = ({
     setExpanded(!expanded);
   };
 
+  const handleNewPost = () => {
+    if (window.location.href === "http://localhost:3000/exhibits?page=1") {
+      setTimeout(function () {
+        window.location.reload();
+      }, 1000);
+    }
+  };
+
   if (loading) {
     return <Typography>Loading...</Typography>; // Пока идет загрузка, можно отобразить текст
   }
 
   return (
     <>
+      {/* Добавляем компонент уведомлений */}
+      <NotificationComponent onNewPost={handleNewPost} />
+
       <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>
         <Typography variant="body1" sx={{ marginRight: 1 }}>
           Show Comments
@@ -77,7 +89,11 @@ const ExhibitCardActionBar: React.FC<ExhibitCardActionBarPropsI> = ({
 
       {/* Передаем userId в CommentStripe */}
       {expanded && userId && (
-        <CommentStripe exhibitId={exhibitId} expanded={expanded} userId={userId} />
+        <CommentStripe
+          exhibitId={exhibitId}
+          expanded={expanded}
+          userId={userId}
+        />
       )}
     </>
   );
