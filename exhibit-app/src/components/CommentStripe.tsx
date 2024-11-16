@@ -30,14 +30,20 @@ const CommentStripe: React.FC<CommentStripeProps> = ({
   useEffect(() => {
     if (exhibitId) {
       fetchComments(exhibitId)
-        .then((data) => setComments(data))
+        .then((data) => {
+          if (data && Array.isArray(data.comments)) {
+            setComments(data.comments); 
+          } else {
+            setComments([]); 
+          }
+        })
         .catch(console.error);
     }
   }, [exhibitId]);
 
   // Add a new comment
   const handleAddComment = async () => {
-    if (!newComment.trim()) return; // Prevent empty comments
+    if (!newComment.trim()) return; 
 
     try {
       const response = await addComment(exhibitId, newComment);
