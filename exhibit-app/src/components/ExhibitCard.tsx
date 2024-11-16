@@ -4,8 +4,6 @@ import ExhibitCardActionBar from "./ExhibitCardActionBar";
 import { Card, CardMedia, Avatar, Typography, CardHeader, CardContent, Divider, Box } from "@mui/material";
 import { format } from "date-fns";
 import { red } from "@mui/material/colors";
-
-// Импортируем DeleteExhibitButton без динамической загрузки
 import DeleteExhibitButton from './DeleteExhibitButton';
 
 const ExhibitCard: React.FC<ExhibitI> = ({
