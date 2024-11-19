@@ -66,7 +66,7 @@ app.delete("/users/:id", async (req: Request, res: Response): Promise<void> => {
     res.status(404).json({ error: "User not found." });
   } else {
     writeFileAsync(updatedUsers);
-    res.sendStatus(204);
+    res.status(200).json({ message: "User successfully deleted." });
   }
 });
 
