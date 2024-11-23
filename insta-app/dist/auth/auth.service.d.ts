@@ -10,4 +10,5 @@ export declare class AuthService {
         access_token: string;
     }>;
     private comparePasswords;
+    extractTokenFromRequest(req: any): string | null;
 }

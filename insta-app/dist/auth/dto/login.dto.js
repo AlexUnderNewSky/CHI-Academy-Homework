@@ -15,11 +15,11 @@ class LoginDto {
 }
 exports.LoginDto = LoginDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: "username123", description: "Имя пользователя" }),
+    (0, swagger_1.ApiProperty)({ example: "username123", description: "Username" }),
     __metadata("design:type", String)
 ], LoginDto.prototype, "username", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: "password123", description: "Пароль пользователя" }),
+    (0, swagger_1.ApiProperty)({ example: "password123", description: "Password" }),
     __metadata("design:type", String)
 ], LoginDto.prototype, "password", void 0);
 //# sourceMappingURL=login.dto.js.map

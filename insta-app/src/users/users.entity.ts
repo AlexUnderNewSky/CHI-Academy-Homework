@@ -8,7 +8,7 @@ export class Users {
   @PrimaryGeneratedColumn()
   @ApiProperty({
     example: 1,
-    description: "Уникальный идентификатор пользователя",
+    description: "Unique user id",
   })
   id: number;
 
@@ -16,14 +16,14 @@ export class Users {
   @Column({ unique: true })
   @ApiProperty({
     example: "user123",
-    description: "Уникальное имя пользователя",
+    description: "User name",
   })
   username: string;
 
   @Column()
   @ApiProperty({
     example: "hashedPassword",
-    description: "Пароль пользователя",
+    description: "User password",
   })
   password: string;
 

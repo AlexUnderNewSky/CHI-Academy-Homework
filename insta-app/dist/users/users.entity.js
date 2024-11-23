@@ -21,7 +21,7 @@ __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     (0, swagger_1.ApiProperty)({
         example: 1,
-        description: "Уникальный идентификатор пользователя",
+        description: "Unique user id",
     }),
     __metadata("design:type", Number)
 ], Users.prototype, "id", void 0);
@@ -30,7 +30,7 @@ __decorate([
     (0, typeorm_1.Column)({ unique: true }),
     (0, swagger_1.ApiProperty)({
         example: "user123",
-        description: "Уникальное имя пользователя",
+        description: "User name",
     }),
     __metadata("design:type", String)
 ], Users.prototype, "username", void 0);
@@ -38,7 +38,7 @@ __decorate([
     (0, typeorm_1.Column)(),
     (0, swagger_1.ApiProperty)({
         example: "hashedPassword",
-        description: "Пароль пользователя",
+        description: "User password",
     }),
     __metadata("design:type", String)
 ], Users.prototype, "password", void 0);

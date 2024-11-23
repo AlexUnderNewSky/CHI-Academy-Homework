@@ -19,12 +19,16 @@ let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(pas
         super({
             jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
-            secretOrKey: "your_secret_key",
+            secretOrKey: "your-secret-key",
         });
         this.usersService = usersService;
     }
     async validate(payload) {
-        return await this.usersService.findById(payload.sub);
+        const user = await this.usersService.findById(payload.sub);
+        if (!user) {
+            throw new common_1.UnauthorizedException("User not found");
+        }
+        return user;
     }
 };
 exports.JwtStrategy = JwtStrategy;

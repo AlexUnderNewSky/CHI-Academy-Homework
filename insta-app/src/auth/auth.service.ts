@@ -1,9 +1,9 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcrypt";
-import { access } from "fs";
 import { Users } from "src/users/users.entity";
 import { UsersService } from "src/users/users.service";
+import { Request } from "express";
 
 @Injectable()
 export class AuthService {
@@ -42,5 +42,13 @@ export class AuthService {
     hashed: string
   ): Promise<boolean> {
     return bcrypt.compare(plainText, hashed);
+  }
+
+  extractTokenFromRequest(req): string | null {
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      return authHeader.split(" ")[1]; // Извлекаем токен после "Bearer "
+    }
+    return null;
   }
 }

@@ -23,11 +23,11 @@ let AuthController = class AuthController {
     }
     async login(loginDto, res) {
         if (!loginDto.username || !loginDto.password) {
-            throw new common_1.BadRequestException("Неверные учетные данные");
+            throw new common_1.BadRequestException("Incorrect username or password");
         }
         const user = await this.authService.validateUser(loginDto.username, loginDto.password);
         if (!user) {
-            throw new common_1.UnauthorizedException("Неверное имя пользователя или пароль");
+            throw new common_1.UnauthorizedException("Incorrect username or password");
         }
         const { access_token } = await this.authService.login(user);
         const response = {
@@ -41,14 +41,14 @@ let AuthController = class AuthController {
 };
 exports.AuthController = AuthController;
 __decorate([
-    (0, swagger_1.ApiOperation)({ summary: "Вход пользователя" }),
+    (0, swagger_1.ApiOperation)({ summary: "Login" }),
     (0, swagger_1.ApiResponse)({
         status: 200,
-        description: "Успешная авторизация, возвращает JWT токен и имя пользователя",
+        description: "Successful login, access_token, user_name, user_role, user_id",
     }),
     (0, swagger_1.ApiResponse)({
         status: 401,
-        description: "Неверное имя пользователя или пароль",
+        description: "Incorrect username or password",
     }),
     (0, common_1.Post)("login"),
     __param(0, (0, common_1.Body)()),
@@ -58,7 +58,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 exports.AuthController = AuthController = __decorate([
-    (0, swagger_1.ApiTags)("auth"),
+    (0, swagger_1.ApiTags)("auth | Authentication"),
     (0, common_1.Controller)("api/auth"),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);
