@@ -16,13 +16,19 @@ class CreateUserDto {
 }
 exports.CreateUserDto = CreateUserDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'username123', description: 'Имя пользователя для регистрации' }),
-    (0, class_validator_1.MinLength)(4, { message: 'Имя пользователя должно быть не короче 4 символов' }),
+    (0, swagger_1.ApiProperty)({
+        example: "username123",
+        description: "Username for registration",
+    }),
+    (0, class_validator_1.MinLength)(4, { message: "Username must be at least 4 characters" }),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "username", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'password123', description: 'Пароль пользователя' }),
-    (0, class_validator_1.MinLength)(4, { message: 'Пароль должен быть не короче 4 символов' }),
+    (0, swagger_1.ApiProperty)({
+        example: "password123",
+        description: "Password for registration",
+    }),
+    (0, class_validator_1.MinLength)(4, { message: "Password must be at least 4 characters" }),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "password", void 0);
 //# sourceMappingURL=create-user.dto.js.map

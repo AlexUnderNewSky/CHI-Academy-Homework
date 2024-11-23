@@ -6,18 +6,59 @@ import {
   NotFoundException,
   Post,
   Query,
+  Req,
+  UseGuards,
 } from "@nestjs/common";
 import { UsersService } from "./users.service";
-import { ApiOperation, ApiQuery, ApiResponse } from "@nestjs/swagger";
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { Users } from "./users.entity";
 import { CreateUserDto } from "./dto/create-user.dto";
+import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
+import { AuthService } from "src/auth/auth.service";
 
 const MinLoginLength = 4;
 const MinPasswordLength = 4;
+@ApiTags("users | Login/Register for User")
 @Controller("users")
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly authService: AuthService
+  ) {}
+
+  @ApiOperation({ summary: "Register new user" })
+  @ApiResponse({
+    status: 201,
+    description: "Successfully registered new user",
+  })
+  @ApiResponse({ status: 400, description: "Bad request" })
+  @Post("register")
+  async register(@Body() createUserDto: CreateUserDto) {
+    if (
+      !createUserDto.username ||
+      !createUserDto.password ||
+      createUserDto.username.length < MinLoginLength ||
+      createUserDto.password.length < MinPasswordLength
+    ) {
+      throw new BadRequestException(
+        `Password and login length must be at least ${MinLoginLength} characters`
+      );
+    }
+
+    const user = this.usersService.create(
+      createUserDto.username,
+      createUserDto.password
+    );
+
+    return plainToInstance(Users, user, { excludeExtraneousValues: true });
+  }
 
   @Get()
   @ApiOperation({ summary: "Get all users" })
@@ -41,30 +82,28 @@ export class UsersController {
     return plainToInstance(Users, user, { excludeExtraneousValues: true });
   }
 
-  @ApiOperation({ summary: "Регистрация нового пользователя" })
+  @Get("my-profile")
+  @ApiBearerAuth("access-token")
   @ApiResponse({
-    status: 201,
-    description: "Пользователь успешно зарегистрирован",
+    status: 200,
+    description: "User profile fetched successfully",
   })
-  @ApiResponse({ status: 400, description: "Некорректные данные" })
-  @Post("register")
-  async register(@Body() createUserDto: CreateUserDto) {
-    if (
-      !createUserDto.username ||
-      !createUserDto.password ||
-      createUserDto.username.length < MinLoginLength ||
-      createUserDto.password.length < MinPasswordLength
-    ) {
-      throw new BadRequestException(
-        `Длинна пароля и логина должна быть не меньше ${MinLoginLength} символов`
-      );
+  @ApiResponse({ status: 401, description: "Unauthorized" })
+  @UseGuards(JwtAuthGuard)
+  async getProfile(@Req() req) {
+    console.log(req.user);
+    const token = this.authService.extractTokenFromRequest(req); // Используем метод для извлечения токена
+
+    if (!token) {
+      throw new Error("Token is required");
     }
 
-    const user = this.usersService.create(
-      createUserDto.username,
-      createUserDto.password
-    );
+    const user = await this.usersService.getProfileFromToken(token);
 
-    return plainToInstance(Users, user, { excludeExtraneousValues: true });
+    return {
+      id: user.id,
+      username: user.username,
+      isAdmin: user.isAdmin,
+    };
   }
 }

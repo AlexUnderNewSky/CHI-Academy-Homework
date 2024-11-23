@@ -1,0 +1,1 @@
+//# sourceMappingURL=query-gallery.dto.js.map

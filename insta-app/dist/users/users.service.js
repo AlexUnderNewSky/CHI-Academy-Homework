@@ -18,9 +18,11 @@ const users_entity_1 = require("./users.entity");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const bcrypt = require("bcrypt");
+const jwt_1 = require("@nestjs/jwt");
 let UsersService = class UsersService {
-    constructor(usersRepository) {
+    constructor(usersRepository, jwtService) {
         this.usersRepository = usersRepository;
+        this.jwtService = jwtService;
     }
     async findById(id) {
         return this.usersRepository.findOne({ where: { id } });
@@ -34,7 +36,7 @@ let UsersService = class UsersService {
             where: { username },
         });
         if (existingUser) {
-            throw new common_1.BadRequestException("Пользователь с таким именем уже существует");
+            throw new common_1.BadRequestException("User with this username already exists");
         }
         const user = this.usersRepository.create({
             username,
@@ -42,11 +44,28 @@ let UsersService = class UsersService {
         });
         return this.usersRepository.save(user);
     }
+    async getProfileFromToken(token) {
+        try {
+            const decoded = this.jwtService.verify(token, {
+                secret: "your-secret-key",
+            });
+            const user = await this.findById(decoded.sub);
+            if (!user) {
+                throw new Error("User not found");
+            }
+            return user;
+        }
+        catch (error) {
+            console.error("Error decoding token or fetching user:", error.message);
+            throw new Error("Invalid token or user not found");
+        }
+    }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(users_entity_1.Users)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        jwt_1.JwtService])
 ], UsersService);
 //# sourceMappingURL=users.service.js.map

@@ -40,6 +40,13 @@ let AuthService = class AuthService {
     async comparePasswords(plainText, hashed) {
         return bcrypt.compare(plainText, hashed);
     }
+    extractTokenFromRequest(req) {
+        const authHeader = req.headers.authorization;
+        if (authHeader && authHeader.startsWith("Bearer ")) {
+            return authHeader.split(" ")[1];
+        }
+        return null;
+    }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
