@@ -5,6 +5,7 @@ import { UsersModule } from "./users/users.module";
 import { Users } from "./users/users.entity";
 import { AuthModule } from "./auth/auth.module";
 import { GalleryModule } from './gallery/gallery.module';
+import { GalleryItem } from "./gallery/gallery.entity";
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { GalleryModule } from './gallery/gallery.module';
       username: "Samael",
       password: "12zx12zx",
       database: "insta",
-      entities: [Users],
+      entities: [Users, GalleryItem],
       synchronize: false,
     }),
     UsersModule,

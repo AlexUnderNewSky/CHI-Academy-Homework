@@ -84,6 +84,7 @@ export class UsersController {
 
   @Get("my-profile")
   @ApiBearerAuth("access-token")
+  @ApiOperation({ summary: "Get info about current user" })
   @ApiResponse({
     status: 200,
     description: "User profile fetched successfully",

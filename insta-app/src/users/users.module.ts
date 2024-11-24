@@ -5,10 +5,11 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { Users } from "./users.entity";
 import { JwtModule } from "@nestjs/jwt";
 import { AuthService } from "src/auth/auth.service";
+import { GalleryItem } from "src/gallery/gallery.entity";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Users]),
+    TypeOrmModule.forFeature([Users, GalleryItem]),
     JwtModule.register({
       secret: "your-secret-key", // Ваш секретный ключ для подписи JWT
       signOptions: { expiresIn: "30d" }, // Время действия токена
