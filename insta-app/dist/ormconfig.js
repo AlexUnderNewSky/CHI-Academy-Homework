@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
 const users_entity_1 = require("./users/users.entity");
+const gallery_entity_1 = require("./gallery/gallery.entity");
 exports.default = new typeorm_1.DataSource({
     type: "postgres",
     host: "localhost",
@@ -11,6 +12,6 @@ exports.default = new typeorm_1.DataSource({
     database: "insta",
     migrations: ["./src/migrations/*.ts"],
     synchronize: false,
-    entities: [users_entity_1.Users],
+    entities: [users_entity_1.Users, gallery_entity_1.GalleryItem],
 });
 //# sourceMappingURL=ormconfig.js.map

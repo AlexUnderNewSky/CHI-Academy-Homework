@@ -15,6 +15,7 @@ const auth_controller_1 = require("./auth.controller");
 const jwt_strategy_1 = require("./jwt.strategy");
 const jwt_auth_guard_1 = require("./jwt-auth.guard");
 const users_module_1 = require("../users/users.module");
+const gallery_entity_1 = require("../gallery/gallery.entity");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -23,6 +24,7 @@ exports.AuthModule = AuthModule = __decorate([
         imports: [
             users_module_1.UsersModule,
             passport_1.PassportModule,
+            gallery_entity_1.GalleryItem,
             jwt_1.JwtModule.register({
                 secret: "your-secret-key",
                 signOptions: { expiresIn: "30d" },

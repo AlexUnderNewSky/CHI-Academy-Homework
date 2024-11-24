@@ -29,4 +29,5 @@ export class Users {
 
   @Column({ default: false })
   isAdmin: boolean;
+    gallery: any;
 }

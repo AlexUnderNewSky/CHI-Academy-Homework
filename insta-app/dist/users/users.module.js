@@ -14,13 +14,14 @@ const typeorm_1 = require("@nestjs/typeorm");
 const users_entity_1 = require("./users.entity");
 const jwt_1 = require("@nestjs/jwt");
 const auth_service_1 = require("../auth/auth.service");
+const gallery_entity_1 = require("../gallery/gallery.entity");
 let UsersModule = class UsersModule {
 };
 exports.UsersModule = UsersModule;
 exports.UsersModule = UsersModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forFeature([users_entity_1.Users]),
+            typeorm_1.TypeOrmModule.forFeature([users_entity_1.Users, gallery_entity_1.GalleryItem]),
             jwt_1.JwtModule.register({
                 secret: "your-secret-key",
                 signOptions: { expiresIn: "30d" },

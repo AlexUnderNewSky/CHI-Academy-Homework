@@ -18,6 +18,13 @@ let JwtAuthGuard = class JwtAuthGuard extends (0, passport_1.AuthGuard)("jwt") {
         }
         return super.canActivate(context);
     }
+    handleRequest(err, user, info, context) {
+        if (err || !user) {
+            console.error("JWT error:", info?.message || "Unknown error");
+            throw new common_1.UnauthorizedException("You are not authorized");
+        }
+        return user;
+    }
 };
 exports.JwtAuthGuard = JwtAuthGuard;
 exports.JwtAuthGuard = JwtAuthGuard = __decorate([

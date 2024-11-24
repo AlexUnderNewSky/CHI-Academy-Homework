@@ -94,6 +94,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)("my-profile"),
     (0, swagger_1.ApiBearerAuth)("access-token"),
+    (0, swagger_1.ApiOperation)({ summary: "Get info about current user" }),
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: "User profile fetched successfully",
