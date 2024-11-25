@@ -31,16 +31,15 @@ import {
   ApiConsumes,
 } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
+import { plainToInstance } from "class-transformer";
+import { GalleryItem } from "./gallery.entity";
 
 @ApiTags("gallery")
-@ApiBearerAuth("access-token")
 @Controller("gallery")
-@UseGuards(JwtAuthGuard)
 export class GalleryController {
   constructor(private readonly galleryService: GalleryService) {}
 
   @Post("add-post")
-  @ApiBearerAuth("access-token")
   @ApiOperation({ summary: "Add a new post to the gallery" })
   @ApiConsumes("multipart/form-data")
   @ApiBody({
@@ -50,7 +49,7 @@ export class GalleryController {
       properties: {
         image: {
           type: "string",
-          format: "binary", // Указывает, что это файл
+          format: "binary",
           description: "The image file to upload",
         },
         description: {
@@ -58,7 +57,7 @@ export class GalleryController {
           description: "Description of the gallery post",
         },
       },
-      required: ["image", "description"], // Указываем обязательные поля
+      required: ["image", "description"],
     },
   })
   @ApiResponse({
@@ -69,6 +68,8 @@ export class GalleryController {
     status: 400,
     description: "Bad request - image file is required",
   })
+  @ApiBearerAuth("access-token")
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(
     FileInterceptor("image", {
       storage: diskStorage({
@@ -88,7 +89,18 @@ export class GalleryController {
     if (!file) {
       throw new BadRequestException("Image file is required");
     }
-    return await this.galleryService.create(file, createGalleryItemDto, user);
+
+    // Создаем новый пост
+    const createdPost = await this.galleryService.create(
+      file,
+      createGalleryItemDto,
+      user
+    );
+
+    // Возвращаем преобразованный объект
+    return plainToInstance(GalleryItem, createdPost, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Get()
@@ -104,7 +116,10 @@ export class GalleryController {
     description: "Successfully fetched posts",
   })
   async findAll(@Query("limit") limit: number) {
-    return await this.galleryService.findAll(limit || 10);
+    const posts = await this.galleryService.findAll(limit || 10);
+    return posts.map((post) =>
+      plainToInstance(GalleryItem, post, { excludeExtraneousValues: true })
+    );
   }
 
   @Get(":id")
@@ -123,7 +138,10 @@ export class GalleryController {
     description: "Post not found",
   })
   async findById(@Param("id") id: number) {
-    return await this.galleryService.findById(id);
+    const post = await this.galleryService.findById(id);
+    return plainToInstance(GalleryItem, post, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Get("/user/me")
@@ -136,8 +154,13 @@ export class GalleryController {
     status: 401,
     description: "Unauthorized",
   })
+  @ApiBearerAuth("access-token")
+  @UseGuards(JwtAuthGuard) // Защита только для этого маршрута
   async findByUser(@GetUser() user: Users) {
-    return await this.galleryService.findByUser(user);
+    const post = await this.galleryService.findByUser(user);
+    return plainToInstance(GalleryItem, post, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Delete(":id")
@@ -159,6 +182,8 @@ export class GalleryController {
     status: 404,
     description: "Post not found",
   })
+  @ApiBearerAuth("access-token")
+  @UseGuards(JwtAuthGuard) // Защита только для этого маршрута
   async deleteById(@Param("id") id: number, @GetUser() user: Users) {
     return await this.galleryService.deleteById(id, user);
   }

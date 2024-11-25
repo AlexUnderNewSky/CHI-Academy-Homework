@@ -1,27 +1,31 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { GalleryItem } from './gallery.entity';
-import { Users } from 'src/users/users.entity';
-import { CreateGalleryItemDto } from './dto/create-gallery.dto';
-import * as fs from 'fs';
-import * as path from 'path';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { GalleryItem } from "./gallery.entity";
+import { Users } from "src/users/users.entity";
+import { CreateGalleryItemDto } from "./dto/create-gallery.dto";
+import * as fs from "fs";
+import * as path from "path";
 import * as Multer from "multer";
 
 @Injectable()
 export class GalleryService {
   constructor(
     @InjectRepository(GalleryItem)
-    private readonly galleryRepository: Repository<GalleryItem>,
+    private readonly galleryRepository: Repository<GalleryItem>
   ) {}
 
   async create(
     file: Multer.File,
     createGalleryItemDto: CreateGalleryItemDto,
-    user: Users,
+    user: Users
   ): Promise<GalleryItem> {
     if (!file) {
-      throw new NotFoundException('Image file is required');
+      throw new NotFoundException("Image file is required");
     }
 
     const filePath = `images/${file.filename}`;
@@ -43,7 +47,7 @@ export class GalleryService {
   async findById(id: number): Promise<GalleryItem> {
     const galleryItem = await this.galleryRepository.findOneBy({ id });
     if (!galleryItem) {
-      throw new NotFoundException('Gallery item not found');
+      throw new NotFoundException("Gallery item not found");
     }
     return galleryItem;
   }
@@ -58,7 +62,9 @@ export class GalleryService {
     const galleryItem = await this.findById(id);
 
     if (galleryItem.user.id !== user.id) {
-      throw new ForbiddenException('You do not have permission to delete this item');
+      throw new ForbiddenException(
+        "You do not have permission to delete this item"
+      );
     }
 
     const filePath = path.resolve(galleryItem.imagePath);
