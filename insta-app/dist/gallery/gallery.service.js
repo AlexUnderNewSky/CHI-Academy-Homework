@@ -25,7 +25,7 @@ let GalleryService = class GalleryService {
     }
     async create(file, createGalleryItemDto, user) {
         if (!file) {
-            throw new common_1.NotFoundException('Image file is required');
+            throw new common_1.NotFoundException("Image file is required");
         }
         const filePath = `images/${file.filename}`;
         const galleryItem = this.galleryRepository.create({
@@ -43,7 +43,7 @@ let GalleryService = class GalleryService {
     async findById(id) {
         const galleryItem = await this.galleryRepository.findOneBy({ id });
         if (!galleryItem) {
-            throw new common_1.NotFoundException('Gallery item not found');
+            throw new common_1.NotFoundException("Gallery item not found");
         }
         return galleryItem;
     }
@@ -55,7 +55,7 @@ let GalleryService = class GalleryService {
     async deleteById(id, user) {
         const galleryItem = await this.findById(id);
         if (galleryItem.user.id !== user.id) {
-            throw new common_1.ForbiddenException('You do not have permission to delete this item');
+            throw new common_1.ForbiddenException("You do not have permission to delete this item");
         }
         const filePath = path.resolve(galleryItem.imagePath);
         if (fs.existsSync(filePath)) {

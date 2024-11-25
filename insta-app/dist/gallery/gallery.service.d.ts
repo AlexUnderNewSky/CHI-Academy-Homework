@@ -1,7 +1,7 @@
-import { Repository } from 'typeorm';
-import { GalleryItem } from './gallery.entity';
-import { Users } from 'src/users/users.entity';
-import { CreateGalleryItemDto } from './dto/create-gallery.dto';
+import { Repository } from "typeorm";
+import { GalleryItem } from "./gallery.entity";
+import { Users } from "src/users/users.entity";
+import { CreateGalleryItemDto } from "./dto/create-gallery.dto";
 import * as Multer from "multer";
 export declare class GalleryService {
     private readonly galleryRepository;

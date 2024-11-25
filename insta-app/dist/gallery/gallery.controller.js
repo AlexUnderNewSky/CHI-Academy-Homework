@@ -26,6 +26,8 @@ const uuid_1 = require("uuid");
 const Multer = require("multer");
 const swagger_1 = require("@nestjs/swagger");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const class_transformer_1 = require("class-transformer");
+const gallery_entity_1 = require("./gallery.entity");
 let GalleryController = class GalleryController {
     constructor(galleryService) {
         this.galleryService = galleryService;
@@ -34,16 +36,26 @@ let GalleryController = class GalleryController {
         if (!file) {
             throw new common_1.BadRequestException("Image file is required");
         }
-        return await this.galleryService.create(file, createGalleryItemDto, user);
+        const createdPost = await this.galleryService.create(file, createGalleryItemDto, user);
+        return (0, class_transformer_1.plainToInstance)(gallery_entity_1.GalleryItem, createdPost, {
+            excludeExtraneousValues: true,
+        });
     }
     async findAll(limit) {
-        return await this.galleryService.findAll(limit || 10);
+        const posts = await this.galleryService.findAll(limit || 10);
+        return posts.map((post) => (0, class_transformer_1.plainToInstance)(gallery_entity_1.GalleryItem, post, { excludeExtraneousValues: true }));
     }
     async findById(id) {
-        return await this.galleryService.findById(id);
+        const post = await this.galleryService.findById(id);
+        return (0, class_transformer_1.plainToInstance)(gallery_entity_1.GalleryItem, post, {
+            excludeExtraneousValues: true,
+        });
     }
     async findByUser(user) {
-        return await this.galleryService.findByUser(user);
+        const post = await this.galleryService.findByUser(user);
+        return (0, class_transformer_1.plainToInstance)(gallery_entity_1.GalleryItem, post, {
+            excludeExtraneousValues: true,
+        });
     }
     async deleteById(id, user) {
         return await this.galleryService.deleteById(id, user);
@@ -52,7 +64,6 @@ let GalleryController = class GalleryController {
 exports.GalleryController = GalleryController;
 __decorate([
     (0, common_1.Post)("add-post"),
-    (0, swagger_1.ApiBearerAuth)("access-token"),
     (0, swagger_1.ApiOperation)({ summary: "Add a new post to the gallery" }),
     (0, swagger_1.ApiConsumes)("multipart/form-data"),
     (0, swagger_1.ApiBody)({
@@ -81,6 +92,8 @@ __decorate([
         status: 400,
         description: "Bad request - image file is required",
     }),
+    (0, swagger_1.ApiBearerAuth)("access-token"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)("image", {
         storage: (0, multer_1.diskStorage)({
             destination: "./images",
@@ -148,6 +161,8 @@ __decorate([
         status: 401,
         description: "Unauthorized",
     }),
+    (0, swagger_1.ApiBearerAuth)("access-token"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, get_user_decorator_1.GetUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [users_entity_1.Users]),
@@ -173,6 +188,8 @@ __decorate([
         status: 404,
         description: "Post not found",
     }),
+    (0, swagger_1.ApiBearerAuth)("access-token"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Param)("id")),
     __param(1, (0, get_user_decorator_1.GetUser)()),
     __metadata("design:type", Function),
@@ -181,9 +198,7 @@ __decorate([
 ], GalleryController.prototype, "deleteById", null);
 exports.GalleryController = GalleryController = __decorate([
     (0, swagger_1.ApiTags)("gallery"),
-    (0, swagger_1.ApiBearerAuth)("access-token"),
     (0, common_1.Controller)("gallery"),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __metadata("design:paramtypes", [gallery_service_1.GalleryService])
 ], GalleryController);
 //# sourceMappingURL=gallery.controller.js.map
