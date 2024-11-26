@@ -1,6 +1,6 @@
 import {
   Injectable,
-  NotFoundException,
+  BadRequestException,
   ForbiddenException,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -25,7 +25,7 @@ export class GalleryService {
     user: Users
   ): Promise<GalleryItem> {
     if (!file) {
-      throw new NotFoundException("Image file is required");
+      throw new BadRequestException("Image file is required");
     }
 
     const filePath = `images/${file.filename}`;
@@ -47,7 +47,7 @@ export class GalleryService {
   async findById(id: number): Promise<GalleryItem> {
     const galleryItem = await this.galleryRepository.findOneBy({ id });
     if (!galleryItem) {
-      throw new NotFoundException("Gallery item not found");
+      throw new BadRequestException("Gallery item not found");
     }
     return galleryItem;
   }

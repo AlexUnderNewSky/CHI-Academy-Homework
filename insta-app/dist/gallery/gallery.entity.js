@@ -34,10 +34,10 @@ __decorate([
 __decorate([
     (0, class_transformer_1.Expose)(),
     (0, typeorm_1.ManyToOne)(() => users_entity_1.Users, (user) => user.gallery, { eager: true }),
-    (0, typeorm_1.JoinColumn)({ name: 'userId' }),
+    (0, typeorm_1.JoinColumn)({ name: "userId" }),
     __metadata("design:type", users_entity_1.Users)
 ], GalleryItem.prototype, "user", void 0);
 exports.GalleryItem = GalleryItem = __decorate([
-    (0, typeorm_1.Entity)('galleryItems')
+    (0, typeorm_1.Entity)("galleryItems")
 ], GalleryItem);
 //# sourceMappingURL=gallery.entity.js.map

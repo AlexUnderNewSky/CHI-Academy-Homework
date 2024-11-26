@@ -22,7 +22,7 @@ __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     (0, swagger_1.ApiProperty)({
         example: 1,
-        description: 'Unique user id',
+        description: "Unique user id",
     }),
     __metadata("design:type", Number)
 ], Users.prototype, "id", void 0);
@@ -30,8 +30,8 @@ __decorate([
     (0, class_transformer_1.Expose)(),
     (0, typeorm_1.Column)({ unique: true }),
     (0, swagger_1.ApiProperty)({
-        example: 'user123',
-        description: 'User name',
+        example: "user123",
+        description: "User name",
     }),
     __metadata("design:type", String)
 ], Users.prototype, "username", void 0);
@@ -39,8 +39,8 @@ __decorate([
     (0, class_transformer_1.Exclude)(),
     (0, typeorm_1.Column)(),
     (0, swagger_1.ApiProperty)({
-        example: 'hashedPassword',
-        description: 'User password',
+        example: "hashedPassword",
+        description: "User password",
     }),
     __metadata("design:type", String)
 ], Users.prototype, "password", void 0);
@@ -49,7 +49,7 @@ __decorate([
     (0, typeorm_1.Column)({ default: false }),
     (0, swagger_1.ApiProperty)({
         example: false,
-        description: 'Indicates if the user has admin privileges',
+        description: "Indicates if the user has admin privileges",
     }),
     __metadata("design:type", Boolean)
 ], Users.prototype, "isAdmin", void 0);

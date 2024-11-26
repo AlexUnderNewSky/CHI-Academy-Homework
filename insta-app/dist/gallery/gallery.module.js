@@ -17,11 +17,9 @@ let GalleryModule = class GalleryModule {
 exports.GalleryModule = GalleryModule;
 exports.GalleryModule = GalleryModule = __decorate([
     (0, common_1.Module)({
-        imports: [
-            typeorm_1.TypeOrmModule.forFeature([gallery_entity_1.GalleryItem]),
-        ],
+        imports: [typeorm_1.TypeOrmModule.forFeature([gallery_entity_1.GalleryItem])],
         controllers: [gallery_controller_1.GalleryController],
-        providers: [gallery_service_1.GalleryService]
+        providers: [gallery_service_1.GalleryService],
     })
 ], GalleryModule);
 //# sourceMappingURL=gallery.module.js.map
