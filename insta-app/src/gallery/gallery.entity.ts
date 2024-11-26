@@ -1,8 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { Users } from '../users/users.entity';
-import { Expose } from 'class-transformer';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from "typeorm";
+import { Users } from "../users/users.entity";
+import { Expose } from "class-transformer";
 
-@Entity('galleryItems')
+@Entity("galleryItems")
 export class GalleryItem {
   @Expose()
   @PrimaryGeneratedColumn()
@@ -18,6 +24,6 @@ export class GalleryItem {
 
   @Expose() // Это поле будет включено в DTO
   @ManyToOne(() => Users, (user) => user.gallery, { eager: true })
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: "userId" })
   user: Users;
 }
