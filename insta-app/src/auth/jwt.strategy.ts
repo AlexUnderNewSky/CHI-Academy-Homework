@@ -8,8 +8,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private usersService: UsersService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false, // Отклоняет истёкшие токены
-      secretOrKey: "your-secret-key", // Используйте тот же ключ, что и в JwtModule
+      ignoreExpiration: false, 
+      secretOrKey: "your-secret-key", 
     });
   }
 
@@ -18,6 +18,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!user) {
       throw new UnauthorizedException("User not found");
     }
-    return user; // Пользователь будет доступен в `req.user`
+    return user; 
   }
 }

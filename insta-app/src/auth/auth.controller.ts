@@ -28,7 +28,6 @@ export class AuthController {
   })
   @Post("login")
   async login(@Body() loginDto: LoginDto, @Res() res) {
-
     if (!loginDto.username || !loginDto.password) {
       throw new BadRequestException("Incorrect username or password");
     }
@@ -39,7 +38,7 @@ export class AuthController {
     );
 
     if (!user) {
-        throw new UnauthorizedException("Incorrect username or password");
+      throw new UnauthorizedException("Incorrect username or password");
     }
 
     const { access_token } = await this.authService.login(user);

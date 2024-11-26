@@ -13,7 +13,7 @@ import {
 } from "@nestjs/common";
 import { GalleryService } from "./gallery.service";
 import { CreateGalleryItemDto } from "./dto/create-gallery.dto";
-import { GetUser } from "src/auth/get-user.decorator";
+import { GetUser } from "src/gallery/decorators/get-user.decorator";
 import { Users } from "src/users/users.entity";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";

@@ -41,10 +41,10 @@ export class UsersService {
   async getProfileFromToken(token: string) {
     try {
       const decoded = this.jwtService.verify(token, {
-        secret: "your-secret-key", 
+        secret: "your-secret-key",
       });
 
-      const user = await this.findById(decoded.sub); 
+      const user = await this.findById(decoded.sub);
       if (!user) {
         throw new Error("User not found");
       }
