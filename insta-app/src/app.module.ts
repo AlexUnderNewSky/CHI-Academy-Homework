@@ -4,7 +4,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { UsersModule } from "./users/users.module";
 import { Users } from "./users/users.entity";
 import { AuthModule } from "./auth/auth.module";
-import { GalleryModule } from "./gallery/gallery.module";
+import { GalleryModule } from './gallery/gallery.module';
 import { GalleryItem } from "./gallery/gallery.entity";
 
 @Module({

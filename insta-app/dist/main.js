@@ -7,17 +7,17 @@ async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors();
     const config = new swagger_1.DocumentBuilder()
-        .setTitle('insta API')
-        .setDescription('clone insta API')
-        .setVersion('1.0')
+        .setTitle("insta API")
+        .setDescription("clone insta API")
+        .setVersion("1.0")
         .addBearerAuth({
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-    }, 'access-token')
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+    }, "access-token")
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, config);
-    swagger_1.SwaggerModule.setup('api', app, document);
+    swagger_1.SwaggerModule.setup("api", app, document);
     await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

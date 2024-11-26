@@ -1,4 +1,4 @@
-import { GalleryItem } from '../gallery/gallery.entity';
+import { GalleryItem } from "../gallery/gallery.entity";
 export declare class Users {
     id: number;
     username: string;

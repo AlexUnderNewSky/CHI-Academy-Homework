@@ -40,13 +40,13 @@ let UsersController = class UsersController {
     }
     async getAllUsers(id, username) {
         if (!id && !username) {
-            throw new common_1.NotFoundException("ID or user must be provided");
+            throw new common_1.BadRequestException("ID or user must be provided");
         }
         const user = id
             ? await this.usersService.findById(id)
             : await this.usersService.findByUsername(username);
         if (!user) {
-            throw new common_1.NotFoundException("User not found");
+            throw new common_1.BadRequestException("User not found");
         }
         return (0, class_transformer_1.plainToInstance)(users_entity_1.Users, user, { excludeExtraneousValues: true });
     }

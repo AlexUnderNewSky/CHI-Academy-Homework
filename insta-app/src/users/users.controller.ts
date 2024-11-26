@@ -3,7 +3,6 @@ import {
   Body,
   Controller,
   Get,
-  NotFoundException,
   Post,
   Query,
   Req,
@@ -71,13 +70,13 @@ export class UsersController {
     @Query("username") username?: string
   ) {
     if (!id && !username) {
-      throw new NotFoundException("ID or user must be provided");
+      throw new BadRequestException("ID or user must be provided");
     }
     const user = id
       ? await this.usersService.findById(id)
       : await this.usersService.findByUsername(username);
     if (!user) {
-      throw new NotFoundException("User not found");
+      throw new BadRequestException("User not found");
     }
     return plainToInstance(Users, user, { excludeExtraneousValues: true });
   }
