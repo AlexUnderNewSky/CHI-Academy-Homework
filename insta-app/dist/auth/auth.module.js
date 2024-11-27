@@ -15,24 +15,32 @@ const auth_controller_1 = require("./auth.controller");
 const jwt_strategy_1 = require("./jwt.strategy");
 const jwt_auth_guard_1 = require("./jwt-auth.guard");
 const users_module_1 = require("../users/users.module");
-const gallery_entity_1 = require("../gallery/gallery.entity");
+const config_1 = require("@nestjs/config");
+const gallery_module_1 = require("../gallery/gallery.module");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
 exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            users_module_1.UsersModule,
+            (0, common_1.forwardRef)(() => users_module_1.UsersModule),
             passport_1.PassportModule,
-            gallery_entity_1.GalleryItem,
-            jwt_1.JwtModule.register({
-                secret: "your-secret-key",
-                signOptions: { expiresIn: "30d" },
+            config_1.ConfigModule,
+            gallery_module_1.GalleryModule,
+            jwt_1.JwtModule.registerAsync({
+                imports: [config_1.ConfigModule],
+                inject: [config_1.ConfigService],
+                useFactory: async (configService) => ({
+                    secret: configService.get("JWT_SECRET"),
+                    signOptions: {
+                        expiresIn: configService.get("JWT_EXPIRES_IN"),
+                    },
+                }),
             }),
         ],
         providers: [auth_service_1.AuthService, jwt_strategy_1.JwtStrategy, jwt_auth_guard_1.JwtAuthGuard],
         controllers: [auth_controller_1.AuthController],
-        exports: [jwt_auth_guard_1.JwtAuthGuard],
+        exports: [jwt_auth_guard_1.JwtAuthGuard, jwt_1.JwtModule],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

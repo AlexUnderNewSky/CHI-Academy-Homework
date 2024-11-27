@@ -6,6 +6,7 @@ import { GalleryItem } from "./gallery.entity";
 
 @Module({
   imports: [TypeOrmModule.forFeature([GalleryItem])],
+  exports: [TypeOrmModule],
   controllers: [GalleryController],
   providers: [GalleryService],
 })

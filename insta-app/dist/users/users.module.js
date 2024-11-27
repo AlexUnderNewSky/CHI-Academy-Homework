@@ -12,20 +12,19 @@ const users_controller_1 = require("./users.controller");
 const users_service_1 = require("./users.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const users_entity_1 = require("./users.entity");
-const jwt_1 = require("@nestjs/jwt");
 const auth_service_1 = require("../auth/auth.service");
+const config_1 = require("@nestjs/config");
 const gallery_entity_1 = require("../gallery/gallery.entity");
+const auth_module_1 = require("../auth/auth.module");
 let UsersModule = class UsersModule {
 };
 exports.UsersModule = UsersModule;
 exports.UsersModule = UsersModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            config_1.ConfigModule,
             typeorm_1.TypeOrmModule.forFeature([users_entity_1.Users, gallery_entity_1.GalleryItem]),
-            jwt_1.JwtModule.register({
-                secret: "your-secret-key",
-                signOptions: { expiresIn: "30d" },
-            }),
+            auth_module_1.AuthModule,
         ],
         controllers: [users_controller_1.UsersController],
         exports: [users_service_1.UsersService],

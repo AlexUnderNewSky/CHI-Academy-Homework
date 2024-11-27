@@ -14,21 +14,30 @@ const users_entity_1 = require("./users/users.entity");
 const auth_module_1 = require("./auth/auth.module");
 const gallery_module_1 = require("./gallery/gallery.module");
 const gallery_entity_1 = require("./gallery/gallery.entity");
+const config_1 = require("@nestjs/config");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forRoot({
-                type: "postgres",
-                host: "localhost",
-                port: 5432,
-                username: "Samael",
-                password: "12zx12zx",
-                database: "insta",
-                entities: [users_entity_1.Users, gallery_entity_1.GalleryItem],
-                synchronize: false,
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+                envFilePath: ".env",
+            }),
+            typeorm_1.TypeOrmModule.forRootAsync({
+                imports: [config_1.ConfigModule],
+                inject: [config_1.ConfigService],
+                useFactory: (configService) => ({
+                    type: "postgres",
+                    host: configService.get("DB_HOST"),
+                    port: configService.get("DB_PORT"),
+                    username: configService.get("DB_USERNAME"),
+                    password: configService.get("DB_PASSWORD"),
+                    database: configService.get("DB_NAME"),
+                    entities: [users_entity_1.Users, gallery_entity_1.GalleryItem],
+                    synchronize: false,
+                }),
             }),
             users_module_1.UsersModule,
             auth_module_1.AuthModule,
