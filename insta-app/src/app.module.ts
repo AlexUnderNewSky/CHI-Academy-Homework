@@ -7,6 +7,8 @@ import { AuthModule } from "./auth/auth.module";
 import { GalleryModule } from "./gallery/gallery.module";
 import { GalleryItem } from "./gallery/gallery.entity";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { CommentsModule } from "./comments/comments.module";
+import { Comment } from "./comments/comments.entity";
 
 @Module({
   imports: [
@@ -24,13 +26,14 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
         username: configService.get<string>("DB_USERNAME"),
         password: configService.get<string>("DB_PASSWORD"),
         database: configService.get<string>("DB_NAME"),
-        entities: [Users, GalleryItem],
+        entities: [Users, GalleryItem, Comment],
         synchronize: false,
       }),
     }),
     UsersModule,
     AuthModule,
     GalleryModule,
+    CommentsModule,
   ],
   // controllers: [AppController, AuthModule],
   // providers: [],

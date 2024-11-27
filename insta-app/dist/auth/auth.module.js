@@ -17,6 +17,7 @@ const jwt_auth_guard_1 = require("./jwt-auth.guard");
 const users_module_1 = require("../users/users.module");
 const config_1 = require("@nestjs/config");
 const gallery_module_1 = require("../gallery/gallery.module");
+const comments_module_1 = require("../comments/comments.module");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -27,6 +28,7 @@ exports.AuthModule = AuthModule = __decorate([
             passport_1.PassportModule,
             config_1.ConfigModule,
             gallery_module_1.GalleryModule,
+            comments_module_1.CommentsModule,
             jwt_1.JwtModule.registerAsync({
                 imports: [config_1.ConfigModule],
                 inject: [config_1.ConfigService],

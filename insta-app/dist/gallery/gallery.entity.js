@@ -13,6 +13,7 @@ exports.GalleryItem = void 0;
 const typeorm_1 = require("typeorm");
 const users_entity_1 = require("../users/users.entity");
 const class_transformer_1 = require("class-transformer");
+const comments_entity_1 = require("../comments/comments.entity");
 let GalleryItem = class GalleryItem {
 };
 exports.GalleryItem = GalleryItem;
@@ -37,6 +38,10 @@ __decorate([
     (0, typeorm_1.JoinColumn)({ name: "userId" }),
     __metadata("design:type", users_entity_1.Users)
 ], GalleryItem.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => comments_entity_1.Comment, (comment) => comment.user),
+    __metadata("design:type", Array)
+], GalleryItem.prototype, "comments", void 0);
 exports.GalleryItem = GalleryItem = __decorate([
     (0, typeorm_1.Entity)("galleryItems")
 ], GalleryItem);

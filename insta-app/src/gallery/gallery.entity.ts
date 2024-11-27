@@ -4,9 +4,11 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from "typeorm";
 import { Users } from "../users/users.entity";
 import { Expose } from "class-transformer";
+import { Comment } from "../comments/comments.entity";
 
 @Entity("galleryItems")
 export class GalleryItem {
@@ -26,4 +28,7 @@ export class GalleryItem {
   @ManyToOne(() => Users, (user) => user.gallery, { eager: true })
   @JoinColumn({ name: "userId" })
   user: Users;
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[];
 }

@@ -15,6 +15,8 @@ const auth_module_1 = require("./auth/auth.module");
 const gallery_module_1 = require("./gallery/gallery.module");
 const gallery_entity_1 = require("./gallery/gallery.entity");
 const config_1 = require("@nestjs/config");
+const comments_module_1 = require("./comments/comments.module");
+const comments_entity_1 = require("./comments/comments.entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -35,13 +37,14 @@ exports.AppModule = AppModule = __decorate([
                     username: configService.get("DB_USERNAME"),
                     password: configService.get("DB_PASSWORD"),
                     database: configService.get("DB_NAME"),
-                    entities: [users_entity_1.Users, gallery_entity_1.GalleryItem],
+                    entities: [users_entity_1.Users, gallery_entity_1.GalleryItem, comments_entity_1.Comment],
                     synchronize: false,
                 }),
             }),
             users_module_1.UsersModule,
             auth_module_1.AuthModule,
             gallery_module_1.GalleryModule,
+            comments_module_1.CommentsModule,
         ],
     })
 ], AppModule);

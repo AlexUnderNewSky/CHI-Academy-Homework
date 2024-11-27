@@ -2,6 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 import { Exclude, Expose } from "class-transformer";
 import { GalleryItem } from "../gallery/gallery.entity";
+import { Comment } from "../comments/comments.entity";
 
 @Entity()
 export class Users {
@@ -39,4 +40,7 @@ export class Users {
 
   @OneToMany(() => GalleryItem, (galleryItem) => galleryItem.user)
   gallery: GalleryItem[];
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[];
 }
