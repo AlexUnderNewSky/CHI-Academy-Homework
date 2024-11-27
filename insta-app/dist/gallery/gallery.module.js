@@ -12,12 +12,13 @@ const gallery_controller_1 = require("./gallery.controller");
 const gallery_service_1 = require("./gallery.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const gallery_entity_1 = require("./gallery.entity");
+const comments_entity_1 = require("../comments/comments.entity");
 let GalleryModule = class GalleryModule {
 };
 exports.GalleryModule = GalleryModule;
 exports.GalleryModule = GalleryModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([gallery_entity_1.GalleryItem])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([gallery_entity_1.GalleryItem, comments_entity_1.Comment])],
         exports: [typeorm_1.TypeOrmModule],
         controllers: [gallery_controller_1.GalleryController],
         providers: [gallery_service_1.GalleryService],

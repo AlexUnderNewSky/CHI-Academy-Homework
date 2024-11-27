@@ -8,6 +8,7 @@ import { JwtAuthGuard } from "./jwt-auth.guard";
 import { UsersModule } from "src/users/users.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { GalleryModule } from "src/gallery/gallery.module";
+import { CommentsModule } from "src/comments/comments.module";
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { GalleryModule } from "src/gallery/gallery.module";
     PassportModule,
     ConfigModule, // Подключаем ConfigModule
     GalleryModule,
+    CommentsModule,
     JwtModule.registerAsync({
       imports: [ConfigModule], // Подключение для доступа к конфигурации
       inject: [ConfigService], // Внедрение ConfigService

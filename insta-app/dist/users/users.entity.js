@@ -14,6 +14,7 @@ const typeorm_1 = require("typeorm");
 const swagger_1 = require("@nestjs/swagger");
 const class_transformer_1 = require("class-transformer");
 const gallery_entity_1 = require("../gallery/gallery.entity");
+const comments_entity_1 = require("../comments/comments.entity");
 let Users = class Users {
 };
 exports.Users = Users;
@@ -57,6 +58,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => gallery_entity_1.GalleryItem, (galleryItem) => galleryItem.user),
     __metadata("design:type", Array)
 ], Users.prototype, "gallery", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => comments_entity_1.Comment, (comment) => comment.user),
+    __metadata("design:type", Array)
+], Users.prototype, "comments", void 0);
 exports.Users = Users = __decorate([
     (0, typeorm_1.Entity)()
 ], Users);

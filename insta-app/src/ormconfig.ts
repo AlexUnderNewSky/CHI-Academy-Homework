@@ -1,6 +1,7 @@
 import { DataSource } from "typeorm";
 import { Users } from "./users/users.entity";
 import { GalleryItem } from "./gallery/gallery.entity";
+import { Comment } from "./comments/comments.entity";
 
 export default new DataSource({
   type: "postgres",
@@ -11,5 +12,5 @@ export default new DataSource({
   database: "insta",
   migrations: ["./src/migrations/*.ts"],
   synchronize: false,
-  entities: [Users, GalleryItem],
+  entities: [Users, GalleryItem, Comment],
 });

@@ -16,6 +16,7 @@ const auth_service_1 = require("../auth/auth.service");
 const config_1 = require("@nestjs/config");
 const gallery_entity_1 = require("../gallery/gallery.entity");
 const auth_module_1 = require("../auth/auth.module");
+const comments_entity_1 = require("../comments/comments.entity");
 let UsersModule = class UsersModule {
 };
 exports.UsersModule = UsersModule;
@@ -23,8 +24,8 @@ exports.UsersModule = UsersModule = __decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule,
-            typeorm_1.TypeOrmModule.forFeature([users_entity_1.Users, gallery_entity_1.GalleryItem]),
-            auth_module_1.AuthModule,
+            typeorm_1.TypeOrmModule.forFeature([users_entity_1.Users, gallery_entity_1.GalleryItem, comments_entity_1.Comment]),
+            (0, common_1.forwardRef)(() => auth_module_1.AuthModule),
         ],
         controllers: [users_controller_1.UsersController],
         exports: [users_service_1.UsersService],

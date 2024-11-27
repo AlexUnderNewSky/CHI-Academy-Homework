@@ -7,11 +7,12 @@ import { AuthService } from "src/auth/auth.service";
 import { ConfigModule } from "@nestjs/config";
 import { GalleryItem } from "src/gallery/gallery.entity";
 import { AuthModule } from "src/auth/auth.module";
+import { Comment } from "src/comments/comments.entity";
 
 @Module({
   imports: [
     ConfigModule, // Импорт ConfigModule для работы с переменными окружения
-    TypeOrmModule.forFeature([Users, GalleryItem]),
+    TypeOrmModule.forFeature([Users, GalleryItem, Comment]),
     forwardRef(() => AuthModule),
   ],
   controllers: [UsersController],
