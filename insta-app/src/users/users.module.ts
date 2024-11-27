@@ -1,19 +1,18 @@
-import { Module } from "@nestjs/common";
+import { forwardRef, Module } from "@nestjs/common";
 import { UsersController } from "./users.controller";
 import { UsersService } from "./users.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Users } from "./users.entity";
-import { JwtModule } from "@nestjs/jwt";
 import { AuthService } from "src/auth/auth.service";
+import { ConfigModule } from "@nestjs/config";
 import { GalleryItem } from "src/gallery/gallery.entity";
+import { AuthModule } from "src/auth/auth.module";
 
 @Module({
   imports: [
+    ConfigModule, // Импорт ConfigModule для работы с переменными окружения
     TypeOrmModule.forFeature([Users, GalleryItem]),
-    JwtModule.register({
-      secret: "your-secret-key", // Ваш секретный ключ для подписи JWT
-      signOptions: { expiresIn: "30d" }, // Время действия токена
-    }),
+    forwardRef(() => AuthModule),
   ],
   controllers: [UsersController],
   exports: [UsersService],

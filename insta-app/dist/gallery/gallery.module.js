@@ -18,6 +18,7 @@ exports.GalleryModule = GalleryModule;
 exports.GalleryModule = GalleryModule = __decorate([
     (0, common_1.Module)({
         imports: [typeorm_1.TypeOrmModule.forFeature([gallery_entity_1.GalleryItem])],
+        exports: [typeorm_1.TypeOrmModule],
         controllers: [gallery_controller_1.GalleryController],
         providers: [gallery_service_1.GalleryService],
     })
