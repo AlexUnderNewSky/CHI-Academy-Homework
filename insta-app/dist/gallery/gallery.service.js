@@ -19,9 +19,11 @@ const typeorm_2 = require("typeorm");
 const gallery_entity_1 = require("./gallery.entity");
 const fs = require("fs");
 const path = require("path");
+const notifications_gateway_1 = require("../notifications/notifications.gateway");
 let GalleryService = class GalleryService {
-    constructor(galleryRepository) {
+    constructor(galleryRepository, notificationService) {
         this.galleryRepository = galleryRepository;
+        this.notificationService = notificationService;
     }
     async create(file, createGalleryItemDto, user) {
         if (!file) {
@@ -32,6 +34,10 @@ let GalleryService = class GalleryService {
             imagePath: filePath,
             description: createGalleryItemDto.description,
             user,
+        });
+        this.notificationService.handleNewPost({
+            message: `New post: ${createGalleryItemDto.description}`,
+            user: user.username,
         });
         return await this.galleryRepository.save(galleryItem);
     }
@@ -68,6 +74,7 @@ exports.GalleryService = GalleryService;
 exports.GalleryService = GalleryService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(gallery_entity_1.GalleryItem)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        notifications_gateway_1.NotificationsGateway])
 ], GalleryService);
 //# sourceMappingURL=gallery.service.js.map

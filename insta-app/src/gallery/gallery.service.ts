@@ -11,12 +11,14 @@ import { CreateGalleryItemDto } from "./dto/create-gallery.dto";
 import * as fs from "fs";
 import * as path from "path";
 import * as Multer from "multer";
+import { NotificationsGateway } from "src/notifications/notifications.gateway";
 
 @Injectable()
 export class GalleryService {
   constructor(
     @InjectRepository(GalleryItem)
-    private readonly galleryRepository: Repository<GalleryItem>
+    private readonly galleryRepository: Repository<GalleryItem>,
+    private readonly notificationService: NotificationsGateway
   ) {}
 
   async create(
@@ -33,6 +35,11 @@ export class GalleryService {
       imagePath: filePath,
       description: createGalleryItemDto.description,
       user,
+    });
+
+    this.notificationService.handleNewPost({
+      message: `New post: ${createGalleryItemDto.description}`,
+      user: user.username,
     });
 
     return await this.galleryRepository.save(galleryItem);
