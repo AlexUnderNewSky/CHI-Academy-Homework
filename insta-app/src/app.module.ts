@@ -1,5 +1,4 @@
 import { MiddlewareConsumer, Module } from "@nestjs/common";
-// import { AppController } from "./app.controller";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { UsersModule } from "./users/users.module";
 import { Users } from "./users/users.entity";
@@ -9,6 +8,7 @@ import { GalleryItem } from "./gallery/gallery.entity";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { CommentsModule } from "./comments/comments.module";
 import { Comment } from "./comments/comments.entity";
+import * as session from "express-session";
 
 @Module({
   imports: [
@@ -35,7 +35,27 @@ import { Comment } from "./comments/comments.entity";
     GalleryModule,
     CommentsModule,
   ],
-  // controllers: [AppController, AuthModule],
-  // providers: [],
 })
-export class AppModule {}
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!SESSION BLOCK, ONLY FOR TESTING!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+export class AppModule {
+  constructor(private readonly configService: ConfigService) {}
+
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(
+        session({
+          secret:
+            this.configService.get<string>("JWT_SECRET") || "your-secret-key",
+          resave: false,
+          saveUninitialized: false,
+          cookie: {
+            maxAge: 3600000, // 1 час
+          },
+        })
+      )
+      .forRoutes("*");
+  }
+}

@@ -5,7 +5,6 @@ import {
   Get,
   Post,
   Query,
-  Req,
   UseGuards,
 } from "@nestjs/common";
 import { UsersService } from "./users.service";
@@ -21,6 +20,7 @@ import { Users } from "./users.entity";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 import { AuthService } from "src/auth/auth.service";
+import { GetUser } from "src/decorators/get-user.decorator";
 
 const MinLoginLength = 4;
 const MinPasswordLength = 4;
@@ -90,20 +90,10 @@ export class UsersController {
   })
   @ApiResponse({ status: 401, description: "Unauthorized" })
   @UseGuards(JwtAuthGuard)
-  async getProfile(@Req() req) {
-    console.log(req.user);
-    const token = this.authService.extractTokenFromRequest(req); // Используем метод для извлечения токена
-
-    if (!token) {
-      throw new Error("Token is required");
-    }
-
-    const user = await this.usersService.getProfileFromToken(token);
-
+  async getProfile(@GetUser() user: Users) {
     return {
       id: user.id,
       username: user.username,
-      isAdmin: user.isAdmin,
     };
   }
 }

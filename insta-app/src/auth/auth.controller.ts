@@ -1,14 +1,19 @@
 import {
   Controller,
   Post,
+  UseGuards,
+  Req,
   Body,
   Res,
-  HttpStatus,
-  BadRequestException,
   UnauthorizedException,
+  BadRequestException,
+  HttpStatus,
+  Get,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
+import { AuthGuard } from "@nestjs/passport";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { Request, Response } from "express";
 import { LoginDto } from "./dto/login.dto";
 
 @ApiTags("auth | Authentication")
@@ -50,5 +55,41 @@ export class AuthController {
       userId: user.id,
     };
     return res.status(HttpStatus.OK).json(response);
+  }
+
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  //!SESSION BLOCK, ONLY FOR TESTING!
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+  @ApiOperation({ summary: "SESSION!!!(only for testing) | Login via session" })
+  @ApiResponse({ status: 200, description: "Session login successful" })
+  @ApiResponse({ status: 401, description: "Invalid credentials" })
+  @Post("session-login")
+  @UseGuards(AuthGuard("local"))
+  sessionLogin(@Body() loginDto: LoginDto, @Req() req: Request) {
+    return { message: "Session login successful", user: req.user };
+  }
+
+  @ApiOperation({ summary: "SESSION!!!(only for testing) | Logout session" })
+  @ApiResponse({ status: 200, description: "Session logout successful" })
+  @Post("session-logout")
+  logout(@Req() req: Request, @Res() res: Response) {
+    req.logout((err) => {
+      if (err) {
+        throw new UnauthorizedException(err.message);
+      }
+      res.json({ message: "Logout successful" });
+    });
+  }
+
+  @Get("session-info")
+  @ApiOperation({ summary: "SESSION!!!(only for testing) | Get session info" })
+  getSessionInfo(@Req() req: Request) {
+    // Данные сессии будут храниться в req.session
+    if (req.session) {
+      return { sessionId: req.sessionID, sessionData: req.session };
+    } else {
+      return { message: "No session found" };
+    }
   }
 }

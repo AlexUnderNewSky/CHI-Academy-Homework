@@ -24,8 +24,8 @@ let CommentService = class CommentService {
         this.galleryRepository = galleryRepository;
     }
     async create(createCommentDto, user) {
-        const post = await this.galleryRepository.findOne({
-            where: { id: createCommentDto.postId },
+        const post = await this.galleryRepository.findOneBy({
+            id: createCommentDto.postId,
         });
         if (!post) {
             throw new common_1.NotFoundException("Gallery post not found");
@@ -40,13 +40,18 @@ let CommentService = class CommentService {
     async findByPost(postId) {
         return await this.commentRepository.find({
             where: { post: { id: postId } },
-            relations: ["user", "post"],
+            relations: {
+                user: true,
+                post: true,
+            },
         });
     }
     async delete(commentId, user) {
         const comment = await this.commentRepository.findOne({
             where: { id: commentId },
-            relations: ["user"],
+            relations: {
+                user: true,
+            },
         });
         if (!comment) {
             throw new common_1.NotFoundException("Comment not found");

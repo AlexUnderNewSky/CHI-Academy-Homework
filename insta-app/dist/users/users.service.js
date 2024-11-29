@@ -19,22 +19,22 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const bcrypt = require("bcrypt");
 const jwt_1 = require("@nestjs/jwt");
+const config_1 = require("@nestjs/config");
 let UsersService = class UsersService {
-    constructor(usersRepository, jwtService) {
+    constructor(usersRepository, jwtService, configService) {
         this.usersRepository = usersRepository;
         this.jwtService = jwtService;
+        this.configService = configService;
     }
     async findById(id) {
-        return this.usersRepository.findOne({ where: { id } });
+        return this.usersRepository.findOneBy({ id });
     }
     async findByUsername(username) {
-        return this.usersRepository.findOne({ where: { username } });
+        return this.usersRepository.findOneBy({ username });
     }
     async create(username, password) {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const existingUser = await this.usersRepository.findOne({
-            where: { username },
-        });
+        const hashedPassword = await this.hashPassword(password);
+        const existingUser = await this.usersRepository.findOneBy({ username });
         if (existingUser) {
             throw new common_1.BadRequestException("User with this username already exists");
         }
@@ -44,11 +44,13 @@ let UsersService = class UsersService {
         });
         return this.usersRepository.save(user);
     }
+    async hashPassword(password) {
+        return bcrypt.hash(password, 10);
+    }
     async getProfileFromToken(token) {
         try {
-            const decoded = this.jwtService.verify(token, {
-                secret: "your-secret-key",
-            });
+            const secret = this.configService.get("JWT_SECRET");
+            const decoded = this.jwtService.verify(token, { secret });
             const user = await this.findById(decoded.sub);
             if (!user) {
                 throw new Error("User not found");
@@ -60,12 +62,20 @@ let UsersService = class UsersService {
             throw new Error("Invalid token or user not found");
         }
     }
+    async findBySession(userId) {
+        const user = await this.findById(userId);
+        if (!user) {
+            throw new common_1.UnauthorizedException("User not found");
+        }
+        return user;
+    }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(users_entity_1.Users)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
-        jwt_1.JwtService])
+        jwt_1.JwtService,
+        config_1.ConfigService])
 ], UsersService);
 //# sourceMappingURL=users.service.js.map
