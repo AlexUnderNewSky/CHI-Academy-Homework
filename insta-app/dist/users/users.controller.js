@@ -21,6 +21,7 @@ const users_entity_1 = require("./users.entity");
 const create_user_dto_1 = require("./dto/create-user.dto");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
 const auth_service_1 = require("../auth/auth.service");
+const get_user_decorator_1 = require("../decorators/get-user.decorator");
 const MinLoginLength = 4;
 const MinPasswordLength = 4;
 let UsersController = class UsersController {
@@ -50,17 +51,10 @@ let UsersController = class UsersController {
         }
         return (0, class_transformer_1.plainToInstance)(users_entity_1.Users, user, { excludeExtraneousValues: true });
     }
-    async getProfile(req) {
-        console.log(req.user);
-        const token = this.authService.extractTokenFromRequest(req);
-        if (!token) {
-            throw new Error("Token is required");
-        }
-        const user = await this.usersService.getProfileFromToken(token);
+    async getProfile(user) {
         return {
             id: user.id,
             username: user.username,
-            isAdmin: user.isAdmin,
         };
     }
 };
@@ -101,9 +95,9 @@ __decorate([
     }),
     (0, swagger_1.ApiResponse)({ status: 401, description: "Unauthorized" }),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    __param(0, (0, common_1.Req)()),
+    __param(0, (0, get_user_decorator_1.GetUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [users_entity_1.Users]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getProfile", null);
 exports.UsersController = UsersController = __decorate([

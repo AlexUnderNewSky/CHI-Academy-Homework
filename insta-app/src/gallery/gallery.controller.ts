@@ -13,7 +13,7 @@ import {
 } from "@nestjs/common";
 import { GalleryService } from "./gallery.service";
 import { CreateGalleryItemDto } from "./dto/create-gallery.dto";
-import { GetUser } from "src/gallery/decorators/get-user.decorator";
+import { GetUser } from "src/decorators/get-user.decorator";
 import { Users } from "src/users/users.entity";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
@@ -40,7 +40,7 @@ export class GalleryController {
   constructor(private readonly galleryService: GalleryService) {}
 
   @Post("add-post")
-  @ApiOperation({ summary: "Add a new post to the gallery" })
+  @ApiOperation({ summary: "Add a new post to the gallery"})
   @ApiConsumes("multipart/form-data")
   @ApiBody({
     description: "Gallery post data with image file",
@@ -183,7 +183,7 @@ export class GalleryController {
     description: "Post not found",
   })
   @ApiBearerAuth("access-token")
-  @UseGuards(JwtAuthGuard) // Защита только для этого маршрута
+  @UseGuards(JwtAuthGuard)
   async deleteById(@Param("id") id: number, @GetUser() user: Users) {
     return await this.galleryService.deleteById(id, user);
   }

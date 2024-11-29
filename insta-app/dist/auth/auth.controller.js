@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
+const passport_1 = require("@nestjs/passport");
 const swagger_1 = require("@nestjs/swagger");
 const login_dto_1 = require("./dto/login.dto");
 let AuthController = class AuthController {
@@ -38,6 +39,25 @@ let AuthController = class AuthController {
         };
         return res.status(common_1.HttpStatus.OK).json(response);
     }
+    sessionLogin(loginDto, req) {
+        return { message: "Session login successful", user: req.user };
+    }
+    logout(req, res) {
+        req.logout((err) => {
+            if (err) {
+                throw new common_1.UnauthorizedException(err.message);
+            }
+            res.json({ message: "Logout successful" });
+        });
+    }
+    getSessionInfo(req) {
+        if (req.session) {
+            return { sessionId: req.sessionID, sessionData: req.session };
+        }
+        else {
+            return { message: "No session found" };
+        }
+    }
 };
 exports.AuthController = AuthController;
 __decorate([
@@ -57,6 +77,36 @@ __decorate([
     __metadata("design:paramtypes", [login_dto_1.LoginDto, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({ summary: "SESSION!!!(only for testing) | Login via session" }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: "Session login successful" }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: "Invalid credentials" }),
+    (0, common_1.Post)("session-login"),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)("local")),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [login_dto_1.LoginDto, Object]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "sessionLogin", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({ summary: "SESSION!!!(only for testing) | Logout session" }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: "Session logout successful" }),
+    (0, common_1.Post)("session-logout"),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "logout", null);
+__decorate([
+    (0, common_1.Get)("session-info"),
+    (0, swagger_1.ApiOperation)({ summary: "SESSION!!!(only for testing) | Get session info" }),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "getSessionInfo", null);
 exports.AuthController = AuthController = __decorate([
     (0, swagger_1.ApiTags)("auth | Authentication"),
     (0, common_1.Controller)("api/auth"),

@@ -18,6 +18,8 @@ const users_module_1 = require("../users/users.module");
 const config_1 = require("@nestjs/config");
 const gallery_module_1 = require("../gallery/gallery.module");
 const comments_module_1 = require("../comments/comments.module");
+const session_strategy_1 = require("./session.strategy");
+const session_serializer_1 = require("./session.serializer");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -40,7 +42,13 @@ exports.AuthModule = AuthModule = __decorate([
                 }),
             }),
         ],
-        providers: [auth_service_1.AuthService, jwt_strategy_1.JwtStrategy, jwt_auth_guard_1.JwtAuthGuard],
+        providers: [
+            auth_service_1.AuthService,
+            jwt_strategy_1.JwtStrategy,
+            jwt_auth_guard_1.JwtAuthGuard,
+            session_strategy_1.SessionStrategy,
+            session_serializer_1.SessionSerializer,
+        ],
         controllers: [auth_controller_1.AuthController],
         exports: [jwt_auth_guard_1.JwtAuthGuard, jwt_1.JwtModule],
     })

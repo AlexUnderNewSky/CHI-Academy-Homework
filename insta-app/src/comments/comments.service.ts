@@ -22,8 +22,8 @@ export class CommentService {
     createCommentDto: CreateCommentDto,
     user: Users
   ): Promise<Comment> {
-    const post = await this.galleryRepository.findOne({
-      where: { id: createCommentDto.postId },
+    const post = await this.galleryRepository.findOneBy({
+      id: createCommentDto.postId,
     });
     if (!post) {
       throw new NotFoundException("Gallery post not found");
@@ -41,14 +41,19 @@ export class CommentService {
   async findByPost(postId: number): Promise<Comment[]> {
     return await this.commentRepository.find({
       where: { post: { id: postId } },
-      relations: ["user", "post"], // Релевантные связи для извлечения
+      relations: {
+        user: true,
+        post: true,
+      },
     });
   }
 
   async delete(commentId: number, user: Users): Promise<void> {
     const comment = await this.commentRepository.findOne({
       where: { id: commentId },
-      relations: ["user"],
+      relations: {
+        user: true,
+      },
     });
 
     if (!comment) {

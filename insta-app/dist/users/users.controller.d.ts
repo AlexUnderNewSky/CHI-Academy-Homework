@@ -8,9 +8,8 @@ export declare class UsersController {
     constructor(usersService: UsersService, authService: AuthService);
     register(createUserDto: CreateUserDto): Promise<Users>;
     getAllUsers(id?: number, username?: string): Promise<Users>;
-    getProfile(req: any): Promise<{
+    getProfile(user: Users): Promise<{
         id: number;
         username: string;
-        isAdmin: boolean;
     }>;
 }

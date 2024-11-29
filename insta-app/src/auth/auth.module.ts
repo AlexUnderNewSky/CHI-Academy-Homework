@@ -9,6 +9,8 @@ import { UsersModule } from "src/users/users.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { GalleryModule } from "src/gallery/gallery.module";
 import { CommentsModule } from "src/comments/comments.module";
+import { SessionStrategy } from "./session.strategy";
+import { SessionSerializer } from "./session.serializer";
 
 @Module({
   imports: [
@@ -28,7 +30,16 @@ import { CommentsModule } from "src/comments/comments.module";
       }),
     }),
   ],
-  providers: [AuthService, JwtStrategy, JwtAuthGuard],
+  providers: [
+    //Auth
+    AuthService,
+    //JWT
+    JwtStrategy,
+    JwtAuthGuard,
+    //Sessions
+    SessionStrategy,
+    SessionSerializer,
+  ],
   controllers: [AuthController],
   exports: [JwtAuthGuard, JwtModule],
 })

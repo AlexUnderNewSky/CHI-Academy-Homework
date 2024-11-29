@@ -54,9 +54,7 @@ let GalleryService = class GalleryService {
         return galleryItem;
     }
     async findByUser(user) {
-        return await this.galleryRepository.find({
-            where: { user },
-        });
+        return await this.galleryRepository.findBy({ user });
     }
     async deleteById(id, user) {
         const galleryItem = await this.findById(id);

@@ -19,7 +19,7 @@ export class Comment {
   @ManyToOne(() => Users, (user) => user.comments, { eager: true })
   @JoinColumn({ name: 'userId' })
   @ApiProperty({ description: 'The user who created the comment' })
-  @Exclude() // Исключаем лишние данные о пользователе
+  @Exclude() 
   user: Users;
 
   @ManyToOne(() => GalleryItem, (post) => post.comments, { onDelete: 'CASCADE' })

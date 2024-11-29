@@ -60,9 +60,7 @@ export class GalleryService {
   }
 
   async findByUser(user: Users): Promise<GalleryItem[]> {
-    return await this.galleryRepository.find({
-      where: { user },
-    });
+    return await this.galleryRepository.findBy({ user });
   }
 
   async deleteById(id: number, user: Users): Promise<void> {
