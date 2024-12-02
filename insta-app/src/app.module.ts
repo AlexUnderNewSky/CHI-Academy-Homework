@@ -9,6 +9,8 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { CommentsModule } from "./comments/comments.module";
 import { Comment } from "./comments/comments.entity";
 import * as session from "express-session";
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { join } from "path";
 
 @Module({
   imports: [
@@ -29,6 +31,10 @@ import * as session from "express-session";
         entities: [Users, GalleryItem, Comment],
         synchronize: false,
       }),
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'images'), 
+      serveRoot: '/images', 
     }),
     UsersModule,
     AuthModule,
