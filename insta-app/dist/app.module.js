@@ -21,6 +21,8 @@ const config_1 = require("@nestjs/config");
 const comments_module_1 = require("./comments/comments.module");
 const comments_entity_1 = require("./comments/comments.entity");
 const session = require("express-session");
+const serve_static_1 = require("@nestjs/serve-static");
+const path_1 = require("path");
 let AppModule = class AppModule {
     constructor(configService) {
         this.configService = configService;
@@ -59,6 +61,10 @@ exports.AppModule = AppModule = __decorate([
                     entities: [users_entity_1.Users, gallery_entity_1.GalleryItem, comments_entity_1.Comment],
                     synchronize: false,
                 }),
+            }),
+            serve_static_1.ServeStaticModule.forRoot({
+                rootPath: (0, path_1.join)(__dirname, '..', 'images'),
+                serveRoot: '/images',
             }),
             users_module_1.UsersModule,
             auth_module_1.AuthModule,
